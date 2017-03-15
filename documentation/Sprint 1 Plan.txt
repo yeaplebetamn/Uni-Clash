@@ -1,0 +1,7 @@
+We will be working on User Stories:
+
+#1: As a user when I open the app I want a menu to be displayed so that I can start the game and adjust settings.
+#2: As a user, when I press play I want it to start the game.
+#3: As a user when choosing a team I want to choose from: Spiders, Hokies, or Rams so that I can defeat the rival teams.
+#8: As a user I would like to press buttons in between waves so that I can access the menus (shop, pause)
+#11: As a gamer I want to see the health of my base so that I can know my status.
