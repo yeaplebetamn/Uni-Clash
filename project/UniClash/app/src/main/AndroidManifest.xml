@@ -24,7 +24,14 @@
             android:name=".LevelSelectMenu"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_level_select_menu"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".GameView"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_game_view"
+            android:screenOrientation="landscape"
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".SettingsMenu"></activity>
     </application>
 
 </manifest>

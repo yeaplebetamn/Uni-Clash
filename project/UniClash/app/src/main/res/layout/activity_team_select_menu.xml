@@ -9,7 +9,7 @@
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
 
-    <!--Textview included in original Fullscreen xml-->
+    <!--Textview included in original Fullscreen xml. Kept in case we want to add title/text to menu-->
     <!--<TextView-->
         <!--android:id="@+id/fullscreen_content"-->
         <!--android:layout_width="match_parent"-->
@@ -45,6 +45,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/hokiesTeamButton"
+            android:layout_marginTop="50dp" />
+
+        <Button
+            android:text="Main Menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/backTeamSelectButton"
             android:layout_marginTop="50dp" />
     </LinearLayout>
 

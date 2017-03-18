@@ -12,7 +12,7 @@ import android.view.View;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class TeamSelectMenu extends AppCompatActivity {
+public class GameView extends AppCompatActivity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -87,7 +87,7 @@ public class TeamSelectMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_team_select_menu);
+        setContentView(R.layout.activity_game_view);
 
         mVisible = true;
        /* mControlsView = findViewById(R.id.fullscreen_content_controls);
@@ -105,6 +105,8 @@ public class TeamSelectMenu extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
+
+
         /*findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);*/
     }
 

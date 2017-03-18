@@ -6,4 +6,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="title_activity_level_select_menu">LevelSelectMenu</string>
+
+    <string name="title_activity_game_view">GameView</string>
 </resources>
