@@ -15,6 +15,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TeamSelectMenu"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_team_select_menu"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".LevelSelectMenu"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_level_select_menu"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

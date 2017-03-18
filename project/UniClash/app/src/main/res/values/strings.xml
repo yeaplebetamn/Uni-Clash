@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Uni Clash</string>
+
+    <string name="title_activity_team_select_menu">TeamSelectMenu</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_level_select_menu">LevelSelectMenu</string>
 </resources>
