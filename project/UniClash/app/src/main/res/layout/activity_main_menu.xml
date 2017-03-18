@@ -7,10 +7,34 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.team6.uniclash.MainMenu">
+    tools:context="com.example.team6.uniclash.MainMenu"
+
+    android:background="@drawable/clash_of_kings_college"
+    >
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
+
+    <Button
+        android:text="Settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SettingsButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="74dp" />
+
+    <Button
+        android:text="Play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/PlayButton"
+        android:textStyle="normal|bold"
+        android:layout_above="@+id/SettingsButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="27dp" />
 </RelativeLayout>
