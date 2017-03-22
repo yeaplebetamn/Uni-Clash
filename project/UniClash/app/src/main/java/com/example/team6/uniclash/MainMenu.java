@@ -9,10 +9,15 @@ import android.widget.Button;
 
 public class MainMenu extends AppCompatActivity {
 
+    Button playButton;
+    Button settingsButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        playButton = (Button) findViewById(R.id.PlayButton);
+
 
     }
 
