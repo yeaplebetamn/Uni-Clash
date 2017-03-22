@@ -34,11 +34,28 @@
             android:progress="100" />
 
         <Button
-            android:text="Reset Team"
+            android:id="@+id/chooseRamsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/resetTeamButton"
-            android:layout_marginTop="100dp" />
+            android:layout_marginTop="50dp"
+            android:onClick="pressRamsButton"
+            android:text="Rams" />
+
+        <Button
+            android:id="@+id/chooseHokiesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:onClick="pressHokiesButton"
+            android:text="Hokies" />
+
+        <Button
+            android:id="@+id/chooseSpidersButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:onClick="pressSpidersButton"
+            android:text="Spiders" />
 
         <Button
             android:text="Main Menu"
@@ -48,4 +65,5 @@
             android:layout_marginTop="50dp"
             android:onClick="pressMainMenu" />
     </LinearLayout>
+
 </RelativeLayout>

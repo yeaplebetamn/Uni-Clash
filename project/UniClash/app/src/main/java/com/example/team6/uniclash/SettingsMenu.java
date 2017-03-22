@@ -8,7 +8,11 @@ import android.widget.Button;
 
 public class SettingsMenu extends AppCompatActivity {
     Button mainMenu;
-    Button resetGame; //not implemented
+
+    //change to radio buttons?
+    Button ramsButton;
+    Button hokiesButton;
+    Button spidersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +20,11 @@ public class SettingsMenu extends AppCompatActivity {
         setContentView(R.layout.activity_settings_menu);
 
         mainMenu = (Button) findViewById(R.id.mainMenuButton);
+
+        //also radio buttons?
+        ramsButton = (Button) findViewById(R.id.chooseRamsButton);
+        hokiesButton = (Button) findViewById(R.id.chooseHokiesButton);
+        spidersButton = (Button) findViewById(R.id.chooseSpidersButton);
     }
 
     //Methods for switching between menus
@@ -23,5 +32,17 @@ public class SettingsMenu extends AppCompatActivity {
     public void pressMainMenu(View view){
         Intent mainMenuIntent = new Intent(this, MainMenu.class);
         startActivity(mainMenuIntent);
+    }
+
+    public void pressRamsButton(View view){
+
+    }
+
+    public void pressHokiesButton(View view){
+
+    }
+
+    public void pressSpidersButton(View view){
+
     }
 }
