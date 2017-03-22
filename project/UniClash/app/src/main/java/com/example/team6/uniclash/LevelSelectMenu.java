@@ -33,14 +33,17 @@ public class LevelSelectMenu extends AppCompatActivity {
     }
 
     public void pressLevel1Button(View view){
-
+        Intent level1SelectIntent = new Intent(this, GameView.class);
+        startActivity(level1SelectIntent);
     }
 
     public void pressLevel2Button(View view){
-
+        Intent level2SelectIntent = new Intent(this, GameView.class);
+        startActivity(level2SelectIntent);
     }
 
     public void pressLevel3Button(View view){
-
+        Intent level3SelectIntent = new Intent(this, GameView.class);
+        startActivity(level3SelectIntent);
     }
 }
