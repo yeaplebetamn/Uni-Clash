@@ -32,27 +32,4 @@ public class MainMenu extends AppCompatActivity {
         Intent settingsMenuIntent = new Intent(this, SettingsMenu.class);
         startActivity(settingsMenuIntent);
     }
-
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item){
-//
-//        //stack overflow's method of activity switching
-//        switch(item.getItemId()){
-//            case R.id.PlayButton:
-//                startActivity(new Intent(this, LevelSelectMenu.class));
-//                return true;
-//            case R.id.SettingsButton:
-//                startActivity(new Intent(this, SettingsMenu.class));
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//
-//        }
-//
-//        //Duke's method of activity switching
-////        Intent levelSelectMenuIntent = new Intent(this, LevelSelectMenu.class);
-////        startActivity(levelSelectMenuIntent);
-////        return super.onOptionsItemSelected(item);
-//    }
 }

@@ -27,32 +27,36 @@
         android:layout_height="match_parent">
 
         <Button
-            android:text="Level 1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/level1Button"
-            android:layout_marginTop="200dp" />
-
-        <Button
-            android:text="Level 2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:onClick="pressLevel1Button"
+            android:text="Level 1" />
+
+        <Button
             android:id="@+id/level2Button"
-            android:layout_marginTop="50dp" />
-
-        <Button
-            android:text="Level 3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/level3button"
-            android:layout_marginTop="50dp" />
+            android:layout_marginTop="50dp"
+            android:onClick="pressLevel2Button"
+            android:text="Level 2" />
 
         <Button
-            android:text="Main Menu"
+            android:id="@+id/level3Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:onClick="pressLevel3Button"
+            android:text="Level 3" />
+
+        <Button
             android:id="@+id/backLevelSelectButton"
-            android:layout_marginTop="50dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:onClick="pressMainMenu"
+            android:text="Main Menu" />
     </LinearLayout>
 
     <!-- This FrameLayout insets its children based on system windows using
