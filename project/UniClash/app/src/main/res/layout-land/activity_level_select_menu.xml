@@ -30,7 +30,7 @@
             android:id="@+id/level1Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="10dp"
             android:onClick="pressLevel1Button"
             android:text="Level 1" />
 
@@ -38,7 +38,7 @@
             android:id="@+id/level2Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:onClick="pressLevel2Button"
             android:text="Level 2" />
 
@@ -46,7 +46,7 @@
             android:id="@+id/level3Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:onClick="pressLevel3Button"
             android:text="Level 3" />
 
