@@ -16,15 +16,21 @@ public class MainMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        playButton = (Button) findViewById(R.id.PlayButton);
 
+        playButton = (Button) findViewById(R.id.PlayButton);
+        settingsButton = (Button) findViewById(R.id.SettingsButton);
 
     }
 
-    //Method based on: https://developer.android.com/training/basics/firstapp/starting-activity.html
+    //Methods for switching between menus
+    //Methods based on: https://developer.android.com/training/basics/firstapp/starting-activity.html
     public void pressPlay(View view){
         Intent levelSelectMenuIntent = new Intent(this, LevelSelectMenu.class);
         startActivity(levelSelectMenuIntent);
+    }
+    public void pressSettings(View view){
+        Intent settingsMenuIntent = new Intent(this, SettingsMenu.class);
+        startActivity(settingsMenuIntent);
     }
 
 
