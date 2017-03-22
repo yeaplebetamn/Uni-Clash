@@ -7,14 +7,15 @@ import android.view.View;
 import android.widget.Button;
 
 public class SettingsMenu extends AppCompatActivity {
-    Button mainMen;
+    Button mainMenu;
+    Button resetGame; //not implemented
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_menu);
 
-        mainMenu = (Button) findViewById(R.id.MainMenu);
+        mainMenu = (Button) findViewById(R.id.mainMenuButton);
     }
 
     //Methods for switching between menus
