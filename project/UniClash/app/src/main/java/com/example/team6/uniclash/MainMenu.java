@@ -13,9 +13,10 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
     }
 
-    public boolean onMenuItemSelected(Button PlayButton){
+/*    public boolean onMenuItemSelected(Button PlayButton){
         Intent levelSelectMenuIntent = new Intent(this, LevelSelectMenu.class);
         startActivity(levelSelectMenuIntent);
         return super.onMenuItemSelected(PlayButton);
     }
+*/
 }

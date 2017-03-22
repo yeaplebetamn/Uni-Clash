@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.1"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.example.team6.uniclash"
@@ -24,4 +24,16 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
     testCompile 'junit:junit:4.12'
+    compile 'junit:junit:4.12'
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
+        // Necessary if your app targets Marshmallow (since Espresso
+        // hasn't moved to Marshmallow yet)
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile('com.android.support.test:runner:0.3') {
+        // Necessary if your app targets Marshmallow (since the test runner
+        // hasn't moved to Marshmallow yet)
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
 }
