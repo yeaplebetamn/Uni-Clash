@@ -22,7 +22,7 @@ public class MainMenu extends AppCompatActivity {
 
     }
 
-    //Methods for switching between menus
+    //Methods for switching between menus using buttons
     //Methods based on: https://developer.android.com/training/basics/firstapp/starting-activity.html
     public void pressPlay(View view){
         Intent levelSelectMenuIntent = new Intent(this, LevelSelectMenu.class);
@@ -32,4 +32,5 @@ public class MainMenu extends AppCompatActivity {
         Intent settingsMenuIntent = new Intent(this, SettingsMenu.class);
         startActivity(settingsMenuIntent);
     }
+   
 }
