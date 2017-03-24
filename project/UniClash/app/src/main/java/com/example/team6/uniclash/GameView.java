@@ -69,7 +69,43 @@ public class GameView extends AppCompatActivity {
     void baseAttacked(int dmg){
         health -= dmg;
 
-        
+        if(health >= 96){
+            healthTextView.setText("A+ Health");
+        }
+        else if(health >= 90){
+            healthTextView.setText("A- Health");
+        }
+        else if(health >= 86){
+            healthTextView.setText("B+ Health");
+        }
+        else if(health >= 80){
+            healthTextView.setText("B- Health");
+        }
+        else if(health >= 76){
+            healthTextView.setText("C+ Health");
+        }
+        else if(health >= 70){
+            healthTextView.setText("C- Health");
+        }
+        else if(health >= 66){
+            healthTextView.setText("D+ Health");
+        }
+        else if(health >= 60){
+            healthTextView.setText("D- Health");
+        }
+        else if(health > 0) {
+            healthTextView.setText("F Health");
+        }
+        else{healthTextView.setText("Withdraw");}
+    }
+
+    void baseHealed(int heal){
+        if(health + heal > 100){
+            health = 100;
+
+        }
+        else{health += heal;}
+
     }
 
 }
