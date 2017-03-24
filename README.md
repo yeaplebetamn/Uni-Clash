@@ -20,8 +20,10 @@ User story 3\
   We successfully implemented a SettingsMenu in which the default is Rams (go Rams) but the user can choose between Spiders, Hokies, or Rams.\
   When selected, these buttons set up a file with the corresponding team name and that team name is stored.
  User story 8\
+ All scenarios tested and completed.\
   We successfully implemented the PauseButton in the GameView menu. This launches the SettingsMenu. It does not, however, pause the actual game as we have not implemented the game mechanics. \
-  We did not implement scenarios 2 or 3 as these would delve into the deeper game mechanics.\
+  We also implemented the Wave Info button to display a message.\
+  We implemented the Shop menu to show upon pressing the Shop button.
  User story 11\
    We successfully implemented the a Health TextView that we plan to be able to update when the actual game is running.\
    We did not implment scenariods 2 or 3 as these would delve into the deeper game mechanics.\
