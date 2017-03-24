@@ -3,22 +3,24 @@
 ***************
 FIRST ITERATION
 
-User Stories succesfully implemented included: 1, 2, 3, 8, 11. Most of the implementations where mainly UI set up for the different menus and did not go into the game mechanics of the game.
+User Stories successfully implemented included: 1, 2, 3, 8, 11. Most of the implementations where mainly UI set up for the different menus and did not go into the game mechanics of the game.
 User story 1
-  We are succesfully able to open the app (without it crashing!) and display our basic MainMenu.class.
+  We are successfully able to open the app (without it crashing!) and display our basic MainMenu.class.
   From the MainMenu, user can open the SettingsMenu and the TeamSelectMenu
   We plan to update its graphics and "make it prettier" in a later iteration.
 User story 2
-  We succesfully built a skeleton menu for where the game will be "housed" in GameView.class
+  We successfully built a skeleton menu for where the game will be "housed" in GameView.class
   As of now, no matter what Level is selected in LevelSelect, it brings the user to the same skeleton menu which was purposful as we will not implment the actual game levels with game mechanics until a later iteration.
   Evenutally the game will be shown here.
  User story 3
-  We succesfully implemented a SettingsMenu in which the default is Rams (go Rams) but the user can choose between Spiders, Hokies, or Rams.
+  We successfully implemented a SettingsMenu in which the default is Rams (go Rams) but the user can choose between Spiders, Hokies, or Rams.
   When selected, these buttons set up a file with the corresponding team name.
  User story 8
-  We
+  We successfully implemented the PauseButton in the GameView menu. This launches the SettingsMenu.
+  We did not implement scenarios 2 or 3 as these would delve into the deeper game mechanics.
  User story 11
-  ##
+   We successfully implemented the a Health TextView that we plan to be able to update when the actual game is running.
+   We did not implment scenariods 2 or 3 as these would delve into the deeper game mechanics.
  
  Difficulties: 
   Activity switching was fairly difficult to implement. 
