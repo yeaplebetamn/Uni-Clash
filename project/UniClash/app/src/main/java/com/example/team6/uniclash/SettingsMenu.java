@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
 public class SettingsMenu extends AppCompatActivity {
     Button mainMenu;
 
@@ -28,22 +32,32 @@ public class SettingsMenu extends AppCompatActivity {
         spidersRB = (RadioButton) findViewById(R.id.spidersRB);
     }
 
+    // creates or modifies a team.txt file to store the user's team name.
+    public void setTeam(String teamName){
+        try{
+            PrintWriter writer = new PrintWriter("team.txt", "UTF-8");
+            writer.println(teamName);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     //Methods for switching between menus
     //Methods based on: https://developer.android.com/training/basics/firstapp/starting-activity.html
     public void pressMainMenu(View view){
+        if(spidersRB.isChecked()){
+            setTeam("Spiders");
+        }
+        else if(ramsRB.isChecked()){
+            setTeam("Rams");
+        }
+        else{setTeam("Hokies");}
+
         Intent mainMenuIntent = new Intent(this, MainMenu.class);
         startActivity(mainMenuIntent);
-    }
-
-    public void pressRamsButton(View view){
-
-    }
-
-    public void pressHokiesButton(View view){
-
-    }
-
-    public void pressSpidersButton(View view){
-
     }
 }
