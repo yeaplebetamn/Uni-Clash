@@ -1,5 +1,6 @@
 package com.example.team6.uniclash;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
@@ -32,15 +34,17 @@ public class SettingsMenu extends AppCompatActivity {
         spidersRB = (RadioButton) findViewById(R.id.spidersRB);
     }
 
-    // creates or modifies a team.txt file to store the user's team name.
+    // modifies a team.txt file to store the user's team name.
+    // code modified from https://developer.android.com/training/basics/data-storage/files.html
     public void setTeam(String teamName){
-        try{
-            PrintWriter writer = new PrintWriter("team.txt", "UTF-8");
-            writer.println(teamName);
+        String filename = "team";
+        FileOutputStream outputStream;
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(teamName.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

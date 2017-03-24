@@ -59,6 +59,14 @@
             android:text="Main Menu" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/teamNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Team : Rams"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
