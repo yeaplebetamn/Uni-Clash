@@ -3,6 +3,7 @@ package com.example.team6.uniclash;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ public class LevelSelectMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_select_menu);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mainMenuButton = (Button) findViewById(R.id.mainMenuButton);
         level1Button = (Button) findViewById(R.id.level1Button);
@@ -75,7 +78,7 @@ public class LevelSelectMenu extends AppCompatActivity {
             String inputString;
             StringBuffer stringBuffer = new StringBuffer();
             while ((inputString = inputReader.readLine()) != null) {
-                stringBuffer.append(inputString + "\n");
+                stringBuffer.append(inputString);
             }
             teamNameView.setText(stringBuffer.toString());
         } catch (IOException e) {

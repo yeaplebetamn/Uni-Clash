@@ -1,6 +1,7 @@
 package com.example.team6.uniclash;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,9 +18,10 @@ public class MainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         playButton = (Button) findViewById(R.id.PlayButton);
         settingsButton = (Button) findViewById(R.id.SettingsButton);
-
     }
 
     //Methods for switching between menus using buttons
