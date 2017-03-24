@@ -4,6 +4,7 @@
 FIRST ITERATION
 
 User Stories successfully implemented included: 1, 2, 3, 8, 11. Most of the implementations where mainly UI set up for the different menus and did not go into the game mechanics of the game.
+
 User story 1
   We are successfully able to open the app (without it crashing!) and display our basic MainMenu.class.
   From the MainMenu, user can open the SettingsMenu and the TeamSelectMenu
