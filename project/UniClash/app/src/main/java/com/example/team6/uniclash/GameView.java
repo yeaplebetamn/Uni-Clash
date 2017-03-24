@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class GameView extends AppCompatActivity {
@@ -16,6 +17,10 @@ public class GameView extends AppCompatActivity {
     Button shopButton;
     Button pauseButton;
     Button startWaveButton;
+
+    TextView healthTextView;
+
+    int health;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -26,6 +31,10 @@ public class GameView extends AppCompatActivity {
         shopButton = (Button) findViewById(R.id.shopButton);
         pauseButton = (Button) findViewById(R.id.pauseButton);
         startWaveButton = (Button) findViewById(R.id.startWaveButton);
+        healthTextView = (TextView) findViewById(R.id.healthBar);
+
+
+        health = 100;
     }
 
     //Methods for GameView buttons
@@ -43,5 +52,12 @@ public class GameView extends AppCompatActivity {
 
     }
 
+    //methods for health bar display:
+
+    void baseAttacked(int dmg){
+        health -= dmg;
+
+        
+    }
 
 }
