@@ -1,3 +1,8 @@
+/*
+User story 2 testing
+    tests LevelSelectMenu to be sure each level button selected launches to the GameView.class
+ */
+
 package com.example.team6.uniclash;
 
 import android.app.Application;

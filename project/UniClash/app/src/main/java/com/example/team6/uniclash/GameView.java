@@ -1,8 +1,10 @@
 package com.example.team6.uniclash;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,9 +39,19 @@ public class GameView extends AppCompatActivity {
         health = 100;
     }
 
-    //Methods for GameView buttons
-    public void pressWaveNumButton(View view){
-
+    //GameView Buttons
+    public void pressWaveNumButton(View view){  //brings up popup with wave information
+        AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+        helpBuilder.setTitle("Study this for the incoming wave");
+        helpBuilder.setMessage("incoming wave information");        //this will be updated to reflect incoming wave's enemies
+        helpBuilder.setPositiveButton("Study sesh completed",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //only closes popup
+                    }
+                });
+        AlertDialog helpDialog = helpBuilder.create();
+        helpDialog.show();
     }
     public void pressShopButton(View view){
 
