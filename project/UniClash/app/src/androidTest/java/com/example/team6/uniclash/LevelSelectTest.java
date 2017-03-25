@@ -61,4 +61,13 @@ public class LevelSelectTest extends Fragment {
         assertNotNull(gameView);
         gameView.finish();
     }
+
+    @Test
+    public void testMainMenuButton(){
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(MainMenu.class.getName(), null, false);
+        onView(withId(R.id.mainMenuButton)).perform(click());
+        MainMenu mainMenu = (MainMenu) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+        assertNotNull(mainMenu);
+        mainMenu.finish();
+    }
 }
