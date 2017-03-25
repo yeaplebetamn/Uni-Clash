@@ -16,6 +16,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class HealthTest {
+    public HealthTest(){}
+
+    GameView gameView = new GameView();
 
     @Rule
     public ActivityTestRule<GameView> mActivityTestRule = new ActivityTestRule<>(GameView.class);
@@ -27,8 +30,20 @@ public class HealthTest {
 
     @Test
     public void testAttack1(){
-        //baseAttacked(){}
+        gameView.baseAttacked(1);
         onView(withId(R.id.healthBar)).check(ViewAssertions.matches(withText("A+ Health")));
+    }
+
+    @Test
+    public void testAttack2(){
+        gameView.baseAttacked(5);
+        onView(withId(R.id.healthBar)).check(ViewAssertions.matches(withText("A- Health")));
+    }
+
+    @Test
+    public void testAttack3(){
+        gameView.baseAttacked(10);
+        onView(withId(R.id.healthBar)).check(ViewAssertions.matches(withText("B- Health")));
     }
 
 
