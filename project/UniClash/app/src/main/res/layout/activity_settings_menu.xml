@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:checked="true"
                 android:gravity="center"
-                android:text="Rams    "
+                android:text="Rams"
                 android:textSize="36sp" />
 
             <RadioButton
@@ -58,7 +58,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Spiders "
+                android:text="Spiders"
                 android:textSize="36sp" />
 
             <RadioButton
@@ -68,7 +68,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Hokies  "
+                android:text="Hokies"
                 android:textSize="36sp" />
 
         </RadioGroup>

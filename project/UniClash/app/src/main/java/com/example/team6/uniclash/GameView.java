@@ -54,8 +54,19 @@ public class GameView extends AppCompatActivity {
         helpDialog.show();
     }
     public void pressShopButton(View view){
+         //brings up popup with wave information
+            AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+            helpBuilder.setTitle("Shop Button");//this will be updated to reflect incoming wave's enemies
+            helpBuilder.setPositiveButton("Back",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //only closes popup
+                        }
+                    });
+            AlertDialog helpDialog = helpBuilder.create();
+            helpDialog.show();
+        }
 
-    }
     public void pressPauseButton(View view){    //goes to SettingsMenu
         Intent settingsMenuIntent = new Intent(this, SettingsMenu.class);
         startActivity(settingsMenuIntent);

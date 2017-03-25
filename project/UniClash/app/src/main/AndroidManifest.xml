@@ -31,7 +31,8 @@
             android:label="@string/title_activity_game_view"
             android:screenOrientation="landscape"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".SettingsMenu"></activity>
+        <activity android:name=".SettingsMenu" />
+        <activity android:name=".ShopActivity"></activity>
     </application>
 
 </manifest>

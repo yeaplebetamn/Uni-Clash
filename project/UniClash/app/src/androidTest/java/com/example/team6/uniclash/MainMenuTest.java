@@ -1,8 +1,3 @@
-/*
-User story 1 testing
-    tests MainMenu's buttons launch to the corresponding activities/menus
- */
-
 package com.example.team6.uniclash;
 
 import android.app.Fragment;
