@@ -46,31 +46,6 @@ public class LevelSelectMenu extends AppCompatActivity {
         teamNameView = (TextView) findViewById(R.id.teamNameTextView);
         String teamName = "";
 
-        /*String yourFilePath = this.getFilesDir() + "/" + "team.txt";
-
-        File yourFile = new File( yourFilePath );
-
-        File teamFile = new File(yourFilePath);
-        FileReader myFileReader = null;
-        BufferedReader myBufferedReader = null;
-
-        try {
-            myFileReader = new FileReader("team.txt");
-            myBufferedReader = new BufferedReader(myFileReader);
-
-            teamName = myBufferedReader.readLine();
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        teamNameView.setText("My Team: " + teamName);
-        */
-
-
         //this modified from http://chrisrisner.com/31-Days-of-Android-Day-23-Writing-and-Reading-Files
         try {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(

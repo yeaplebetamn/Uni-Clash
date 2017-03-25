@@ -107,15 +107,53 @@ public class GameView extends AppCompatActivity {
         else if(health > 0) {
             healthTextView.setText("F Health");
         }
-        else{healthTextView.setText("Withdraw");}
+        else{healthTextView.setText("Withdraw");
+            // Add additional code here for GAME OVER.
+        }
     }
 
     void baseHealed(int heal){
         if(health + heal > 100){
-            health = 100;
-
+            health = 100; //prevents the user from going over 100% health.
+            healthTextView.setText("A+ Health");
         }
-        else{health += heal;}
+        else if(health + heal >= 96){
+            health += heal;
+            healthTextView.setText("A+ Health");
+        }
+        else if(health + heal >= 90){
+            health += heal;
+            healthTextView.setText("A- Health");
+        }
+        else if(health + heal >= 86){
+            health += heal;
+            healthTextView.setText("B+ Health");
+        }
+        else if(health + heal >= 80){
+            health += heal;
+            healthTextView.setText("B- Health");
+        }
+        else if(health + heal >= 76){
+            health += heal;
+            healthTextView.setText("C+ Health");
+        }
+        else if(health + heal >= 70){
+            health += heal;
+            healthTextView.setText("C- Health");
+        }
+        else if(health + heal >= 66){
+            health += heal;
+            healthTextView.setText("D+ Health");
+        }
+        else if(health + heal >= 60){
+            health += heal;
+            healthTextView.setText("D- Health");
+        }
+        else if(health + heal > 0){
+            health += heal;
+            healthTextView.setText("F Health");
+        }
+        else{healthTextView.setText("Withdraw");}
 
     }
 
