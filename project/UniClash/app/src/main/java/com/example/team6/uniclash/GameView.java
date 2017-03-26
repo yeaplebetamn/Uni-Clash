@@ -54,10 +54,17 @@ public class GameView extends AppCompatActivity {
         helpDialog.show();
     }
     public void pressShopButton(View view){
+<<<<<<< HEAD
             AlertDialog.Builder shopPopUp = new AlertDialog.Builder(this);
             shopPopUp.setTitle("Shop");   //Title of shop menu
             shopPopUp.setMessage(""); //shop menu dialogue
             shopPopUp.setPositiveButton("Back",
+=======
+         //brings up popup with shop information
+            AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+            helpBuilder.setTitle("Shop Button");//this will show list of all item that the user can buy to make a good defense
+            helpBuilder.setPositiveButton("Back",
+>>>>>>> origin/master
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //closes popup
