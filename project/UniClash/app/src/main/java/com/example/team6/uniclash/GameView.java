@@ -54,9 +54,9 @@ public class GameView extends AppCompatActivity {
         helpDialog.show();
     }
     public void pressShopButton(View view){
-         //brings up popup with wave information
+         //brings up popup with shop information
             AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-            helpBuilder.setTitle("Shop Button");//this will be updated to reflect incoming wave's enemies
+            helpBuilder.setTitle("Shop Button");//this will show list of all item that the user can buy to make a good defense
             helpBuilder.setPositiveButton("Back",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

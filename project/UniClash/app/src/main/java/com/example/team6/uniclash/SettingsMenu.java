@@ -41,11 +41,11 @@ public class SettingsMenu extends AppCompatActivity {
 
         try {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                    openFileInput("team")));
-            String inputString;
-            StringBuffer stringBuffer = new StringBuffer();
-            while ((inputString = inputReader.readLine()) != null) {
-                stringBuffer.append(inputString);
+                        openFileInput("team")));
+                String inputString;
+                StringBuffer stringBuffer = new StringBuffer();
+                while ((inputString = inputReader.readLine()) != null) {
+                    stringBuffer.append(inputString);
             }
             if (stringBuffer.toString().equals("Rams")) {
                 ramsRB.setChecked(true);
