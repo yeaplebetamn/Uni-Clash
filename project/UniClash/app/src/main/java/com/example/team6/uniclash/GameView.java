@@ -41,29 +41,29 @@ public class GameView extends AppCompatActivity {
 
     //GameView Buttons
     public void pressWaveNumButton(View view){  //brings up popup with wave information
-        AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-        helpBuilder.setTitle("Study this for the incoming wave");
-        helpBuilder.setMessage("incoming wave information");        //this will be updated to reflect incoming wave's enemies
-        helpBuilder.setPositiveButton("Study sesh completed",
+        AlertDialog.Builder waveInfoPopUp = new AlertDialog.Builder(this);
+        waveInfoPopUp.setTitle("Study this for the incoming wave");
+        waveInfoPopUp.setMessage("incoming wave information");        //this will be updated to reflect incoming wave's enemies
+        waveInfoPopUp.setPositiveButton("Study sesh completed",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //closes popup
                     }
                 });
-        AlertDialog helpDialog = helpBuilder.create();
+        AlertDialog helpDialog = waveInfoPopUp.create();
         helpDialog.show();
     }
     public void pressShopButton(View view){
-         //brings up popup with wave information
-            AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-            helpBuilder.setTitle("Shop Button");//this will be updated to reflect incoming wave's enemies
-            helpBuilder.setPositiveButton("Back",
+            AlertDialog.Builder shopPopUp = new AlertDialog.Builder(this);
+            shopPopUp.setTitle("Shop");   //Title of shop menu
+            shopPopUp.setMessage(""); //shop menu dialogue
+            shopPopUp.setPositiveButton("Back",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            //only closes popup
+                            //closes popup
                         }
                     });
-            AlertDialog helpDialog = helpBuilder.create();
+            AlertDialog helpDialog = shopPopUp.create();
             helpDialog.show();
         }
 
