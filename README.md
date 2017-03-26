@@ -26,11 +26,11 @@ User story 3\
   We implemented the Shop menu to show upon pressing the Shop button.\
  User story 11\
    We successfully implemented the a Health TextView that we plan to be able to update when the actual game is running.\
-   We did not fully impelment scenarios 2 or 3, as these would delve into the deeper game mechanics, however we did implement and test the point system for the health.\
+   We did not fully impelment scenarios 2 or 3, as these would delve into the deeper game mechanics, however we did implement and test the point system for the health.
  
  Difficulties: \
   Activity switching was fairly difficult to implement. \
     We started by setting up all menus of the game and implemented the activity switching later. Because of this, some of the menu default UI we used from Android Studio needed to be edited before the Activity Switches could occur.\
-  Espresso testing was at times difficult to begin to set up but once up and running was not difficult to implement.\
+  Espresso testing was at times difficult to begin to set up but once up and running was not difficult to implement.
   
  ******************
