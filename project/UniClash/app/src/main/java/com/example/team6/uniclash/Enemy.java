@@ -1,12 +1,18 @@
 package com.example.team6.uniclash;
 
+<<<<<<< HEAD
 import com.example.team6.uniclash.Base;
+=======
+import android.graphics.Bitmap;
+>>>>>>> origin/master
 
 public class Enemy {
     private int health;
     private int speed;
     private int attack;
-
+    private int x;
+    private int y;
+    private Bitmap bitmap;
 
     public int getHealth() {
         return health;
@@ -45,5 +51,29 @@ public class Enemy {
 
     public void die() {
 
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }
