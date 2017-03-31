@@ -5,15 +5,11 @@ User story 8 testing
 
 package com.example.team6.uniclash;
 
-import android.app.Application;
 import android.app.Fragment;
 import android.app.Instrumentation;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ApplicationTestCase;
-import android.test.TouchUtils;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.text.method.Touch;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,10 +29,10 @@ import static junit.framework.Assert.assertNotNull;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class GameViewTest extends Fragment{
+public class GameActivityTest extends Fragment{
 
     @Rule
-    public ActivityTestRule<GameView> gameViewActivityTestRule = new ActivityTestRule<>(GameView.class);
+    public ActivityTestRule<GameActivity> gameViewActivityTestRule = new ActivityTestRule<>(GameActivity.class);
 
     //ShopButton tests
     @Test   //checks for expected shop popup info dialogue title

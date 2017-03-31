@@ -1,23 +1,14 @@
 package com.example.team6.uniclash;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -69,17 +60,17 @@ public class LevelSelectMenu extends AppCompatActivity {
     }
 
     public void pressLevel1Button(View view){
-        Intent level1SelectIntent = new Intent(this, GameView.class);
+        Intent level1SelectIntent = new Intent(this, GameActivity.class);
         startActivity(level1SelectIntent);
     }
 
     public void pressLevel2Button(View view){
-        Intent level2SelectIntent = new Intent(this, GameView.class);
+        Intent level2SelectIntent = new Intent(this, GameActivity.class);
         startActivity(level2SelectIntent);
     }
 
     public void pressLevel3Button(View view){
-        Intent level3SelectIntent = new Intent(this, GameView.class);
+        Intent level3SelectIntent = new Intent(this, GameActivity.class);
         startActivity(level3SelectIntent);
     }
 }

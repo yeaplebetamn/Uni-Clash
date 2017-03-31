@@ -5,12 +5,10 @@ User story 2 testing
 
 package com.example.team6.uniclash;
 
-import android.app.Application;
 import android.app.Fragment;
 import android.app.Instrumentation;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Rule;
@@ -35,9 +33,9 @@ public class LevelSelectTest extends Fragment {
     @Test
     public void testLevel1Button()
     {
-        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(GameView.class.getName(), null, false);
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(GameActivity.class.getName(), null, false);
         onView(withId(R.id.level1Button)).perform(click());
-        GameView gameView = (GameView) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+        GameActivity gameView = (GameActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
         assertNotNull(gameView);
         gameView.finish();
     }
@@ -45,9 +43,9 @@ public class LevelSelectTest extends Fragment {
     @Test
     public void testLevel2Button()
     {
-        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(GameView.class.getName(), null, false);
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(GameActivity.class.getName(), null, false);
         onView(withId(R.id.level2Button)).perform(click());
-        GameView gameView = (GameView) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+        GameActivity gameView = (GameActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
         assertNotNull(gameView);
         gameView.finish();
     }
@@ -55,9 +53,9 @@ public class LevelSelectTest extends Fragment {
     @Test
     public void testLevel3Button()
     {
-        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(GameView.class.getName(), null, false);
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(GameActivity.class.getName(), null, false);
         onView(withId(R.id.level3Button)).perform(click());
-        GameView gameView = (GameView) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+        GameActivity gameView = (GameActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
         assertNotNull(gameView);
         gameView.finish();
     }

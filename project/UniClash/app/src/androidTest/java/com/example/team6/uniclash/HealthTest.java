@@ -4,27 +4,24 @@ package com.example.team6.uniclash;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.app.Fragment;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.R.attr.fragment;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.example.team6.uniclash.R.id.withText;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class HealthTest {
 
-    private GameView gameActivity;
+    private GameActivity gameActivity;
 
     @Rule
-    public ActivityTestRule<GameView> mActivityTestRule = new ActivityTestRule<>(GameView.class);
+    public ActivityTestRule<GameActivity> mActivityTestRule = new ActivityTestRule<>(GameActivity.class);
 
     @Test
     // Code modified from http://stackoverflow.com/questions/34294745/calling-a-method-of-the-tested-activity-from-a-test-using-espresso-and-see-its-r
