@@ -10,6 +10,8 @@ public class Tower {
     private int y;
     private Bitmap bitmap;
 
+
+
     public int getAttack() {
 
         return attack;

@@ -2,9 +2,11 @@ package com.example.team6.uniclash;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,17 +22,27 @@ public class GameActivity extends AppCompatActivity {
 
     int health;
     
-    private GameView gameSurfaceView;
+    private GameView gameView;
     
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        gameSurfaceView = new GameView(this);
-        
-        setContentView(gameSurfaceView);
-        
+        //Getting display object
+        Display display = getWindowManager().getDefaultDisplay();
+
+        //Getting the screen resolution into point object
+        Point size = new Point();
+        display.getSize(size);
+
+        //Initializing game view object
+        //this time we are also passing the screen size to the GameView constructor
+        gameView = new GameView(this, size.x, size.y);
+
+        //adding it to contentview
+        setContentView(gameView);
+
         waveNumButton = (Button) findViewById(R.id.waveButton);
         shopButton = (Button) findViewById(R.id.shopButton);
         pauseButton = (Button) findViewById(R.id.pauseButton);
@@ -163,14 +175,14 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        gameSurfaceView.pause();
+        gameView.pause();
     }
 
     //running the game when activity is resumed
     @Override
     protected void onResume() {
         super.onResume();
-        gameSurfaceView.resume();
+        gameView.resume();
     }
 
 }
