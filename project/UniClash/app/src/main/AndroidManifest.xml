@@ -16,7 +16,6 @@
             </intent-filter>
         </activity>
 
-        <!--delete?-->
         <!--<activity-->
             <!--android:name=".TeamSelectMenu"-->
             <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
@@ -35,7 +34,6 @@
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".SettingsMenu" />
         <activity android:name=".ShopActivity" />
-        <!--delete?-->
         <!--<activity android:name=".GameActivity"></activity>-->
     </application>
 

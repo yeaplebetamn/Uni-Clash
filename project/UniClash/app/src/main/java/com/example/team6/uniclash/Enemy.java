@@ -1,5 +1,6 @@
 package com.example.team6.uniclash;
 
+import com.example.team6.uniclash.Base;
 import android.graphics.Bitmap;
 
 public class Enemy {
