@@ -1,10 +1,7 @@
 package com.example.team6.uniclash;
 
-<<<<<<< HEAD
 import com.example.team6.uniclash.Base;
-=======
 import android.graphics.Bitmap;
->>>>>>> origin/master
 
 public class Enemy {
     private int health;
