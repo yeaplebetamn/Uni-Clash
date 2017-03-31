@@ -1,5 +1,7 @@
 package com.example.team6.uniclash;
 
+import com.example.team6.uniclash.Base;
+
 public class Enemy {
     private int health;
     private int speed;
