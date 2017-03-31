@@ -157,4 +157,6 @@ public class GameView extends AppCompatActivity {
 
     }
 
+    public void spawnDefaultEnemy(){}
+
 }
