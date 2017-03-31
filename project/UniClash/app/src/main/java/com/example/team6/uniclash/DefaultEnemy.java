@@ -8,7 +8,9 @@ public class DefaultEnemy extends Enemy {
         setHealth(100);
         setSpeed(2);
         setAttack(3);
-        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.clash_of_kings_college));
+        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.richmond_spiders));
+        setMaxX(screenX);
+        setMaxY(screenY);
         setX(75);
         setY(50);
     }

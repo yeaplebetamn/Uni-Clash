@@ -109,4 +109,11 @@ public class Enemy {
     public void setMaxY(int maxY) {
         this.maxY = maxY;
     }
+
+    public void update() {
+        this.x += this.speed * 10;
+        if (x > maxX){
+            x = 0;
+        }
+    }
 }

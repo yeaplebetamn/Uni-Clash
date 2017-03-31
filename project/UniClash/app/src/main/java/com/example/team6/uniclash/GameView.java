@@ -25,11 +25,15 @@ public class GameView extends SurfaceView implements Runnable {
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
-
         enemies = new Enemy[3];
-        for(int i = 0; i < 3; i++){
-            enemies[i] = new DefaultEnemy(context, screenX+10, screenY+10);
-        }
+
+//        for(int i = 0; i < 3; i++){
+//            enemies[i] = new DefaultEnemy(context, screenX, screenY);
+//        }
+
+        enemies[0] = new DefaultEnemy(context, screenX, screenY);
+        enemies[1] = new TankEnemy(context, screenX, screenY);
+        enemies[2] = new FastEnemy(context, screenX, screenY);
 
         //initializing drawing objects
         surfaceHolder = getHolder();
@@ -52,7 +56,9 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-
+        for(int i=0; i<3; i++){
+            enemies[i].update();
+        }
     }
 
     private void draw() {
@@ -61,13 +67,16 @@ public class GameView extends SurfaceView implements Runnable {
             //locking the canvas
             canvas = surfaceHolder.lockCanvas();
             //drawing a background color for canvas
-            canvas.drawColor(Color.RED);
+            canvas.drawColor(Color.WHITE);
             //Drawing the player
-            canvas.drawBitmap(
-                    enemies[0].getBitmap(),
-                    enemies[0].getX(),
-                    enemies[0].getY(),
-                    paint);
+            for (int i = 0; i < 3; i++) {
+                canvas.drawBitmap(
+                        enemies[i].getBitmap(),
+                        enemies[i].getX(),
+                        enemies[i].getY(),
+                        paint
+                );
+            }
             //Unlocking the canvas
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
