@@ -23,12 +23,18 @@ public class GameView extends AppCompatActivity {
     TextView healthTextView;
 
     int health;
-
+    
+    private GameSurfaceView gameSurfaceView;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
 
+        gameSurfaceView = new GameSurfaceView(this);
+        
+        setContentView(gameSurfaceView);
+        
         waveNumButton = (Button) findViewById(R.id.waveButton);
         shopButton = (Button) findViewById(R.id.shopButton);
         pauseButton = (Button) findViewById(R.id.pauseButton);
@@ -155,6 +161,20 @@ public class GameView extends AppCompatActivity {
         }
         else{healthTextView.setText("Withdraw");}
 
+    }
+
+    //pausing the game when activity is paused
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gameSurfaceView.pause();
+    }
+
+    //running the game when activity is resumed
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gameSurfaceView.resume();
     }
 
 }
