@@ -20,11 +20,13 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread gameThread = null;
 
     private Enemy[] enemies;
+    private Base base;
 
 
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
+        spawnBase(context, screenX, screenY);
         spawnEnemies(context, screenX, screenY);
         //initializing drawing objects
         surfaceHolder = getHolder();
@@ -37,6 +39,10 @@ public class GameView extends SurfaceView implements Runnable {
         enemies[0] = new DefaultEnemy(context, screenX, screenY);
         enemies[1] = new TankEnemy(context, screenX, screenY);
         enemies[2] = new FastEnemy(context, screenX, screenY);
+    }
+
+    public void spawnBase(Context context, int screenX, int screenY){
+        this.base = new Base(context, screenX, screenY);
     }
 
     @Override
@@ -67,14 +73,24 @@ public class GameView extends SurfaceView implements Runnable {
             canvas = surfaceHolder.lockCanvas();
             //drawing a background color for canvas
             canvas.drawColor(Color.WHITE);
+            //Drawing the base
+            canvas.drawBitmap(
+                    base.getBitmap(),
+                    base.getX(),
+                    base.getY(),
+                    paint);
+
+
             //Drawing the player
             for (int i = 0; i < 3; i++) {
-                canvas.drawBitmap(
-                        enemies[i].getBitmap(),
-                        enemies[i].getX(),
-                        enemies[i].getY(),
-                        paint
-                );
+                if (enemies[i].dead == false) {
+                    canvas.drawBitmap(
+                            enemies[i].getBitmap(),
+                            enemies[i].getX(),
+                            enemies[i].getY(),
+                            paint
+                    );
+                }
             }
             //Unlocking the canvas
             surfaceHolder.unlockCanvasAndPost(canvas);

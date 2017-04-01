@@ -8,7 +8,7 @@ public class TankEnemy extends Enemy {
         setHealth(200);
         setSpeed(1);
         setAttack(6);
-        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.richmond_spiders));
+        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turkey_icon));
         setMaxX(screenX);
         setMaxY(screenY);
         setX(75);

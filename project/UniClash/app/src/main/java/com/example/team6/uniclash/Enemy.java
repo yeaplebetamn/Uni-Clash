@@ -14,6 +14,7 @@ public class Enemy {
     private int minY;
     private int maxY;
     private Bitmap bitmap;
+    public boolean dead = false;
 
     short currentDirection = 4;
     short directionUp = 1;
@@ -57,7 +58,9 @@ public class Enemy {
     }
 
     public void die() {
-
+        dead = true;
+        setX(0);
+        setY(0);
     }
 
     public int getX() {
@@ -125,34 +128,34 @@ public class Enemy {
     }
 
     public void update() {
-        if (x > maxX) { //if enemy reaches the end of the screen, send it back to other side
-            resetX();
-            resetY();
-        }
-        // once x reaches 800, go down
-        if (x > 800 && y < 800){
-            x = 800;
-            currentDirection = directionDown;
-        }
-        // once y reaches 800, go right again
-        if (y > 800){
-            y = 800;
-            currentDirection = directionRight;
-        }
+        if(dead == false) {
+            if (x >= 2200) { //TODO: change hard coded x to base's x
+                die();
+            }
+            // once x reaches 800, go down
+            if (x > 800 && y < 800) {
+                x = 800;
+                currentDirection = directionDown;
+            }
+            // once y reaches 800, go right again
+            if (y > 800) {
+                y = 800;
+                currentDirection = directionRight;
+            }
 
-        //actually start to move
-        if (currentDirection == directionUp){
-            this.y -= this.speed * 5;
+            //actually start to move
+            if (currentDirection == directionUp) {
+                this.y -= this.speed * 5;
+            }
+            if (currentDirection == directionDown) {
+                this.y += this.speed * 5;
+            }
+            if (currentDirection == directionLeft) {
+                this.x -= this.speed * 5;
+            }
+            if (currentDirection == directionRight) {
+                this.x += this.speed * 5;
+            }
         }
-        if (currentDirection == directionDown){
-            this.y += this.speed * 5;
-        }
-        if (currentDirection == directionLeft){
-            this.x -= this.speed * 5;
-        }
-        if (currentDirection == directionRight){
-            this.x += this.speed * 5;
-        }
-
     }
 }
