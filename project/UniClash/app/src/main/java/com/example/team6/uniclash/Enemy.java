@@ -10,7 +10,7 @@ public class Enemy {
     private int x;
     private int minX;
     private int maxX;
-    private int y;
+    private int y = 75;
     private int minY;
     private int maxY;
     private Bitmap bitmap;
@@ -142,16 +142,16 @@ public class Enemy {
 
         //actually start to move
         if (currentDirection == directionUp){
-            this.y -= this.speed * 10;
+            this.y -= this.speed * 5;
         }
         if (currentDirection == directionDown){
-            this.y += this.speed * 10;
+            this.y += this.speed * 5;
         }
         if (currentDirection == directionLeft){
-            this.x -= this.speed * 10;
+            this.x -= this.speed * 5;
         }
         if (currentDirection == directionRight){
-            this.x += this.speed * 10;
+            this.x += this.speed * 5;
         }
 
     }
