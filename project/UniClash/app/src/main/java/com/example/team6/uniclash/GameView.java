@@ -25,19 +25,18 @@ public class GameView extends SurfaceView implements Runnable {
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
-        enemies = new Enemy[3];
+        spawnEnemies(context, screenX, screenY);
+        //initializing drawing objects
+        surfaceHolder = getHolder();
+        paint = new Paint();
+    }
 
-//        for(int i = 0; i < 3; i++){
-//            enemies[i] = new DefaultEnemy(context, screenX, screenY);
-//        }
+    public void spawnEnemies(Context context, int screenX, int screenY){
+        enemies = new Enemy[3];
 
         enemies[0] = new DefaultEnemy(context, screenX, screenY);
         enemies[1] = new TankEnemy(context, screenX, screenY);
         enemies[2] = new FastEnemy(context, screenX, screenY);
-
-        //initializing drawing objects
-        surfaceHolder = getHolder();
-        paint = new Paint();
     }
 
     @Override
