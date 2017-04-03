@@ -129,24 +129,25 @@ public class Enemy {
         y = 75;
     }
 
+    // moves the enemy across the map, following a path and dying after hitting the base
     public void update() {
         if(dead == false) {
-            if (x >= 2200) { //TODO: change hard coded x to base's x.
+            if (getX() >= 2200) { //TODO: change hard coded x to base's x.
                 die();
             }
             // once x reaches 800, go down
-            if (x > 800 && y < 800) {
-                x = 800;
+            if (getX() > 800 && getY() < 800) {
+                setX(800);
                 currentDirection = directionDown;
             }
             // once y reaches 800, go right again
-            if (y > 800) {
-                y = 800;
+            if (getY() > 800) {
+                setY(800);
                 currentDirection = directionRight;
             }
 
             //actually start to move
-            if (currentDirection == directionUp) {
+            if (currentDirection == directionUp){
                 this.y -= this.speed * 5;
             }
             if (currentDirection == directionDown) {
