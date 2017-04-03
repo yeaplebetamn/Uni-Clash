@@ -3,6 +3,8 @@ package com.example.team6.uniclash;
 import com.example.team6.uniclash.Base;
 import android.graphics.Bitmap;
 
+import java.util.Random;
+
 public class Enemy {
     private int health;
     private int speed;
@@ -129,7 +131,7 @@ public class Enemy {
 
     public void update() {
         if(dead == false) {
-            if (x >= 2200) { //TODO: change hard coded x to base's x
+            if (x >= 2200) { //TODO: change hard coded x to base's x.
                 die();
             }
             // once x reaches 800, go down

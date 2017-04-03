@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+
 public class GameView extends SurfaceView implements Runnable {
 
     private Paint paint;
@@ -19,7 +21,10 @@ public class GameView extends SurfaceView implements Runnable {
     //the game thread
     private Thread gameThread = null;
 
-    private Enemy[] enemies;
+    private ArrayList enemies = new ArrayList();
+
+    //private Enemy[] enemies[];
+
     private Base base;
 
 
@@ -27,18 +32,34 @@ public class GameView extends SurfaceView implements Runnable {
     public GameView(Context context, int screenX, int screenY) {
         super(context);
         spawnBase(context, screenX, screenY);
-        spawnEnemies(context, screenX, screenY);
+        spawnDefaultEnemies(1, context, screenX, screenY);
+        spawnFastEnemies(1, context, screenX, screenY);
+        spawnTankEnemies(1, context, screenX, screenY);
+
         //initializing drawing objects
         surfaceHolder = getHolder();
         paint = new Paint();
     }
 
-    public void spawnEnemies(Context context, int screenX, int screenY){
-        enemies = new Enemy[3];
+    public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY){
+        for(int i = 0; i < numberEnemies; i++){
+            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY);
+            enemies.add(enemy);
+        }
+    }
 
-        enemies[0] = new DefaultEnemy(context, screenX, screenY);
-        enemies[1] = new TankEnemy(context, screenX, screenY);
-        enemies[2] = new FastEnemy(context, screenX, screenY);
+    public void spawnTankEnemies(int numberEnemies, Context context, int screenX, int screenY){
+        for(int i = 0; i < numberEnemies; i++){
+            TankEnemy enemy = new TankEnemy(context, screenX, screenY);
+            enemies.add(enemy);
+        }
+    }
+
+    public void spawnFastEnemies(int numberEnemies, Context context, int screenX, int screenY){
+        for(int i = 0; i < numberEnemies; i++){
+            FastEnemy enemy = new FastEnemy(context, screenX, screenY);
+            enemies.add(enemy);
+        }
     }
 
     public void spawnBase(Context context, int screenX, int screenY){
@@ -62,7 +83,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void update() {
         for(int i=0; i<3; i++){
-            enemies[i].update();
+            Enemy enemy = (Enemy) enemies.get(i);
+            enemy.update();
         }
     }
 
@@ -83,11 +105,12 @@ public class GameView extends SurfaceView implements Runnable {
 
             //Drawing the player
             for (int i = 0; i < 3; i++) {
-                if (enemies[i].dead == false) {
+                Enemy enemy = (Enemy) enemies.get(i);
+                if (enemy.dead == false) {
                     canvas.drawBitmap(
-                            enemies[i].getBitmap(),
-                            enemies[i].getX(),
-                            enemies[i].getY(),
+                            enemy.getBitmap(),
+                            enemy.getX(),
+                            enemy.getY(),
                             paint
                     );
                 }
