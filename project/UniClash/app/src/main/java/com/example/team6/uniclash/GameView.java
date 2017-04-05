@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -26,6 +28,8 @@ public class GameView extends SurfaceView implements Runnable {
     //private Enemy[] enemies[];
 
     private Base base;
+
+    private boolean shopOpen;
 
 
     //Class constructor
@@ -95,6 +99,7 @@ public class GameView extends SurfaceView implements Runnable {
             canvas = surfaceHolder.lockCanvas();
             //drawing a background color for canvas
             canvas.drawColor(Color.WHITE);
+
             //Drawing the base
             canvas.drawBitmap(
                     base.getBitmap(),
@@ -102,8 +107,25 @@ public class GameView extends SurfaceView implements Runnable {
                     base.getY(),
                     paint);
 
+            //shop button
+            canvas.drawRect(
+                    20,
+                    20,
+                    250,
+                    100,
+                    paint);
 
-            //Drawing the player
+            //shop box
+            if (shopOpen) {
+                canvas.drawRect(
+                        300,
+                        300,
+                        700,
+                        700,
+                        paint);
+            }
+
+            //Drawing the enemies
             for (int i = 0; i < 3; i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
                 if (enemy.dead == false) {
@@ -145,5 +167,19 @@ public class GameView extends SurfaceView implements Runnable {
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    //detects touches
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getX() > 19 && event.getX() < 251 && event.getY() > 19 && event.getY() < 101) {
+            if (shopOpen == true) {
+                shopOpen = false;
+            } else {
+                shopOpen = true;
+            }
+        }
+
+        return false;
     }
 }
