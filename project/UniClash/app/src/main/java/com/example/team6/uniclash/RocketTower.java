@@ -6,5 +6,6 @@ public class RocketTower extends Tower {
         setAttack(20);
         setAttackDelay(1.2);
         setRange(150);
+        setRangeDetector(getRange());
     }
 }

@@ -2,6 +2,7 @@ package com.example.team6.uniclash;
 
 import com.example.team6.uniclash.Base;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 
 import java.util.Random;
 
@@ -18,6 +19,7 @@ public class Enemy {
     private Bitmap bitmap;
     public boolean dead = false;
     boolean turn[] = new boolean[10];
+    private Rect collisionDetector;
 
     short currentDirection = 4;
     short directionUp = 1;
@@ -128,6 +130,19 @@ public class Enemy {
 
     public void resetY(){
         y = 75;
+    }
+
+    public Rect getCollisionDetector() {
+        return collisionDetector;
+    }
+
+    public void setCollisionDetector() {
+        int collisionDetectorLeft = x;
+        int collisionDetectorTop = y;
+        int collisionDetectorRight = x + bitmap.getWidth();
+        int collisionDetectorBottom = y + bitmap.getHeight();
+
+        collisionDetector = new Rect(collisionDetectorLeft, collisionDetectorTop, collisionDetectorRight, collisionDetectorBottom);
     }
 
     // moves the enemy across the map, following a path and dying after hitting the base
@@ -250,4 +265,5 @@ public class Enemy {
     public void update() {
         followPath1();
     }
+
 }

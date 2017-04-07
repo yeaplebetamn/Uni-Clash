@@ -1,6 +1,9 @@
 package com.example.team6.uniclash;
 
 import android.graphics.Bitmap;
+import android.graphics.Rect;
+
+import java.util.ArrayList;
 
 public class Tower {
     private int attack;
@@ -9,11 +12,11 @@ public class Tower {
     private int x;
     private int y;
     private Bitmap bitmap;
+    private Rect rangeDetector;
 
 
 
     public int getAttack() {
-
         return attack;
     }
 
@@ -63,5 +66,26 @@ public class Tower {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public Rect getRangeDetector() {
+        return rangeDetector;
+    }
+
+    public void setRangeDetector(int range) {
+        int rangeDetectorLeft = this.x - (range/2);
+        int rangeDetectorTop = this.y - (range/2);
+        int rangeDetectorRight = this.x + (range/2);
+        int rangeDetectorBottom = this.y + (range/2);
+        
+        rangeDetector = new Rect(rangeDetectorLeft, rangeDetectorTop, rangeDetectorRight, rangeDetectorBottom);
+    }
+    
+    public void update(ArrayList<Enemy> enemies) {
+        for (Enemy enemy: enemies) {
+            if (rangeDetector.intersect(enemy.getCollisionDetector())) {
+                applyDamage(enemy);
+            }
+        }
     }
 }

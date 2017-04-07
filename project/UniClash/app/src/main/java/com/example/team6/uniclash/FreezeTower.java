@@ -6,5 +6,6 @@ public class FreezeTower extends Tower {
         setAttack(0);
         setAttackDelay(0);
         setRange(100);
+        setRangeDetector(getRange());
     }
 }

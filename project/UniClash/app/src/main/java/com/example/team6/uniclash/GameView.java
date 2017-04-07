@@ -10,6 +10,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.logging.Handler;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -30,7 +32,6 @@ public class GameView extends SurfaceView implements Runnable {
     private Base base;
 
     private boolean shopOpen;
-
 
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
@@ -86,7 +87,9 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-        for(int i=0; i<3; i++){
+
+
+        for(int i = 0; i < enemies.size(); i++){
             Enemy enemy = (Enemy) enemies.get(i);
             enemy.update();
         }
