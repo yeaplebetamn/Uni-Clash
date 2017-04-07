@@ -180,6 +180,11 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    public void returnToMainMenu(){
+        Intent levelSelectMenuIntent = new Intent(this, LevelSelectMenu.class);
+        startActivity(levelSelectMenuIntent);
+    }
+
     //pausing the game when activity is paused
     @Override
     protected void onPause() {
