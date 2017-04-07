@@ -25,20 +25,17 @@ public class GameView extends SurfaceView implements Runnable {
 
     private ArrayList enemies = new ArrayList();
 
-    //private Enemy[] enemies[];
-
     private Base base;
 
     private boolean shopOpen;
-
 
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
         spawnBase(context, screenX, screenY);
-        spawnDefaultEnemies(1, context, screenX, screenY);
-        spawnFastEnemies(1, context, screenX, screenY);
-        spawnTankEnemies(1, context, screenX, screenY);
+        spawnDefaultEnemies(5, context, screenX, screenY);
+        spawnFastEnemies(10, context, screenX, screenY);
+        spawnTankEnemies(2, context, screenX, screenY);
 
         //initializing drawing objects
         surfaceHolder = getHolder();
@@ -47,21 +44,21 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY){
         for(int i = 0; i < numberEnemies; i++){
-            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY);
+            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base);
             enemies.add(enemy);
         }
     }
 
     public void spawnTankEnemies(int numberEnemies, Context context, int screenX, int screenY){
         for(int i = 0; i < numberEnemies; i++){
-            TankEnemy enemy = new TankEnemy(context, screenX, screenY);
+            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base);
             enemies.add(enemy);
         }
     }
 
     public void spawnFastEnemies(int numberEnemies, Context context, int screenX, int screenY){
         for(int i = 0; i < numberEnemies; i++){
-            FastEnemy enemy = new FastEnemy(context, screenX, screenY);
+            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base);
             enemies.add(enemy);
         }
     }
@@ -86,7 +83,7 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-        for(int i=0; i<3; i++){
+        for(int i=0; i < enemies.size(); i++){
             Enemy enemy = (Enemy) enemies.get(i);
             enemy.update();
         }
@@ -126,7 +123,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             //Drawing the enemies
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
                 if (enemy.dead == false) {
                     canvas.drawBitmap(
