@@ -1,11 +1,13 @@
 package com.example.team6.uniclash;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,11 +17,11 @@ import java.util.Random;
 import java.util.logging.Handler;
 
 public class GameView extends SurfaceView implements Runnable {
-    private Context context;
     private Paint paint;
     private Paint paint1;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
+    private Context context;
 
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
@@ -38,7 +40,7 @@ public class GameView extends SurfaceView implements Runnable {
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
-        this.context = context;
+        this.context=context;
         spawnBase(context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
         spawnFastEnemies(15, context, screenX, screenY);
@@ -52,6 +54,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void setGameOver(){
         gameOver = true;
+
     }
 
     public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY){
@@ -146,17 +149,12 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.WHITE);
 
             //Drawing the base
-            canvas.drawBitmap(
-                    base.getBitmap(),
-                    base.getX(),
-                    base.getY(),
-                    paint);
+            canvas.drawBitmap(base.getBitmap(), base.getX(), base.getY(), paint);
 
             //shop button
-
-            paint1.setTextSize(50);
             canvas.drawRect(20, 1000, 250, 900, paint);
             paint1.setColor(Color.RED);
+            paint1.setTextSize(50);
             canvas.drawText("Shop",70,980,paint1);
             canvas.drawRect(1000,100,700,20,paint);
             canvas.drawText("Wave Info",720,85,paint1);
@@ -165,16 +163,11 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawRect(1700, 100, 1400, 20, paint);
             canvas.drawText("Pause",1500,85,paint1);
 
-
             //Drawing the enemies
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
                 if (enemy.dead == false) {
-                    canvas.drawBitmap(
-                            enemy.getBitmap(),
-                            enemy.getX(),
-                            enemy.getY(),
-                            paint
+                    canvas.drawBitmap(enemy.getBitmap(), enemy.getX(), enemy.getY(), paint
                     );
                 }
             }
@@ -260,18 +253,18 @@ public class GameView extends SurfaceView implements Runnable {
     //detects touches
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         //on clicking shop button
         if (event.getX() > 19 && event.getX() < 251 && event.getY() > 901 && event.getY() < 999) {
             GameActivity.pressShopButton(this);
         }
+
         //on clicking wave info button
         if (event.getX() > 701 && event.getX() < 999 && event.getY() > 21 && event.getY() < 99) {
             GameActivity.pressWaveNumButton(this);
         }
+
         //on clicking start wave
         if (event.getX() > 701 && event.getX() < 999 && event.getY() > 921 && event.getY() < 1001) {
-
 
         }
         //on clicking pause
@@ -280,4 +273,5 @@ public class GameView extends SurfaceView implements Runnable {
         }
         return false;
     }
+
 }

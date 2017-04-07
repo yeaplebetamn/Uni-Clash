@@ -93,7 +93,7 @@ public class SettingsMenuTest {
             while ((inputString = inputReader.readLine()) != null) {
                 stringBuffer.append(inputString);
             }
-            assertEquals("Hokies", stringBuffer.toString()); 
+            assertEquals("Hokies", stringBuffer.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

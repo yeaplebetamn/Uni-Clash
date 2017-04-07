@@ -1,5 +1,6 @@
 package com.example.team6.uniclash;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
@@ -8,7 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -29,7 +34,10 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        //Getting display object
+
+
+
+    //Getting display object
         Display display = getWindowManager().getDefaultDisplay();
 
         //Getting the screen resolution into point object
@@ -38,7 +46,7 @@ public class GameActivity extends AppCompatActivity {
 
         //Initializing game view object
         //this time we are also passing the screen size to the GameView constructor
-        gameView = new GameView(this, size.x, size.y);
+            gameView = new GameView(this, size.x, size.y);
 
         //adding it to contentview
         setContentView(gameView);
@@ -70,6 +78,7 @@ public class GameActivity extends AppCompatActivity {
     public static void pressShopButton(View view){
             AlertDialog.Builder shopPopUp = new AlertDialog.Builder(view.getContext());
             shopPopUp.setTitle("Shop");   //Title of shop menu
+      //  shopPopUp.setView(im);
             shopPopUp.setMessage(""); //shop menu dialogue
             shopPopUp.setPositiveButton("Back",
                     new DialogInterface.OnClickListener() {
