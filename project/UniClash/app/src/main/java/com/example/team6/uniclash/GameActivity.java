@@ -54,8 +54,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     //GameActivity Buttons
-    public void pressWaveNumButton(View view){  //brings up popup with wave information
-        AlertDialog.Builder waveInfoPopUp = new AlertDialog.Builder(this);
+    public static void pressWaveNumButton(View view){  //brings up popup with wave information
+        AlertDialog.Builder waveInfoPopUp = new AlertDialog.Builder(view.getContext());
         waveInfoPopUp.setTitle("Study this for the incoming wave");
         waveInfoPopUp.setMessage("incoming wave information");        //this will be updated to reflect incoming wave's enemies
         waveInfoPopUp.setPositiveButton("Study sesh completed",
@@ -67,8 +67,8 @@ public class GameActivity extends AppCompatActivity {
         AlertDialog helpDialog = waveInfoPopUp.create();
         helpDialog.show();
     }
-    public void pressShopButton(View view){
-            AlertDialog.Builder shopPopUp = new AlertDialog.Builder(this);
+    public static void pressShopButton(View view){
+            AlertDialog.Builder shopPopUp = new AlertDialog.Builder(view.getContext());
             shopPopUp.setTitle("Shop");   //Title of shop menu
             shopPopUp.setMessage(""); //shop menu dialogue
             shopPopUp.setPositiveButton("Back",

@@ -17,6 +17,7 @@ import java.util.logging.Handler;
 public class GameView extends SurfaceView implements Runnable {
     private Context context;
     private Paint paint;
+    private Paint paint1;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
 
@@ -46,6 +47,7 @@ public class GameView extends SurfaceView implements Runnable {
         //initializing drawing objects
         surfaceHolder = getHolder();
         paint = new Paint();
+        paint1 = new Paint();
     }
 
     public void setGameOver(){
@@ -151,22 +153,18 @@ public class GameView extends SurfaceView implements Runnable {
                     paint);
 
             //shop button
-            canvas.drawRect(
-                    20,
-                    20,
-                    250,
-                    100,
-                    paint);
 
-            //shop box
-            if (shopOpen) {
-                canvas.drawRect(
-                        300,
-                        300,
-                        700,
-                        700,
-                        paint);
-            }
+            paint1.setTextSize(50);
+            canvas.drawRect(20, 1000, 250, 900, paint);
+            paint1.setColor(Color.RED);
+            canvas.drawText("Shop",70,980,paint1);
+            canvas.drawRect(1000,100,700,20,paint);
+            canvas.drawText("Wave Info",720,85,paint1);
+            canvas.drawRect(1000, 1000, 700, 920, paint);
+            canvas.drawText("Start Wave",720,980,paint1);
+            canvas.drawRect(1700, 100, 1400, 20, paint);
+            canvas.drawText("Pause",1500,85,paint1);
+
 
             //Drawing the enemies
             for (int i = 0; i < enemies.size(); i++) {
@@ -262,22 +260,24 @@ public class GameView extends SurfaceView implements Runnable {
     //detects touches
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getX() > 19 && event.getX() < 251 && event.getY() > 19 && event.getY() < 101) {
-            if (shopOpen == true) {
-                shopOpen = false;
-            } else {
-                shopOpen = true;
-            }
+
+        //on clicking shop button
+        if (event.getX() > 19 && event.getX() < 251 && event.getY() > 901 && event.getY() < 999) {
+            GameActivity.pressShopButton(this);
         }
-        if (gameOver && event.getX() > 1400 && event.getX() < 1900 && event.getY() > 900 && event.getY() < 1100) {
-
-            Intent in = new Intent(((GameActivity)getContext()),MainMenu.class);
-            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ((GameActivity)getContext()).startActivity(in);
+        //on clicking wave info button
+        if (event.getX() > 701 && event.getX() < 999 && event.getY() > 21 && event.getY() < 99) {
+            GameActivity.pressWaveNumButton(this);
         }
+        //on clicking start wave
+        if (event.getX() > 701 && event.getX() < 999 && event.getY() > 921 && event.getY() < 1001) {
 
 
+        }
+        //on clicking pause
+        if (event.getX() > 1401 && event.getX() < 1699 && event.getY() > 19 && event.getY() < 101) {
 
+        }
         return false;
     }
 }
