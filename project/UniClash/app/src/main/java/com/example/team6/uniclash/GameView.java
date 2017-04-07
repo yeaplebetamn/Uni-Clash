@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v7.app.AlertDialog;
+//import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -41,10 +41,20 @@ public class GameView extends SurfaceView implements Runnable {
     private int waveNumber;
     private boolean waveStarted = false;
 
+    private int maxX;
+    private int maxY;
+
+
+    private Rect shopButton = new Rect(20, maxY - 120, 250, maxY - 20);
+    private Rect startWaveButton= new Rect(maxX/2 - 150, maxY - 120, maxX/2 + 150, maxY - 20);
+
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
         this.context=context;
+        maxX = screenX;
+        maxY = screenY;
+
         spawnBase(context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
         spawnFastEnemies(15, context, screenX, screenY);
@@ -54,6 +64,9 @@ public class GameView extends SurfaceView implements Runnable {
         surfaceHolder = getHolder();
         paint = new Paint();
         paint1 = new Paint();
+
+        shopButton = new Rect(20, maxY - 200, 250, maxY - 100);
+        startWaveButton= new Rect(maxX/2 - 150, maxY - 200, maxX/2 + 150, maxY - 100);
     }
 
     public void setGameOver(){
@@ -166,14 +179,23 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawBitmap(base.getBitmap(), base.getX(), base.getY(), paint);
 
             //shop button
-            canvas.drawRect(20, 1000, 250, 900, paint);
             paint1.setColor(Color.RED);
             paint1.setTextSize(50);
-            canvas.drawText("Shop",70,980,paint1);
+
+
+            //canvas.drawRect(20, 1000, 250, 900, paint);
+            canvas.drawRect(shopButton, paint);
+            canvas.drawText("Shop", shopButton.left+20, shopButton.centerY()+20, paint1);
+
+
             canvas.drawRect(1000,100,700,20,paint);
             canvas.drawText("Wave Info",720,85,paint1);
-            canvas.drawRect(1000, 1000, 700, 920, paint);
-            canvas.drawText("Start Wave",720,980,paint1);
+
+
+            //canvas.drawRect(1000, 1000, 700, 920, paint);
+            canvas.drawRect(startWaveButton, paint);
+            canvas.drawText("Start Wave",startWaveButton.left+20,startWaveButton.centerY()+20,paint1);
+
             canvas.drawRect(1700, 100, 1400, 20, paint);
             canvas.drawText("Pause",1500,85,paint1);
 
@@ -269,19 +291,22 @@ public class GameView extends SurfaceView implements Runnable {
     //detects touches
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //on clicking shop button
-        if (event.getX() > 19 && event.getX() < 251 && event.getY() > 901 && event.getY() < 999) {
+        if(shopButton.contains((int) event.getX(), (int) event.getY())) {
             GameActivity.pressShopButton(this);
         }
+//
+//        //on clicking shop button
+//        if (event.getX() > 19 && event.getX() < 251 && event.getY() > 901 && event.getY() < 999) {
+//            GameActivity.pressShopButton(this);
+//        }
 
         //on clicking wave info button
         if (event.getX() > 701 && event.getX() < 999 && event.getY() > 21 && event.getY() < 99) {
             GameActivity.pressWaveNumButton(this);
         }
 
-        //on clicking start wave
-        if (event.getX() > 701 && event.getX() < 999 && event.getY() > 921 && event.getY() < 1001) {
-
+        if(startWaveButton.contains((int) event.getX(), (int) event.getY())) {
+            waveStarted = true;
         }
         //on clicking pause
         if (event.getX() > 1401 && event.getX() < 1699 && event.getY() > 19 && event.getY() < 101) {
