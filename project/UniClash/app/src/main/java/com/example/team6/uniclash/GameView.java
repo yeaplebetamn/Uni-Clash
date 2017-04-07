@@ -31,17 +31,23 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean shopOpen;
 
+    private boolean gameOver = false;
+
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
         spawnBase(context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
-        spawnFastEnemies(10, context, screenX, screenY);
+        spawnFastEnemies(50, context, screenX, screenY);
         spawnTankEnemies(2, context, screenX, screenY);
 
         //initializing drawing objects
         surfaceHolder = getHolder();
         paint = new Paint();
+    }
+
+    public void setGameOver(){
+        gameOver = true;
     }
 
     public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY){
@@ -66,7 +72,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void spawnBase(Context context, int screenX, int screenY){
-        this.base = new Base(context, screenX, screenY);
+        this.base = new Base(context, screenX, screenY, this);
     }
 
     @Override
@@ -85,9 +91,11 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-        for(int i=0; i < enemies.size(); i++){
-            Enemy enemy = (Enemy) enemies.get(i);
-            enemy.update();
+        if(!gameOver){
+            for(int i=0; i < enemies.size(); i++) {
+               Enemy enemy = (Enemy) enemies.get(i);
+                enemy.update();
+            }
         }
     }
 
@@ -136,6 +144,48 @@ public class GameView extends SurfaceView implements Runnable {
                     );
                 }
             }
+
+            if (gameOver){
+                paint.setTextSize(150);
+                canvas.drawText("GAME OVER", 1000, 700, paint);
+
+                // restart button
+                canvas.drawRect(
+                        700,
+                        900,
+                        1200,
+                        1100,
+                        paint);
+                paint.setColor(Color.YELLOW);
+                canvas.drawRect(
+                        710,
+                        910,
+                        1190,
+                        1090,
+                        paint);
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(75);
+                canvas.drawText("Main Menu", 765, 1025, paint);
+
+
+                // main menu button
+                canvas.drawRect(
+                        1400,
+                        900,
+                        1900,
+                        1100,
+                        paint);
+                paint.setColor(Color.GREEN);
+                canvas.drawRect(
+                        1410,
+                        910,
+                        1890,
+                        1090,
+                        paint);
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(75);
+                canvas.drawText("Restart", 1520, 1025, paint);
+            }
             //Unlocking the canvas
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
@@ -178,6 +228,8 @@ public class GameView extends SurfaceView implements Runnable {
                 shopOpen = true;
             }
         }
+
+
 
         return false;
     }

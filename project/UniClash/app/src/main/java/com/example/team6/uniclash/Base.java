@@ -5,14 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Base{
-    public Base(Context context, int screenX, int screenY){
-        bitmap = (BitmapFactory.decodeResource(context.getResources(), R.drawable.base)
-
-        );
+    public Base(Context context, int screenX, int screenY, GameView gameview){
+        bitmap = (BitmapFactory.decodeResource(context.getResources(), R.drawable.base));
+        this.gameview = gameview;
     }
     public Bitmap bitmap;
     public int x = 2200, y = 800;
-
+    public GameView gameview;
     private int health = 100;
 
     public int getHealth() {
@@ -34,6 +33,7 @@ public class Base{
         if(getHealth() <= 0){
             x = -1000;
             y = -1000;
+            gameview.setGameOver();
         }
 
     }
