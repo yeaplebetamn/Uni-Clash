@@ -7,7 +7,7 @@ public class FastEnemy extends Enemy {
     public FastEnemy(Context context, int screenX, int screenY, Base base) {
         setHealth(50);
         setSpeed(3);
-        setAttack(2);
+        setAttack(3);
         setBase(base);
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.richmond_spiders));
         setMaxX(screenX);

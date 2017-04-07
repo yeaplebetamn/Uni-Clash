@@ -7,7 +7,7 @@ public class DefaultEnemy extends Enemy {
     public DefaultEnemy(Context context, int screenX, int screenY, Base base) {
         setHealth(100);
         setSpeed(2);
-        setAttack(10);
+        setAttack(5);
         setBase(base);
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ram_icon));
         setMaxX(screenX);
