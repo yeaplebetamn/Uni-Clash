@@ -17,6 +17,7 @@ public class Enemy {
     private int maxY;
     private Bitmap bitmap;
     public boolean dead = false;
+    boolean turn[] = new boolean[10];
 
     short currentDirection = 4;
     short directionUp = 1;
@@ -145,6 +146,89 @@ public class Enemy {
                 setY(800);
                 currentDirection = directionRight;
             }
+
+            //actually start to move
+            if (currentDirection == directionUp){
+                this.y -= this.speed * 5;
+            }
+            if (currentDirection == directionDown) {
+                this.y += this.speed * 5;
+            }
+            if (currentDirection == directionLeft) {
+                this.x -= this.speed * 5;
+            }
+            if (currentDirection == directionRight) {
+                this.x += this.speed * 5;
+            }
+        }
+    }
+
+    public void followPath2(){
+        turn[0] = true;
+        if(!dead) {
+            if (getX() >= 2200) { //TODO: change hard coded x to base's x.
+                die();
+            }
+            // once x reaches 800 and before y reaches 800, go down
+            if (turn[0]) {
+                if(getX() > 800){
+                    turn[0] = false;
+                    turn[1] = true;
+                    setX(800);
+                    currentDirection = directionDown;
+                }
+            }
+
+            // once y reaches 400, go right again until x reaches 1500
+            if (turn[1]) {
+                if(getY() > 400){
+                    turn[1] = false;
+                    turn[2] = true;
+                    setY(400);
+                    currentDirection = directionRight;
+                }
+            }
+
+            // once x reaches 1500, go up until y reaches 200
+            if (turn[2]) {
+                if(getX() > 1500){
+                    turn[2] = false;
+                    turn[3] = true;
+                    setX(1500);
+                    currentDirection = directionUp;
+                }
+            }
+
+            // once y reaches 200, go right until x = 1800
+            if (turn[3]) {
+                if(getY() < 200){
+                    turn[3] = false;
+                    turn[4] = true;
+                    setY(200);
+                    currentDirection = directionRight;
+                }
+            }
+
+            //once x reaches 1800, go down until y = 800
+            if(turn[4]){
+                if(getX() > 1800){
+                    turn[4] = false;
+                    turn[5] = true;
+                    setX(1800);
+                    currentDirection = directionDown;
+                }
+            }
+
+            //once y reaches 800, go right until hitting the base
+            if(turn[5]){
+                if(getY() > 800){
+                    turn[5] = false;
+                    turn[6] = true;
+                    setY(800);
+                    currentDirection = directionRight;
+                }
+            }
+
 
             //actually start to move
             if (currentDirection == directionUp){
