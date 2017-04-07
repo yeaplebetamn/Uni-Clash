@@ -13,7 +13,7 @@ public class Base{
     public Bitmap bitmap;
     public int x = 2200, y = 800;
 
-    private int health;
+    private int health = 100;
 
     public int getHealth() {
         return health;
@@ -30,7 +30,12 @@ public class Base{
     }
 
     public void takeDamage(int damage) {
-        this.setHealth(this.getHealth() - damage);
+        setHealth(getHealth() - damage);
+        if(getHealth() <= 0){
+            x = -1000;
+            y = -1000;
+        }
+
     }
 
     public void heal(int amount) {

@@ -1,6 +1,8 @@
 package com.example.team6.uniclash;
 
 import com.example.team6.uniclash.Base;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
@@ -10,7 +12,7 @@ public class Enemy {
     private int health;
     private int speed;
     private int attack;
-    private int x;
+    private int x = 0;
     private int minX;
     private int maxX;
     private int y = 75;
@@ -18,6 +20,7 @@ public class Enemy {
     private int maxY;
     private Bitmap bitmap;
     public boolean dead = false;
+    private Base base;
     boolean turn[] = new boolean[10];
     private Rect collisionDetector;
 
@@ -26,6 +29,15 @@ public class Enemy {
     short directionDown = 2;
     short directionLeft = 3;
     short directionRight = 4;
+
+    public Enemy(){
+        Random rand = new Random();
+        x = x - rand.nextInt(500);
+    }
+
+    public void setBase(Base myBase){
+        this.base = myBase;
+    }
 
     public int getHealth() {
         return health;
@@ -149,6 +161,7 @@ public class Enemy {
     public void followPath1() {
         if(dead == false) {
             if (getX() >= 2200) { //TODO: change hard coded x to base's x.
+                applyDamage(base);
                 die();
             }
             // once x reaches 800, go down
