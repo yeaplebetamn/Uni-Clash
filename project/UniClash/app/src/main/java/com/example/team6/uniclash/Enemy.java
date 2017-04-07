@@ -130,7 +130,7 @@ public class Enemy {
     }
 
     // moves the enemy across the map, following a path and dying after hitting the base
-    public void update() {
+    public void followPath1() {
         if(dead == false) {
             if (getX() >= 2200) { //TODO: change hard coded x to base's x.
                 die();
@@ -160,5 +160,10 @@ public class Enemy {
                 this.x += this.speed * 5;
             }
         }
+    }
+
+
+    public void update() {
+        followPath1();
     }
 }
