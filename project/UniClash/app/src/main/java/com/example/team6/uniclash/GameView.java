@@ -40,7 +40,7 @@ public class GameView extends SurfaceView implements Runnable {
         this.context = context;
         spawnBase(context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
-        spawnFastEnemies(50, context, screenX, screenY);
+        spawnFastEnemies(15, context, screenX, screenY);
         spawnTankEnemies(2, context, screenX, screenY);
 
         //initializing drawing objects
@@ -75,6 +75,40 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnBase(Context context, int screenX, int screenY){
         this.base = new Base(context, screenX, screenY, this);
+    }
+
+    public String getBaseHealthText(){
+        int baseHealth = base.getHealth();
+
+        if(baseHealth >= 96){
+            return("A+ Health");
+        }
+        else if(baseHealth >= 90){
+            return("A- Health");
+        }
+        else if(baseHealth >= 86){
+            return("B+ Health");
+        }
+        else if(baseHealth >= 80){
+            return("B- Health");
+        }
+        else if(baseHealth >= 76){
+            return("C+ Health");
+        }
+        else if(baseHealth >= 70){
+            return("C- Health");
+        }
+        else if(baseHealth >= 66){
+            return("D+ Health");
+        }
+        else if(baseHealth >= 60){
+            return("D- Health");
+        }
+        else if(baseHealth > 0) {
+            return("F Health");
+        }
+        else{return("Withdraw");}
+
     }
 
     @Override
@@ -146,6 +180,11 @@ public class GameView extends SurfaceView implements Runnable {
                     );
                 }
             }
+
+            //Drawing health text
+            paint.setTextSize(100);
+            canvas.drawText(getBaseHealthText(), 2000, 1200, paint);
+
 
             if (gameOver){
                 paint.setTextSize(150);
