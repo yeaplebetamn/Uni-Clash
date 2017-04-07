@@ -13,8 +13,8 @@ public class Tower {
     private int y;
     private Bitmap bitmap;
     private Rect rangeDetector;
-
-
+    private Enemy target;
+    private boolean hasTarget;
 
     public int getAttack() {
         return attack;
@@ -82,10 +82,25 @@ public class Tower {
     }
     
     public void update(ArrayList<Enemy> enemies) {
-        for (Enemy enemy: enemies) {
-            if (rangeDetector.intersect(enemy.getCollisionDetector())) {
-                applyDamage(enemy);
+        if (hasTarget) {
+            if (rangeDetector.intersect(target.getCollisionDetector())) {
+                attack(target, enemies);
+            } else {
+                target = null;
+                hasTarget = false;
+            }
+        } else {
+            for (Enemy enemy : enemies) {
+                if (getRangeDetector().intersect(enemy.getCollisionDetector())) {
+                    target = enemy;
+                    hasTarget = true;
+                }
             }
         }
+    }
+
+    //to be overridden by certain subclasses
+    public void attack(Enemy target, ArrayList<Enemy> enemies) {
+        target.takeDamage(getAttack());
     }
 }
