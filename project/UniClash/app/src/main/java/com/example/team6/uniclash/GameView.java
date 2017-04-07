@@ -44,7 +44,7 @@ public class GameView extends SurfaceView implements Runnable {
         spawnBase(context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
         spawnFastEnemies(15, context, screenX, screenY);
-        spawnTankEnemies(2, context, screenX, screenY);
+        spawnTankEnemies(6, context, screenX, screenY);
 
         //initializing drawing objects
         surfaceHolder = getHolder();
@@ -116,6 +116,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    public String getBaseHealth(){
+        String baseHealth;
+        baseHealth = "" + base.getHealth();
+        return baseHealth;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -173,6 +179,8 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             //Drawing health text
+            paint.setTextSize(50);
+            canvas.drawText(getBaseHealth(), 2000, 1000, paint);
             paint.setTextSize(100);
             canvas.drawText(getBaseHealthText(), 2000, 1200, paint);
 
@@ -271,6 +279,7 @@ public class GameView extends SurfaceView implements Runnable {
         if (event.getX() > 1401 && event.getX() < 1699 && event.getY() > 19 && event.getY() < 101) {
 
         }
+
         return false;
     }
 
