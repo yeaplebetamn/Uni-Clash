@@ -1,6 +1,7 @@
 package com.example.team6.uniclash;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,7 +15,7 @@ import java.util.Random;
 import java.util.logging.Handler;
 
 public class GameView extends SurfaceView implements Runnable {
-
+    private Context context;
     private Paint paint;
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
@@ -36,6 +37,7 @@ public class GameView extends SurfaceView implements Runnable {
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
+        this.context = context;
         spawnBase(context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
         spawnFastEnemies(50, context, screenX, screenY);
@@ -147,9 +149,9 @@ public class GameView extends SurfaceView implements Runnable {
 
             if (gameOver){
                 paint.setTextSize(150);
-                canvas.drawText("GAME OVER", 1000, 700, paint);
+                canvas.drawText("GAME OVER", 850, 700, paint);
 
-                // restart button
+                // main menu button
                 canvas.drawRect(
                         700,
                         900,
@@ -168,7 +170,7 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawText("Main Menu", 765, 1025, paint);
 
 
-                // main menu button
+                // restart button
                 canvas.drawRect(
                         1400,
                         900,
@@ -227,6 +229,12 @@ public class GameView extends SurfaceView implements Runnable {
             } else {
                 shopOpen = true;
             }
+        }
+        if (gameOver && event.getX() > 1400 && event.getX() < 1900 && event.getY() > 900 && event.getY() < 1100) {
+
+            Intent in = new Intent(((GameActivity)getContext()),MainMenu.class);
+            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ((GameActivity)getContext()).startActivity(in);
         }
 
 
