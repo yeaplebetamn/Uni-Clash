@@ -1,5 +1,6 @@
 package com.example.team6.uniclash;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
+    private int waveNumber;
+    private boolean waveStarted = false;
+
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
@@ -57,23 +61,27 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
-    public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY){
+    public void spawnTankEnemies(int numberEnemies, Context context, int screenX, int screenY){
         for(int i = 0; i < numberEnemies; i++){
-            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base);
+            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base);
+            enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
     }
 
-    public void spawnTankEnemies(int numberEnemies, Context context, int screenX, int screenY){
+    public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY){
         for(int i = 0; i < numberEnemies; i++){
-            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base);
+            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base);
+            enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
+
         }
     }
 
     public void spawnFastEnemies(int numberEnemies, Context context, int screenX, int screenY){
         for(int i = 0; i < numberEnemies; i++){
             FastEnemy enemy = new FastEnemy(context, screenX, screenY, base);
+            enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
     }
@@ -132,7 +140,7 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-        if(!gameOver){
+        if(!gameOver && waveStarted){
             for(int i=0; i < enemies.size(); i++) {
                Enemy enemy = (Enemy) enemies.get(i);
                 enemy.update();
