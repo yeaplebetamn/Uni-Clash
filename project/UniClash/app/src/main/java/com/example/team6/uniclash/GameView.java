@@ -30,6 +30,10 @@ public class GameView extends SurfaceView implements Runnable {
     private ArrayList enemies = new ArrayList();
     private ArrayList towers = new ArrayList();
 
+    private int incomingRams = 0;
+    private int incomingSpiders = 0;
+    private int incomingTurkeys = 0;
+
     private Base base;
 
     private boolean shopOpen;
@@ -83,6 +87,7 @@ public class GameView extends SurfaceView implements Runnable {
             TankEnemy enemy = new TankEnemy(context, screenX, screenY, base);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
+            incomingTurkeys++;
         }
     }
 
@@ -91,6 +96,7 @@ public class GameView extends SurfaceView implements Runnable {
             DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
+            incomingRams++;
 
         }
     }
@@ -100,6 +106,7 @@ public class GameView extends SurfaceView implements Runnable {
             FastEnemy enemy = new FastEnemy(context, screenX, screenY, base);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
+            incomingSpiders++;
         }
     }
 
@@ -385,7 +392,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         //on clicking wave info button
         if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
-            GameActivity.pressWaveNumButton(this);
+            GameActivity.pressWaveNumButton(this, incomingRams, incomingTurkeys, incomingSpiders);
         }
 
 

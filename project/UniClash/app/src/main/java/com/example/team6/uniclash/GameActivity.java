@@ -62,10 +62,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     //GameActivity Buttons
-    public static void pressWaveNumButton(View view){  //brings up popup with wave information
+    public static void pressWaveNumButton(View view, int numRams, int numTurkeys, int numSpiders){  //brings up popup with wave information
         AlertDialog.Builder waveInfoPopUp = new AlertDialog.Builder(view.getContext());
         waveInfoPopUp.setTitle("Study this for the incoming wave");
-        waveInfoPopUp.setMessage("incoming wave information");        //this will be updated to reflect incoming wave's enemies
+        waveInfoPopUp.setMessage("Incoming wave information:" +
+                "\nRams: " + numRams +
+                "\nTurkeys: " + numTurkeys +
+                "\nSpiders: " + numSpiders);        //this will be updated to reflect incoming wave's enemies
         waveInfoPopUp.setPositiveButton("Study sesh completed",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -95,88 +98,6 @@ public class GameActivity extends AppCompatActivity {
         startActivity(settingsMenuIntent);
     }
     public void pressStartWaveButton(View view){
-
-    }
-
-    //methods for health bar display:
-
-    void baseAttacked(int dmg){
-        health -= dmg;
-
-        if(health >= 96){
-            healthTextView.setText("A+ Health");
-        }
-        else if(health >= 90){
-            healthTextView.setText("A- Health");
-        }
-        else if(health >= 86){
-            healthTextView.setText("B+ Health");
-        }
-        else if(health >= 80){
-            healthTextView.setText("B- Health");
-        }
-        else if(health >= 76){
-            healthTextView.setText("C+ Health");
-        }
-        else if(health >= 70){
-            healthTextView.setText("C- Health");
-        }
-        else if(health >= 66){
-            healthTextView.setText("D+ Health");
-        }
-        else if(health >= 60){
-            healthTextView.setText("D- Health");
-        }
-        else if(health > 0) {
-            healthTextView.setText("F Health");
-        }
-        else{healthTextView.setText("Withdraw");
-            // Add additional code here for GAME OVER.
-        }
-    }
-
-    void baseHealed(int heal){
-        if(health + heal > 100){
-            health = 100; //prevents the user from going over 100% health.
-            healthTextView.setText("A+ Health");
-        }
-        else if(health + heal >= 96){
-            health += heal;
-            healthTextView.setText("A+ Health");
-        }
-        else if(health + heal >= 90){
-            health += heal;
-            healthTextView.setText("A- Health");
-        }
-        else if(health + heal >= 86){
-            health += heal;
-            healthTextView.setText("B+ Health");
-        }
-        else if(health + heal >= 80){
-            health += heal;
-            healthTextView.setText("B- Health");
-        }
-        else if(health + heal >= 76){
-            health += heal;
-            healthTextView.setText("C+ Health");
-        }
-        else if(health + heal >= 70){
-            health += heal;
-            healthTextView.setText("C- Health");
-        }
-        else if(health + heal >= 66){
-            health += heal;
-            healthTextView.setText("D+ Health");
-        }
-        else if(health + heal >= 60){
-            health += heal;
-            healthTextView.setText("D- Health");
-        }
-        else if(health + heal > 0){
-            health += heal;
-            healthTextView.setText("F Health");
-        }
-        else{healthTextView.setText("Withdraw");}
 
     }
 
