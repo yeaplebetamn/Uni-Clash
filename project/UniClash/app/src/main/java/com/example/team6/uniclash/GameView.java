@@ -313,7 +313,7 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (event.getX() > 19 && event.getX() < 251 && event.getY() > (maxY - 200) && event.getY() < (maxY - 100)) {   //if shop button selected
+        if (shopButton.contains((int) event.getX(), (int) event.getY())) {   //if shop button selected
             if (shopOpen == true) {
                 shopOpen = false;
             } else {
@@ -378,34 +378,30 @@ public class GameView extends SurfaceView implements Runnable {
 
         }
 
+        //old shop
+//        if (shopButton.contains((int) event.getX(), (int) event.getY())) {
+//            GameActivity.pressShopButton(this);
+//        }
 
-        if (gameOver && event.getX() > 1400 && event.getX() < 1900 && event.getY() > 900 && event.getY() < 1100) {
-            if (shopButton.contains((int) event.getX(), (int) event.getY())) {
-                GameActivity.pressShopButton(this);
-            }
-
-            //on clicking wave info button
-            if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
-                GameActivity.pressWaveNumButton(this);
-            }
-
-
-            if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
-                waveStarted = true;
-            }
-
-            //on clicking pause
-            if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
-                if (playing) {
-                    pause();
-                } else {
-                    resume();
-                }
-            }
-
-
-
+        //on clicking wave info button
+        if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
+            GameActivity.pressWaveNumButton(this);
         }
+
+
+        if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
+            waveStarted = true;
+        }
+
+        //on clicking pause
+        if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
+            if (playing) {
+                pause();
+            } else {
+                resume();
+            }
+        }
+
         return false;
     }
 }
