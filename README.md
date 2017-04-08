@@ -34,3 +34,32 @@ User story 3\
   Espresso testing was at times difficult to begin to set up but once up and running was not difficult to implement.
   
  ******************
+ 
+ 
+ ***************
+SECOND ITERATION\
+User story 16 \
+  Successfully implemented different enemy types through classes\
+  Successfully completed all scenarios and tested them, however we were not able to fully test damage by towers on enemies.\
+    We will do this once other game mechanics are in place.\
+User story 17 \
+  Successfully implemented all scenarios and tested them.\
+User story 6 \
+  Sucessfully implemented all scenarios and tested them.\
+User story 7 \
+  Partially completed all scenarios. Methods to update/upgrade are in place, but not fully implmented within GameView.\
+User story 5 \
+  Successfully implemented all scenarios and tested them.\
+User story 4 \
+  Successfully implemented all scenarios and tested them.\
+\
+Some user story scenarios were edited as they were repetitive.
+\
+\
+DIFFICULTIES
+\
+We couldn't figure out how to test gameView within expresso . We researched for severeal hours but could'nt access the game view in our test class because it is a custom view and does not have a xml. Instead we recorded out test to test the functionality in game view.\
+Learning the onTouch method and Canvas class was very difficult and therefore difficult to implement. This was due to confusing documentation and conflicting resources. \
+Implementing a timer for the game was confusing as there are several types of timers and they all are very specialized. This may become the one of the most complex aspects of the game.\
+Other difficulties included keeping this list short and sweet.
+******************

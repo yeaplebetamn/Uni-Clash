@@ -10,7 +10,7 @@ public class Base{
         this.gameview = gameview;
     }
     public Bitmap bitmap;
-    public int x = 2200, y = 800;
+    public int x, y;
     public GameView gameview;
     private int health = 100;
 

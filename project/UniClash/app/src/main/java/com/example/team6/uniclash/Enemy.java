@@ -32,7 +32,7 @@ public class Enemy {
 
     public Enemy(){
         Random rand = new Random();
-        x = x - rand.nextInt(500);
+        x = 0;//x - (100 + rand.nextInt(500));
     }
 
     public void setBase(Base myBase){
