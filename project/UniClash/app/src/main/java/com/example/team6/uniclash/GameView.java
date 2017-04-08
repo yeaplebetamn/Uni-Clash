@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Handler;
 
 public class GameView extends SurfaceView implements Runnable {
     private Context context;
@@ -27,10 +24,13 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread gameThread = null;
 
     private ArrayList enemies = new ArrayList();
+    private ArrayList towers = new ArrayList();
 
     private Base base;
 
     private boolean shopOpen;
+    int selectedShopQuadrant; //quad 1 = upper left, 2 = upper right, 3 = lower left, 4 = lower right
+    private boolean towerSpawned; //true if user has just selected tower
 
     private boolean gameOver = false;
 
@@ -181,6 +181,17 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             }
 
+            //Drawing towers
+                for (int i = 0; i < towers.size(); i++) {
+                    Tower tower = (Tower) towers.get(i);
+                    canvas.drawBitmap(
+                            tower.getBitmap(),
+                            tower.getX(),
+                            tower.getY(),
+                            paint
+                    );
+                }
+
             //Drawing health text
             paint.setTextSize(100);
             canvas.drawText(getBaseHealthText(), 2000, 1200, paint);
@@ -262,21 +273,80 @@ public class GameView extends SurfaceView implements Runnable {
     //detects touches
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getX() > 19 && event.getX() < 251 && event.getY() > 19 && event.getY() < 101) {
+
+        if (event.getX() > 19 && event.getX() < 251 && event.getY() > 19 && event.getY() < 101) {   //if home button selected
             if (shopOpen == true) {
                 shopOpen = false;
             } else {
                 shopOpen = true;
             }
         }
+
+        if(towerSpawned && !shopOpen){  //if player just bought a tower and is placing it
+            int x = Math.round(event.getX());
+            int y = Math.round(event.getY());
+
+
+            switch(selectedShopQuadrant){
+                case 1: //shop quadrant 1
+                    towers.add(new GunTower(context, x, y));//TODO: bank deductions for each tower bought
+                    break;
+                case 2: //shop quadrant 2
+                    towers.add(new SniperTower(context, x, y));//TODO: bank deduct
+                    break;
+                case 3: //shop quadrant 3
+                    towers.add(new FreezeTower(context, x, y));//TODO: bank deduct
+                    break;
+                case 4: //shop quadrant 4
+                    towers.add(new RocketTower(context, x, y));//TODO: bank deduct
+                    break;
+            }
+
+            towerSpawned = false; //player is done selecting tower location
+        }
+
+        //Shop Menu is up
+        if(shopOpen){
+            //different tower selections based on x,y coordinates
+            if (event.getX() > 299 && event.getX()  < 501 && event.getY() > 299 && event.getY() < 501) {   //upper left quadrant of shop
+                selectedShopQuadrant = 1;
+
+                shopOpen=false;
+                towerSpawned = true;
+            }
+            if (event.getX()  > 499 && event.getX()  < 701 && event.getY() > 299 && event.getY() < 501) {   //upper right quadrant of shop
+                selectedShopQuadrant = 2;
+
+                shopOpen=false;
+                towerSpawned = true;
+            }
+            if (event.getX()  > 299 && event.getX()  < 501 && event.getY() > 499 && event.getY() < 701) {   //lower left quadrant of shop
+                selectedShopQuadrant = 3;
+
+                shopOpen=false;
+                towerSpawned = true;
+            }
+            if (event.getX()  > 499 && event.getX()  < 701 && event.getY() > 499 && event.getY() < 701) {   //lower right quadrant of shop
+                selectedShopQuadrant = 4;
+
+                shopOpen=false;
+                towerSpawned = true;
+            }
+//            else{
+//                shopOpen=false;
+//                towerSpawned = false;
+//            }
+
+        }
+
+
+
         if (gameOver && event.getX() > 1400 && event.getX() < 1900 && event.getY() > 900 && event.getY() < 1100) {
 
             Intent in = new Intent(((GameActivity)getContext()),MainMenu.class);
             in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             ((GameActivity)getContext()).startActivity(in);
         }
-
-
 
         return false;
     }
