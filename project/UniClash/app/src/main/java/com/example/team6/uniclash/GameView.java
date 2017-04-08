@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-//import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -45,8 +44,10 @@ public class GameView extends SurfaceView implements Runnable {
     private int maxY;
 
 
-    private Rect shopButton = new Rect(20, maxY - 120, 250, maxY - 20);
-    private Rect startWaveButton= new Rect(maxX/2 - 150, maxY - 120, maxX/2 + 150, maxY - 20);
+    private Rect shopButton;
+    private Rect startWaveButton;
+    private Rect pauseButton;
+    private Rect waveInfoButton;
 
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
@@ -67,6 +68,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         shopButton = new Rect(20, maxY - 200, 250, maxY - 100);
         startWaveButton= new Rect(maxX/2 - 150, maxY - 200, maxX/2 + 150, maxY - 100);
+        pauseButton = new Rect(maxX - 250, 20, maxX - 20, 120);
+        waveInfoButton = new Rect(maxX/2 - 150, 20, maxX/2 + 150, 120);
     }
 
     public void setGameOver(){
@@ -145,7 +148,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (playing) {
             //to update the frame
             update();
 
@@ -176,7 +179,8 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.WHITE);
 
             //Drawing the base
-            canvas.drawBitmap(base.getBitmap(), base.getX(), base.getY(), paint);
+            //need to use a variable for the y instead of 800
+            canvas.drawBitmap(base.getBitmap(), maxX-base.getBitmap().getWidth(), 800, paint);
 
             //shop button
             paint1.setColor(Color.RED);
@@ -187,17 +191,17 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawRect(shopButton, paint);
             canvas.drawText("Shop", shopButton.left+20, shopButton.centerY()+20, paint1);
 
+            //wave info button
+            canvas.drawRect(waveInfoButton, paint);
+            canvas.drawText("Wave Info", waveInfoButton.left+20, waveInfoButton.centerY()+20 ,paint1);
 
-            canvas.drawRect(1000,100,700,20,paint);
-            canvas.drawText("Wave Info",720,85,paint1);
-
-
-            //canvas.drawRect(1000, 1000, 700, 920, paint);
+            //start wave button
             canvas.drawRect(startWaveButton, paint);
             canvas.drawText("Start Wave",startWaveButton.left+20,startWaveButton.centerY()+20,paint1);
 
-            canvas.drawRect(1700, 100, 1400, 20, paint);
-            canvas.drawText("Pause",1500,85,paint1);
+            //pause button
+            canvas.drawRect(pauseButton, paint);
+            canvas.drawText("Pause", pauseButton.left+20, pauseButton.centerY()+20, paint1);
 
             //Drawing the enemies
             for (int i = 0; i < enemies.size(); i++) {
@@ -210,9 +214,9 @@ public class GameView extends SurfaceView implements Runnable {
 
             //Drawing health text
             paint.setTextSize(50);
-            canvas.drawText(getBaseHealth(), 2000, 1000, paint);
+            canvas.drawText(getBaseHealth(), maxX-500, maxY-200, paint);
             paint.setTextSize(100);
-            canvas.drawText(getBaseHealthText(), 2000, 1200, paint);
+            canvas.drawText(getBaseHealthText(), maxX-500, maxY-100, paint);
 
 
             if (gameOver){
@@ -294,23 +298,23 @@ public class GameView extends SurfaceView implements Runnable {
         if(shopButton.contains((int) event.getX(), (int) event.getY())) {
             GameActivity.pressShopButton(this);
         }
-//
-//        //on clicking shop button
-//        if (event.getX() > 19 && event.getX() < 251 && event.getY() > 901 && event.getY() < 999) {
-//            GameActivity.pressShopButton(this);
-//        }
 
         //on clicking wave info button
-        if (event.getX() > 701 && event.getX() < 999 && event.getY() > 21 && event.getY() < 99) {
+        if(waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
             GameActivity.pressWaveNumButton(this);
         }
 
         if(startWaveButton.contains((int) event.getX(), (int) event.getY())) {
             waveStarted = true;
         }
-        //on clicking pause
-        if (event.getX() > 1401 && event.getX() < 1699 && event.getY() > 19 && event.getY() < 101) {
 
+        //on clicking pause
+        if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
+            if (playing) {
+                pause();
+            } else {
+                resume();
+            }
         }
 
         return false;
