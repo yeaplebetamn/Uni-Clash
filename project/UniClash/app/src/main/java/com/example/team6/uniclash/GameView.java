@@ -59,7 +59,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         spawnBase(context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
-        spawnFastEnemies(15, context, screenX, screenY);
+        spawnFastEnemies(50, context, screenX, screenY);
         spawnTankEnemies(6, context, screenX, screenY);
 
         //initializing drawing objects
@@ -238,44 +238,44 @@ public class GameView extends SurfaceView implements Runnable {
 
             if (gameOver) {
                 paint.setTextSize(150);
-                canvas.drawText("GAME OVER", 850, 700, paint);
+                canvas.drawText("GAME OVER", maxX / 2 - 420, maxY / 2, paint);
 
                 // main menu button
                 canvas.drawRect(
-                        700,
-                        900,
-                        1200,
-                        1100,
+                        maxX / 2 - 580,
+                        maxY / 2 + 180,
+                        maxX / 2 - 80,
+                        maxY / 2 + 380,
                         paint);
                 paint.setColor(Color.YELLOW);
                 canvas.drawRect(
-                        710,
-                        910,
-                        1190,
-                        1090,
+                        maxX / 2 - 570,
+                        maxY / 2 + 190,
+                        maxX / 2 - 90,
+                        maxY / 2 + 370,
                         paint);
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(75);
-                canvas.drawText("Main Menu", 765, 1025, paint);
+                canvas.drawText("Main Menu", maxX / 2 - 580 + 65, maxY / 2 + 300, paint);
 
 
                 // restart button
                 canvas.drawRect(
-                        1400,
-                        900,
-                        1900,
-                        1100,
+                        maxX / 2 + 120,
+                        maxY / 2 + 180,
+                        maxX / 2 + 620,
+                        maxY / 2 + 380,
                         paint);
                 paint.setColor(Color.GREEN);
                 canvas.drawRect(
-                        1410,
-                        910,
-                        1890,
-                        1090,
+                        maxX / 2 + 130,
+                        maxY / 2 + 190,
+                        maxX / 2 + 610,
+                        maxY / 2 + 370,
                         paint);
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(75);
-                canvas.drawText("Restart", 1520, 1025, paint);
+                canvas.drawText("Restart", maxX / 2 + 245, maxY / 2 + 300, paint);
             }
             //Unlocking the canvas
             surfaceHolder.unlockCanvasAndPost(canvas);
