@@ -11,7 +11,9 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -28,17 +30,12 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread gameThread = null;
 
     private ArrayList enemies = new ArrayList();
-    private ArrayList towers = new ArrayList();
 
     private int incomingRams = 0;
     private int incomingSpiders = 0;
     private int incomingTurkeys = 0;
 
     private Base base;
-
-    private boolean shopOpen;
-    int selectedShopQuadrant; //quad 1 = upper left, 2 = upper right, 3 = lower left, 4 = lower right
-    private boolean towerSpawned; //true if user has just selected tower
 
     private boolean gameOver = false;
 
@@ -48,6 +45,19 @@ public class GameView extends SurfaceView implements Runnable {
     private int maxX;
     private int maxY;
 
+    //tower variables
+    private ArrayList<Tower> towers = new ArrayList<>();
+    private Tower[][] towersGrid = new Tower[5][10];   //2d array of all towers, array based on map grid system
+    int gridX; //10 by 5 grid based off of maxX and maxY
+    int gridY;
+    private Integer[][] gridCoordinates = new Integer[5][10];
+
+
+    //shop variables
+    private boolean shopOpen;
+    int selectedShopQuadrant; //quad 1 = upper left, 2 = upper right, 3 = lower left, 4 = lower right
+    private boolean towerSpawned; //true if user has just selected tower
+    private boolean invalidTower;
 
     private Rect shopButton;
     private Rect startWaveButton;
@@ -60,6 +70,10 @@ public class GameView extends SurfaceView implements Runnable {
         this.context = context;
         maxX = screenX;
         maxY = screenY;
+        //setting up grid
+        gridX = maxX/10;  //grid tile width
+        gridY = maxY/5;  //grid tile height
+
 
         spawnBase(context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
@@ -284,6 +298,24 @@ public class GameView extends SurfaceView implements Runnable {
                 paint.setTextSize(75);
                 canvas.drawText("Restart", maxX / 2 + 245, maxY / 2 + 300, paint);
             }
+
+            //temporary grid points for visualization
+//            for(int x=1; x<=20; x++){
+//                for(int y=1; y<=10; y++){
+//                    paint.setColor(Color.GREEN);
+//                    paint.setTextSize(15);
+//                    canvas.drawText(
+//                            "(" + (x*gridX) + " , " + (y*gridY) + ")",
+//                            x*gridX,
+//                            y*gridY,
+//                            paint
+//                            );
+//
+//                }
+//
+//            }
+
+
             //Unlocking the canvas
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
@@ -333,26 +365,42 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         if (towerSpawned && !shopOpen) {  //if player just bought a tower and is placing it
-            int x = Math.round(event.getX());
-            int y = Math.round(event.getY());
+            int x = (Math.round(event.getX()/(float)gridX))*gridX;
+            int y = (Math.round(event.getY()/(float)gridY))*gridY;
 
 
-            switch (selectedShopQuadrant) {
-                case 1: //shop quadrant 1
-                    towers.add(new GunTower(context, x, y));//TODO: bank deductions for each tower bought
-                    break;
-                case 2: //shop quadrant 2
-                    towers.add(new SniperTower(context, x, y));//TODO: bank deduct
-                    break;
-                case 3: //shop quadrant 3
-                    towers.add(new FreezeTower(context, x, y));//TODO: bank deduct
-                    break;
-                case 4: //shop quadrant 4
-                    towers.add(new RocketTower(context, x, y));//TODO: bank deduct
-                    break;
+            for(Tower tower : towers){
+                if(tower.getX()==x && tower.getY()==y){
+                    CharSequence text = "There's already a tower here. Get you're own spot!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    invalidTower=true;
+                    towerSpawned=true;
+                }
+                else{
+                    towerSpawned = false; //player is done selecting tower location
+                    invalidTower=false;
+                }
+            }
+            if(!invalidTower) {
+                switch (selectedShopQuadrant) {
+                    case 1: //shop quadrant 1
+                        towers.add(new GunTower(context, x, y));//TODO: bank deductions for each tower bought
+                        break;
+                    case 2: //shop quadrant 2
+                        towers.add(new SniperTower(context, x, y));//TODO: bank deduct
+                        break;
+                    case 3: //shop quadrant 3
+                        towers.add(new FreezeTower(context, x, y));//TODO: bank deduct
+                        break;
+                    case 4: //shop quadrant 4
+                        towers.add(new RocketTower(context, x, y));//TODO: bank deduct
+                        break;
+                }
             }
 
-            towerSpawned = false; //player is done selecting tower location
         }
 
         //Shop Menu is up
@@ -382,10 +430,6 @@ public class GameView extends SurfaceView implements Runnable {
                 shopOpen = false;
                 towerSpawned = true;
             }
-//            else{
-//                shopOpen=false;
-//                towerSpawned = false;
-//            }
 
         }
 
