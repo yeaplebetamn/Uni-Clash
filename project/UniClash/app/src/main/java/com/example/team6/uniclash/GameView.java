@@ -1,23 +1,16 @@
 package com.example.team6.uniclash;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -59,12 +52,14 @@ public class GameView extends SurfaceView implements Runnable {
 
     //shop variables
     private boolean shopOpen;
-    private boolean upgradeMenuOpen;
+    private boolean upgrading;
     int selectedShopQuadrant; //quad 1 = upper left, 2 = upper right, 3 = lower left, 4 = lower right
     private boolean towerSpawned=false; //true if user has just selected tower
     private boolean invalidTower;
+    private boolean towerBeingUpgraded;
 
     private Rect shopButton;
+    private Rect upgradeButton;
     private Rect startWaveButton;
     private Rect pauseButton;
     private Rect waveInfoButton;
@@ -95,6 +90,7 @@ public class GameView extends SurfaceView implements Runnable {
         paint1 = new Paint();
 
         shopButton = new Rect(20, maxY - 200, 250, maxY - 100);
+        upgradeButton = new Rect(maxX/4-150, maxY-200, maxX/4 +150,maxY-100);
         startWaveButton = new Rect(maxX / 2 - 150, maxY - 200, maxX / 2 + 150, maxY - 100);
         pauseButton = new Rect(maxX - 250, 20, maxX - 20, 120);
         waveInfoButton = new Rect(maxX / 2 - 150, 20, maxX / 2 + 150, 120);
@@ -206,6 +202,17 @@ public class GameView extends SurfaceView implements Runnable {
             //need to use a variable for the y instead of 800
             canvas.drawBitmap(base.getBitmap(), maxX - base.getBitmap().getWidth(), 800, paint);
 
+            //Drawing towers
+            for (int i = 0; i < towers.size(); i++) {
+                Tower tower = (Tower) towers.get(i);
+                canvas.drawBitmap(
+                        tower.getBitmap(),
+                        tower.getX(),
+                        tower.getY(),
+                        paint
+                );
+            }
+
             //shop button
             paint1.setColor(Color.RED);
             paint1.setTextSize(50);
@@ -214,6 +221,10 @@ public class GameView extends SurfaceView implements Runnable {
             //canvas.drawRect(20, 1000, 250, 900, paint);
             canvas.drawRect(shopButton, paint);
             canvas.drawText("Shop", shopButton.left + 20, shopButton.centerY() + 20, paint1);
+
+            //upgrade button
+            canvas.drawRect(upgradeButton, paint);
+            canvas.drawText("Upgrade", upgradeButton.left + 20, upgradeButton.centerY() + 20, paint1);
 
             //wave info button
             canvas.drawRect(waveInfoButton, paint);
@@ -242,13 +253,6 @@ public class GameView extends SurfaceView implements Runnable {
 //                        paint);
             }
 
-            if(upgradeMenuOpen){
-                canvas.drawBitmap(
-                        BitmapFactory.decodeResource(context.getResources(), R.drawable.upgrade_menu),
-                        300,
-                        300,
-                        paint);
-            }
 
             //Drawing the enemies
             for (int i = 0; i < enemies.size(); i++) {
@@ -259,16 +263,7 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             }
 
-            //Drawing towers
-            for (int i = 0; i < towers.size(); i++) {
-                Tower tower = (Tower) towers.get(i);
-                canvas.drawBitmap(
-                        tower.getBitmap(),
-                        tower.getX(),
-                        tower.getY(),
-                        paint
-                );
-            }
+
 
             //Drawing health text
             paint.setTextSize(50);
@@ -336,6 +331,7 @@ public class GameView extends SurfaceView implements Runnable {
 //            }
 
 
+
             //Unlocking the canvas
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
@@ -372,7 +368,7 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgradeMenuOpen) {   //if shop button selected
+        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgrading) {   //if shop button selected
             if (shopOpen) {
                 shopOpen = false;
             }
@@ -384,25 +380,25 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        //tower upgrading
-        if(!shopOpen && !towerSpawned){
+        //tower press
+        if(!shopOpen && !towerSpawned && !upgrading){
             int x = (Math.round(event.getX()/(float)gridX))*gridX; //snapping to grid
             int y = (Math.round(event.getY()/(float)gridY))*gridY;
 
-            for(Tower tower : towers){
-                if(tower.getX()==x && tower.getY()==y){
+            for(int i=0; i<towers.size(); i++){
+                if(towers.get(i).getX()==x && towers.get(i).getY()==y){
+
+
                     CharSequence text = "This is a tower";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-
-                    upgradeMenuOpen=true;
                 }
             }
         }
 
-        if (towerSpawned && !shopOpen) {  //if player just bought a tower and is placing it
+        if (towerSpawned && !shopOpen && !upgrading) {  //if player just bought a tower and is placing it
             int x = (Math.round(event.getX()/(float)gridX))*gridX;//snapping to grid
             int y = (Math.round(event.getY()/(float)gridY))*gridY;
 
@@ -421,7 +417,8 @@ public class GameView extends SurfaceView implements Runnable {
                     invalidTower=false;
                 }
             }
-            if((y<70 && y<80 && x<0 && x>=800) && (x< 790 && x>=800 && y>70 && y<=800) && (x>790 && y>790 && y<=800)){//checking if tower placed on path
+            //checking if tower placed on path
+            if((y<70 && y<80 && x<0 && x>=800) && (x< 790 && x>=800 && y>70 && y<=800) && (x>790 && y>790 && y<=800)){
                 CharSequence text = "This is the enemy's path. Don't be rude.";
                 int duration = Toast.LENGTH_SHORT;
 
@@ -491,23 +488,64 @@ public class GameView extends SurfaceView implements Runnable {
 //        }
 
 
-        if(upgradeMenuOpen && !shopOpen && (shopButton.contains((int) event.getX(), (int) event.getY()))){ //exiting upgrade menu by pressing shop button
-            upgradeMenuOpen=false;
-        }
         //upgrade menu buttons clicked
-        if(upgradeMenuOpen && event.getX()>299 && event.getX()<700 && event.getY()>299 && event.getY()<700){
-            CharSequence text = "Upgrading tower";
-            int duration = Toast.LENGTH_SHORT;
+        if(upgrading){
+            int x = (Math.round(event.getX()/(float)gridX))*gridX;//snapping to grid
+            int y = (Math.round(event.getY()/(float)gridY))*gridY;
 
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            for(Tower tower : towers) {
+                if (tower.getX() == x && tower.getY() == y) {
+                    tower.setLevel(tower.getLevel()+1); //upgrading
 
+                    towerBeingUpgraded = false;
+                    upgrading = false;
+
+                    //TODO: Bank reduction for upgrade
+
+                    CharSequence text = "Upgrading tower to level " + tower.getLevel();
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                }
+
+                CharSequence text = "no longer upgrading";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                upgrading = false;
+            }
         }
 
         //on clicking wave info button
         if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
             GameActivity.pressWaveNumButton(this, incomingRams, incomingTurkeys, incomingSpiders);
         }
+
+        //on clicking upgrade button
+        if(upgradeButton.contains((int) event.getX(), (int) event.getY()) && towers.size()>0){
+            if(!upgrading){
+                upgrading = true;
+
+                CharSequence text = "Press a tower to upgrade it";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }else{
+                upgrading = false;
+            }
+        }
+        if(upgradeButton.contains((int) event.getX(), (int) event.getY()) && towers.size()==0){
+            CharSequence text = "You don't have any towers to upgrade! Go to the shop";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+
 
 
         if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {

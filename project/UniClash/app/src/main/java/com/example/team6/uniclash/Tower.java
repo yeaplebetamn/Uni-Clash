@@ -15,6 +15,9 @@ public class Tower {
     private Rect rangeDetector;
     private Enemy target;
     private boolean hasTarget;
+    public int level;
+
+    public int getLevel(){return level;   }
 
     public int getAttack() {
         return attack;
@@ -51,6 +54,8 @@ public class Tower {
     public void setY(int y) {
         this.y = y;
     }
+
+    public void setLevel(int level){this.level = level;}
 
     public double getAttackDelay() {
         return attackDelay;
