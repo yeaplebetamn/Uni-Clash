@@ -4,13 +4,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -47,22 +51,27 @@ public class GameView extends SurfaceView implements Runnable {
 
     //tower variables
     private ArrayList<Tower> towers = new ArrayList<>();
-    private Tower[][] towersGrid = new Tower[5][10];   //2d array of all towers, array based on map grid system
+    //private Tower[][] towersGrid = new Tower[5][10];   //2d array of all towers, array based on map grid system
     int gridX; //10 by 5 grid based off of maxX and maxY
     int gridY;
-    private Integer[][] gridCoordinates = new Integer[5][10];
+    //private Integer[][] gridCoordinates = new Integer[5][10];
 
 
     //shop variables
     private boolean shopOpen;
+    private boolean upgradeMenuOpen;
     int selectedShopQuadrant; //quad 1 = upper left, 2 = upper right, 3 = lower left, 4 = lower right
-    private boolean towerSpawned; //true if user has just selected tower
+    private boolean towerSpawned=false; //true if user has just selected tower
     private boolean invalidTower;
 
     private Rect shopButton;
     private Rect startWaveButton;
     private Rect pauseButton;
     private Rect waveInfoButton;
+
+
+//    private Bitmap upgradeMenu = BitmapFactory.decodeResource(context.getResources(), R.drawable.upgrade_menu);
+//    private Bitmap shopMenu = BitmapFactory.decodeResource(context.getResources(), R.drawable.shop_menu);
 
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
@@ -228,7 +237,13 @@ public class GameView extends SurfaceView implements Runnable {
                         paint);
             }
 
-
+            if(upgradeMenuOpen){
+                canvas.drawBitmap(
+                        BitmapFactory.decodeResource(context.getResources(), R.drawable.upgrade_menu),
+                        300,
+                        300,
+                        paint);
+            }
 
             //Drawing the enemies
             for (int i = 0; i < enemies.size(); i++) {
@@ -352,7 +367,7 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (shopButton.contains((int) event.getX(), (int) event.getY())) {   //if shop button selected
+        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgradeMenuOpen) {   //if shop button selected
             if (shopOpen) {
                 shopOpen = false;
             }
@@ -364,8 +379,26 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
+        //tower upgrading
+        if(!shopOpen && !towerSpawned){
+            int x = (Math.round(event.getX()/(float)gridX))*gridX; //snapping to grid
+            int y = (Math.round(event.getY()/(float)gridY))*gridY;
+
+            for(Tower tower : towers){
+                if(tower.getX()==x && tower.getY()==y){
+                    CharSequence text = "This is a tower";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    upgradeMenuOpen=true;
+                }
+            }
+        }
+
         if (towerSpawned && !shopOpen) {  //if player just bought a tower and is placing it
-            int x = (Math.round(event.getX()/(float)gridX))*gridX;
+            int x = (Math.round(event.getX()/(float)gridX))*gridX;//snapping to grid
             int y = (Math.round(event.getY()/(float)gridY))*gridY;
 
 
@@ -380,7 +413,7 @@ public class GameView extends SurfaceView implements Runnable {
                     towerSpawned=true;
                 }
                 else{
-                    towerSpawned = false; //player is done selecting tower location
+
                     invalidTower=false;
                 }
             }
@@ -399,6 +432,7 @@ public class GameView extends SurfaceView implements Runnable {
                         towers.add(new RocketTower(context, x, y));//TODO: bank deduct
                         break;
                 }
+                towerSpawned = false; //player is done selecting tower location
             }
 
         }
@@ -437,6 +471,11 @@ public class GameView extends SurfaceView implements Runnable {
 //        if (shopButton.contains((int) event.getX(), (int) event.getY())) {
 //            GameActivity.pressShopButton(this);
 //        }
+
+
+        if(upgradeMenuOpen && !shopOpen && (shopButton.contains((int) event.getX(), (int) event.getY()))){ //exiting upgrade menu by pressing shop button
+            upgradeMenuOpen=false;
+        }
 
         //on clicking wave info button
         if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
