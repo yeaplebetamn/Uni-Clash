@@ -1,16 +1,23 @@
 package com.example.team6.uniclash;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -19,6 +26,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private Context context;
+    public int credit = 100;
 
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
@@ -52,17 +60,17 @@ public class GameView extends SurfaceView implements Runnable {
 
     //shop variables
     private boolean shopOpen;
-    private boolean upgrading;
+    private boolean upgradeMenuOpen;
     int selectedShopQuadrant; //quad 1 = upper left, 2 = upper right, 3 = lower left, 4 = lower right
-    private boolean towerSpawned=false; //true if user has just selected tower
+    private boolean towerSpawned = false; //true if user has just selected tower
     private boolean invalidTower;
     private boolean towerBeingUpgraded;
 
     private Rect shopButton;
-    private Rect upgradeButton;
     private Rect startWaveButton;
     private Rect pauseButton;
     private Rect waveInfoButton;
+    private Rect upgradeButton;
 
 
 //    private Bitmap upgradeMenu = BitmapFactory.decodeResource(context.getResources(), R.drawable.upgrade_menu);
@@ -75,8 +83,8 @@ public class GameView extends SurfaceView implements Runnable {
         maxX = screenX;
         maxY = screenY;
         //setting up grid
-        gridX = maxX/10;  //grid tile width
-        gridY = maxY/5;  //grid tile height
+        gridX = maxX / 10;  //grid tile width
+        gridY = maxY / 5;  //grid tile height
 
 
         spawnBase(context, screenX, screenY);
@@ -166,6 +174,18 @@ public class GameView extends SurfaceView implements Runnable {
         return baseHealth;
     }
 
+    public void setCredits(int credits) {
+        credit += credits;
+    }
+
+    public int getCredits() {
+        return credit;
+    }
+
+    public String toStringCredit() {
+        return getCredits() + "";
+    }
+
     @Override
     public void run() {
         while (playing) {
@@ -202,29 +222,17 @@ public class GameView extends SurfaceView implements Runnable {
             //need to use a variable for the y instead of 800
             canvas.drawBitmap(base.getBitmap(), maxX - base.getBitmap().getWidth(), 800, paint);
 
-            //Drawing towers
-            for (int i = 0; i < towers.size(); i++) {
-                Tower tower = (Tower) towers.get(i);
-                canvas.drawBitmap(
-                        tower.getBitmap(),
-                        tower.getX(),
-                        tower.getY(),
-                        paint
-                );
-            }
-
             //shop button
             paint1.setColor(Color.RED);
             paint1.setTextSize(50);
 
+            //upgrade button
+            canvas.drawRect(upgradeButton, paint);
+            canvas.drawText("Upgrade", upgradeButton.left + 20, upgradeButton.centerY() + 20, paint1);
 
             //canvas.drawRect(20, 1000, 250, 900, paint);
             canvas.drawRect(shopButton, paint);
             canvas.drawText("Shop", shopButton.left + 20, shopButton.centerY() + 20, paint1);
-
-            //upgrade button
-            canvas.drawRect(upgradeButton, paint);
-            canvas.drawText("Upgrade", upgradeButton.left + 20, upgradeButton.centerY() + 20, paint1);
 
             //wave info button
             canvas.drawRect(waveInfoButton, paint);
@@ -263,14 +271,25 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             }
 
-
+            //Drawing towers
+            for (int i = 0; i < towers.size(); i++) {
+                Tower tower = (Tower) towers.get(i);
+                canvas.drawBitmap(
+                        tower.getBitmap(),
+                        tower.getX(),
+                        tower.getY(),
+                        paint
+                );
+            }
 
             //Drawing health text
             paint.setTextSize(50);
             canvas.drawText(getBaseHealth(), maxX - 500, maxY - 200, paint);
             paint.setTextSize(100);
             canvas.drawText(getBaseHealthText(), maxX - 500, maxY - 100, paint);
-
+            paint.setTextSize(50);
+            shopButton = new Rect(20, maxY - 200, 250, maxY - 100);
+            canvas.drawText(toStringCredit(), maxX - 1500, maxY - 100, paint);
 
             if (gameOver) {
                 paint.setTextSize(150);
@@ -315,9 +334,9 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             //temporary grid points for visualization
-            for(int x=1; x<=10; x++){
-                for(int y=1; y<=5; y++){
-                    canvas.drawCircle(x*gridX,y*gridY,4,paint);
+            for (int x = 1; x <= 10; x++) {
+                for (int y = 1; y <= 5; y++) {
+                    canvas.drawCircle(x * gridX, y * gridY, 4, paint);
 
 //                    paint.setTextSize(15);
 //                    canvas.drawText(
@@ -329,7 +348,6 @@ public class GameView extends SurfaceView implements Runnable {
 
                 }
             }
-
 
 
             //Unlocking the canvas
@@ -364,199 +382,277 @@ public class GameView extends SurfaceView implements Runnable {
         gameThread.start();
     }
 
+    //prints toast when is not enough points in bank to buy a tower
+    public void ToastShop() {
+        CharSequence text = "Not enough points to buy a tower!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
     //detects touches
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgrading) {   //if shop button selected
+        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgradeMenuOpen) {   //if shop button selected
             if (shopOpen) {
                 shopOpen = false;
-            }
-            else if(!shopOpen && waveStarted){
+            } else if (!shopOpen && waveStarted) {
                 shopOpen = false;
-            }
-            else {
+            } else {
                 shopOpen = true;
             }
         }
 
+
         //tower press
-        if(!shopOpen && !towerSpawned && !upgrading){
-            int x = ((int)event.getX()/gridX)*gridX;//snapping to grid
-            int y = ((int)event.getY()/gridY)*gridY;
+        if (!shopOpen && !towerSpawned && !upgradeMenuOpen) {
+            int x = ((int) event.getX() / gridX) * gridX;//snapping to grid
+            int y = ((int) event.getY() / gridY) * gridY;
 
-            for(int i=0; i<towers.size(); i++){
-                if(towers.get(i).getX()==x && towers.get(i).getY()==y){
+            for (int i = 0; i < towers.size(); i++) {
+                if (towers.get(i).getX() == x && towers.get(i).getY() == y) {
 
 
-                    CharSequence text = "This is a tower";
-                    int duration = Toast.LENGTH_SHORT;
+                    for (Tower tower : towers) {
+                        if (tower.getX() == x && tower.getY() == y) {
+                            CharSequence text = "This is a tower";
+                            int duration = Toast.LENGTH_SHORT;
 
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                    }
                 }
-            }
-        }
-
-        //if player just bought a tower and is placing it
-        if (towerSpawned && !shopOpen && !upgrading) {
-            int x = ((int)event.getX()/gridX)*gridX;//snapping to grid
-            int y = ((int)event.getY()/gridY)*gridY;
-
-            //checking for invalid tower placement
-            for(Tower tower : towers){
-                if(tower.getX()==x && tower.getY()==y){
-                    CharSequence text = "There's already a tower here. Get you're own spot!";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                    invalidTower=true;
-                    towerSpawned=true;
-                    break;
-                }else if (tower.getX() != x && tower.getY() != y){
-
-                    invalidTower=false;
                 }
+
             }
-            //checking if tower placed on path
-            if((y<70 && y<80 && x<0 && x>=800) && (x< 790 && x>=800 && y>70 && y<=800) && (x>790 && y>790 && y<=800)){
-                CharSequence text = "This is the enemy's path. Don't be rude.";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
-                invalidTower = true;
-            }
+                //if player just bought a tower and is placing it
+                if (towerSpawned && !shopOpen && !upgradeMenuOpen) {
+                    final int x = ((int) event.getX() / gridX) * gridX;//snapping to grid
+                    final int y = ((int) event.getY() / gridY) * gridY;
 
 
-            if(!invalidTower) {
-                switch (selectedShopQuadrant) {
-                    case 1: //shop quadrant 1
-                        towers.add(new GunTower(context, x, y));//TODO: bank deductions for each tower bought
-                        towerSpawned = false; //player is done selecting tower location
-                        break;
-                    case 2: //shop quadrant 2
-                        towers.add(new SniperTower(context, x, y));//TODO: bank deduct
-                        towerSpawned = false; //player is done selecting tower location
-                        break;
-                    case 3: //shop quadrant 3
-                        towers.add(new FreezeTower(context, x, y));//TODO: bank deduct
-                        towerSpawned = false; //player is done selecting tower location
-                        break;
-                    case 4: //shop quadrant 4
-                        towers.add(new RocketTower(context, x, y));//TODO: bank deduct
-                        towerSpawned = false; //player is done selecting tower location
-                        break;
+                    //checking for invalid tower placement
+                    for (Tower tower : towers) {
+                        if (tower.getX() == x && tower.getY() == y) {
+                            CharSequence text = "There's already a tower here. Get you're own spot!";
+                            int duration = Toast.LENGTH_SHORT;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            invalidTower = true;
+                            towerSpawned = true;
+                            break;
+                        } else if (tower.getX() != x && tower.getY() != y) {
+
+                            invalidTower = false;
+                        }
+                    }
+                    if ((y < 70 && y < 80 && x < 0 && x >= 800) && (x < 790 && x >= 800 && y > 70 && y <= 800) && (x > 790 && y > 790 && y <= 800)) {//checking if tower placed on path
+                        CharSequence text = "This is the enemy's path. Don't be rude.";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+
+                        invalidTower = true;
+                    }
+
+
+                    if (!invalidTower) {
+                        switch (selectedShopQuadrant) {
+                            case 1: //shop quadrant 1
+
+                                android.support.v7.app.AlertDialog.Builder shopPopUp = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                                shopPopUp.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+                                shopPopUp.setPositiveButton("yes",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                setCredits(-25);
+                                                towers.add(new GunTower(context, x, y));
+                                            }
+                                        });
+                                shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        towerSpawned = false;
+                                    }
+                                });
+                                android.support.v7.app.AlertDialog helpDialog = shopPopUp.create();
+                                helpDialog.show();
+
+
+                                towerSpawned = false;//player is done selecting tower location
+                                break;
+                            case 2: //shop quadrant 2
+
+                                android.support.v7.app.AlertDialog.Builder shopPopUp1 = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                                shopPopUp1.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+                                shopPopUp1.setPositiveButton("yes",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                setCredits(-30);
+                                                towers.add(new SniperTower(context, x, y));
+                                            }
+                                        });
+                                shopPopUp1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        towerSpawned = false;
+                                    }
+                                });
+                                android.support.v7.app.AlertDialog helpDialog1 = shopPopUp1.create();
+                                helpDialog1.show();
+                                towerSpawned = false;//player is done selecting tower location
+                                break;
+                            case 3: //shop quadrant 3
+
+                                android.support.v7.app.AlertDialog.Builder shopPopUp2 = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                                shopPopUp2.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+                                shopPopUp2.setPositiveButton("yes",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                setCredits(-40);
+                                                towers.add(new FreezeTower(context, x, y));
+                                            }
+                                        });
+                                shopPopUp2.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        towerSpawned = false;
+                                    }
+                                });
+                                android.support.v7.app.AlertDialog helpDialog2 = shopPopUp2.create();
+                                helpDialog2.show();
+                                towerSpawned = false;//player is done selecting tower location
+                                break;
+                            case 4: //shop quadrant 4
+
+                                android.support.v7.app.AlertDialog.Builder shopPopUp3 = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                                shopPopUp3.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+                                shopPopUp3.setPositiveButton("yes",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                setCredits(-50);
+                                                towers.add(new RocketTower(context, x, y));
+                                            }
+                                        });
+                                shopPopUp3.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        towerSpawned = false;
+                                    }
+                                });
+                                android.support.v7.app.AlertDialog helpDialog3 = shopPopUp3.create();
+                                helpDialog3.show();
+                                towerSpawned = false;//player is done selecting tower location
+                                break;
+                        }
+                    }
+
                 }
-            }
 
-        }
+                //Shop Menu is up
+                if (shopOpen) {
+                    //different tower selections based on x,y coordinates
+                    if (event.getX() > 299 && event.getX() < 600 && event.getY() > 299 && event.getY() < 600) {   //upper left quadrant of shop
+                        selectedShopQuadrant = 1;
 
-        //Shop Menu is up
-        if (shopOpen) {
-            //different tower selections based on x,y coordinates
-            if (event.getX() > 299 && event.getX() < 600 && event.getY() > 299 && event.getY() < 600) {   //upper left quadrant of shop
-                selectedShopQuadrant = 1;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
+                    if (event.getX() > 600 && event.getX() < 900 && event.getY() > 299 && event.getY() < 600) {   //upper right quadrant of shop
+                        selectedShopQuadrant = 2;
 
-                shopOpen = false;
-                towerSpawned = true;
-            }
-            if (event.getX() > 600 && event.getX() < 900 && event.getY() > 299 && event.getY() < 600) {   //upper right quadrant of shop
-                selectedShopQuadrant = 2;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
+                    if (event.getX() > 299 && event.getX() < 600 && event.getY() > 600 && event.getY() < 900) {   //lower left quadrant of shop
+                        selectedShopQuadrant = 3;
 
-                shopOpen = false;
-                towerSpawned = true;
-            }
-            if (event.getX() > 299 && event.getX() < 600 && event.getY() > 600 && event.getY() < 900) {   //lower left quadrant of shop
-                selectedShopQuadrant = 3;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
+                    if (event.getX() > 600 && event.getX() < 900 && event.getY() > 600 && event.getY() < 900) {   //lower right quadrant of shop
+                        selectedShopQuadrant = 4;
 
-                shopOpen = false;
-                towerSpawned = true;
-            }
-            if (event.getX() > 600 && event.getX() < 900 && event.getY() > 600 && event.getY() < 900) {   //lower right quadrant of shop
-                selectedShopQuadrant = 4;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
 
-                shopOpen = false;
-                towerSpawned = true;
-            }
 
-        }
+                }
 
-        //old shop
+                //old shop
 //        if (shopButton.contains((int) event.getX(), (int) event.getY())) {
 //            GameActivity.pressShopButton(this);
 //        }
 
 
-        if(upgrading){
-            int x = ((int)event.getX()/gridX)*gridX;//snapping to grid
-            int y = ((int)event.getY()/gridY)*gridY;
+                if (upgradeMenuOpen) {
+                    int x = ((int) event.getX() / gridX) * gridX;//snapping to grid
+                    int y = ((int) event.getY() / gridY) * gridY;
 
-            for(Tower tower : towers) {
-                if (tower.getX() == x && tower.getY() == y) {
-                    tower.setLevel(tower.getLevel()+1); //upgrading
+                    for (Tower tower : towers) {
+                        if (tower.getX() == x && tower.getY() == y) {
+                            tower.setLevel(tower.getLevel() + 1); //upgrading
 
-                    towerBeingUpgraded = false;
-                    upgrading = false;
+                            towerBeingUpgraded = false;
+                            upgradeMenuOpen = false;
 
-                    //TODO: Bank reduction for upgrade
+                            //TODO: Bank reduction for upgrade
 
-                    CharSequence text = "Upgrading tower to level " + tower.getLevel();
+                            CharSequence text = "Upgrading tower to level " + tower.getLevel();
+                            int duration = Toast.LENGTH_SHORT;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+
+
+                            break;
+                        }
+                    }
+
+
+                }
+
+                //on clicking wave info button
+                if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
+                    GameActivity.pressWaveNumButton(this, incomingRams, incomingTurkeys, incomingSpiders);
+                }
+
+            //on clicking upgrade button
+            if(upgradeButton.contains((int) event.getX(), (int) event.getY()) && towers.size()>0){
+                if(!upgradeMenuOpen){
+                    upgradeMenuOpen = true;
+
+                    CharSequence text = "Press a tower to upgrade it";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-
-
-                    break;
+                }else{
+                    upgradeMenuOpen = false;
                 }
             }
-        }
-
-        //on clicking wave info button
-        if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
-            GameActivity.pressWaveNumButton(this, incomingRams, incomingTurkeys, incomingSpiders);
-        }
-
-        //on clicking upgrade button
-        if(upgradeButton.contains((int) event.getX(), (int) event.getY()) && towers.size()>0){
-            if(!upgrading){
-                upgrading = true;
-
-                CharSequence text = "Press a tower to upgrade it";
+            if(upgradeButton.contains((int) event.getX(), (int) event.getY()) && towers.size()==0){
+                CharSequence text = "You don't have any towers to upgrade! Go to the shop";
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
-            }else{
-                upgrading = false;
+            }
+                if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
+                    waveStarted = true;
+                }
+
+                //on clicking pause
+                if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
+                    if (playing) {
+                        pause();
+                    } else {
+                        resume();
+                    }
+                }
+
+                return false;
             }
         }
-        if(upgradeButton.contains((int) event.getX(), (int) event.getY()) && towers.size()==0){
-            CharSequence text = "You don't have any towers to upgrade! Go to the shop";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
-
-
-
-        if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
-            waveStarted = true;
-        }
-
-        //on clicking pause
-        if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
-            if (playing) {
-                pause();
-            } else {
-                resume();
-            }
-        }
-
-        return false;
-    }
-}
