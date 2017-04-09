@@ -225,6 +225,12 @@ public class GameView extends SurfaceView implements Runnable {
 
             //Drawing towers
             for (int i = 0; i < towers.size(); i++) {
+//                ///////test range
+//                Paint newpaint = new Paint();
+//                newpaint.setColor(Color.RED);
+//                canvas.drawRect(tower.getRangeDetector(),newpaint);
+//                //////
+
                 Tower tower = towers.get(i);
                 canvas.drawBitmap(
                         tower.getBitmap(),
@@ -283,21 +289,6 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             }
 
-            //drawing towers
-            for (int i = 0; i < towers.size(); i++) {
-                Tower tower = (Tower) towers.get(i);
-//                ///////test range
-//                Paint newpaint = new Paint();
-//                newpaint.setColor(Color.RED);
-//                canvas.drawRect(tower.getRangeDetector(),newpaint);
-//                //////
-                canvas.drawBitmap(
-                        tower.getBitmap(),
-                        tower.getX()-(tower.getBitmap().getWidth()/2),
-                        tower.getY()-(tower.getBitmap().getHeight()/2),
-                        paint
-                );
-            }
 
             //Drawing health text
             paint.setTextSize(50);
