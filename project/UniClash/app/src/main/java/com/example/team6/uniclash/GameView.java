@@ -410,8 +410,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         //tower upgrading
         if(!shopOpen && !towerSpawned){
-            int x = (Math.round(event.getX()/(float)gridX))*gridX; //snapping to grid
-            int y = (Math.round(event.getY()/(float)gridY))*gridY;
+           final int x = (Math.round(event.getX()/(float)gridX))*gridX; //snapping to grid
+            final int y = (Math.round(event.getY()/(float)gridY))*gridY;
 
             for(Tower tower : towers){
                 if(tower.getX()==x && tower.getY()==y){
@@ -427,8 +427,8 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         if (towerSpawned && !shopOpen) {  //if player just bought a tower and is placing it
-            int x = (Math.round(event.getX()/(float)gridX))*gridX;//snapping to grid
-            int y = (Math.round(event.getY()/(float)gridY))*gridY;
+            final int x = (Math.round(event.getX()/(float)gridX))*gridX;//snapping to grid
+           final  int y = (Math.round(event.getY()/(float)gridY))*gridY;
 
             //checking for invalid tower placement
             for(Tower tower : towers){
@@ -459,23 +459,85 @@ public class GameView extends SurfaceView implements Runnable {
             if(!invalidTower) {
                 switch (selectedShopQuadrant) {
                     case 1: //shop quadrant 1
-                        setCredits(-25);
-                        towers.add(new GunTower(context, x, y));
+
+                        android.support.v7.app.AlertDialog.Builder shopPopUp = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                        shopPopUp.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+                        shopPopUp.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        setCredits(-25);
+                                        towers.add(new GunTower(context, x, y));
+                                    }
+                                });
+                        shopPopUp.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                towerSpawned=false;
+                            }
+                            });
+                        android.support.v7.app.AlertDialog helpDialog = shopPopUp.create();
+                        helpDialog.show();
+
+
                         towerSpawned=false;//player is done selecting tower location
                         break;
                     case 2: //shop quadrant 2
-                        setCredits(-30);
-                        towers.add(new SniperTower(context, x, y));
+
+                        android.support.v7.app.AlertDialog.Builder shopPopUp1 = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                        shopPopUp1.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+                        shopPopUp1.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        setCredits(-30);
+                                        towers.add(new GunTower(context, x, y));
+                                    }
+                                });
+                        shopPopUp1.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                towerSpawned=false;
+                            }
+                        });
+                        android.support.v7.app.AlertDialog helpDialog1 = shopPopUp1.create();
+                        helpDialog1.show();
                         towerSpawned=false;//player is done selecting tower location
                         break;
                     case 3: //shop quadrant 3
-                        setCredits(-40);
-                        towers.add(new FreezeTower(context, x, y));
+
+                        android.support.v7.app.AlertDialog.Builder shopPopUp2 = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                        shopPopUp2.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+                        shopPopUp2.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        setCredits(-40);
+                                        towers.add(new GunTower(context, x, y));
+                                    }
+                                });
+                        shopPopUp2.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                towerSpawned=false;
+                            }
+                        });
+                        android.support.v7.app.AlertDialog helpDialog2 = shopPopUp2.create();
+                        helpDialog2.show();
                         towerSpawned=false;//player is done selecting tower location
                         break;
                     case 4: //shop quadrant 4
-                        setCredits(-50);
-                        towers.add(new RocketTower(context, x, y));
+
+                        android.support.v7.app.AlertDialog.Builder shopPopUp3 = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                        shopPopUp3.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+                        shopPopUp3.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        setCredits(-50);
+                                        towers.add(new GunTower(context, x, y));
+                                    }
+                                });
+                        shopPopUp3.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                towerSpawned=false;
+                            }
+                        });
+                        android.support.v7.app.AlertDialog helpDialog3 = shopPopUp3.create();
+                        helpDialog3.show();
                         towerSpawned=false;//player is done selecting tower location
                         break;
                 }
