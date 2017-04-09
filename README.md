@@ -52,8 +52,13 @@ User story 5 \
   Successfully implemented all scenarios and tested them.\
 User story 4 \
   Successfully implemented all scenarios and tested them.\
+  Paths and tower placement were partially implemented, but could not be fully implemented and tested as the path function for enemies is going to be finished in a later iteration.
 \
-Some user story scenarios were edited as they were repetitive.
+Tests for the tower placement and upgrading can be found here: https://youtu.be/SjwRRcesZ1A \
+see description for tests performed.\
+\
+
+Some user story scenarios were edited as they were repetitive.\
 \
 \
 DIFFICULTIES
