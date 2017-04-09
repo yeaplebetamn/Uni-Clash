@@ -315,9 +315,10 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             //temporary grid points for visualization
-//            for(int x=1; x<=20; x++){
-//                for(int y=1; y<=10; y++){
-//                    paint.setColor(Color.GREEN);
+            for(int x=1; x<=10; x++){
+                for(int y=1; y<=5; y++){
+                    canvas.drawCircle(x*gridX,y*gridY,4,paint);
+
 //                    paint.setTextSize(15);
 //                    canvas.drawText(
 //                            "(" + (x*gridX) + " , " + (y*gridY) + ")",
@@ -325,10 +326,9 @@ public class GameView extends SurfaceView implements Runnable {
 //                            y*gridY,
 //                            paint
 //                            );
-//
-//                }
-//
-//            }
+
+                }
+            }
 
 
 
@@ -382,8 +382,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         //tower press
         if(!shopOpen && !towerSpawned && !upgrading){
-            int x = (Math.round(event.getX()/(float)gridX))*gridX; //snapping to grid
-            int y = (Math.round(event.getY()/(float)gridY))*gridY;
+            int x = ((int)event.getX()/gridX)*gridX;//snapping to grid
+            int y = ((int)event.getY()/gridY)*gridY;
 
             for(int i=0; i<towers.size(); i++){
                 if(towers.get(i).getX()==x && towers.get(i).getY()==y){
@@ -398,9 +398,10 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        if (towerSpawned && !shopOpen && !upgrading) {  //if player just bought a tower and is placing it
-            int x = (Math.round(event.getX()/(float)gridX))*gridX;//snapping to grid
-            int y = (Math.round(event.getY()/(float)gridY))*gridY;
+        //if player just bought a tower and is placing it
+        if (towerSpawned && !shopOpen && !upgrading) {
+            int x = ((int)event.getX()/gridX)*gridX;//snapping to grid
+            int y = ((int)event.getY()/gridY)*gridY;
 
             //checking for invalid tower placement
             for(Tower tower : towers){
@@ -412,6 +413,7 @@ public class GameView extends SurfaceView implements Runnable {
                     toast.show();
                     invalidTower=true;
                     towerSpawned=true;
+                    break;
                 }else if (tower.getX() != x && tower.getY() != y){
 
                     invalidTower=false;
@@ -455,25 +457,25 @@ public class GameView extends SurfaceView implements Runnable {
         //Shop Menu is up
         if (shopOpen) {
             //different tower selections based on x,y coordinates
-            if (event.getX() > 299 && event.getX() < 501 && event.getY() > 299 && event.getY() < 501) {   //upper left quadrant of shop
+            if (event.getX() > 299 && event.getX() < 600 && event.getY() > 299 && event.getY() < 600) {   //upper left quadrant of shop
                 selectedShopQuadrant = 1;
 
                 shopOpen = false;
                 towerSpawned = true;
             }
-            if (event.getX() > 499 && event.getX() < 701 && event.getY() > 299 && event.getY() < 501) {   //upper right quadrant of shop
+            if (event.getX() > 600 && event.getX() < 900 && event.getY() > 299 && event.getY() < 600) {   //upper right quadrant of shop
                 selectedShopQuadrant = 2;
 
                 shopOpen = false;
                 towerSpawned = true;
             }
-            if (event.getX() > 299 && event.getX() < 501 && event.getY() > 499 && event.getY() < 701) {   //lower left quadrant of shop
+            if (event.getX() > 299 && event.getX() < 600 && event.getY() > 600 && event.getY() < 900) {   //lower left quadrant of shop
                 selectedShopQuadrant = 3;
 
                 shopOpen = false;
                 towerSpawned = true;
             }
-            if (event.getX() > 499 && event.getX() < 701 && event.getY() > 499 && event.getY() < 701) {   //lower right quadrant of shop
+            if (event.getX() > 600 && event.getX() < 900 && event.getY() > 600 && event.getY() < 900) {   //lower right quadrant of shop
                 selectedShopQuadrant = 4;
 
                 shopOpen = false;
@@ -488,10 +490,9 @@ public class GameView extends SurfaceView implements Runnable {
 //        }
 
 
-        //upgrade menu buttons clicked
         if(upgrading){
-            int x = (Math.round(event.getX()/(float)gridX))*gridX;//snapping to grid
-            int y = (Math.round(event.getY()/(float)gridY))*gridY;
+            int x = ((int)event.getX()/gridX)*gridX;//snapping to grid
+            int y = ((int)event.getY()/gridY)*gridY;
 
             for(Tower tower : towers) {
                 if (tower.getX() == x && tower.getY() == y) {
@@ -508,14 +509,9 @@ public class GameView extends SurfaceView implements Runnable {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
 
+
+                    break;
                 }
-
-                CharSequence text = "no longer upgrading";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-                upgrading = false;
             }
         }
 
