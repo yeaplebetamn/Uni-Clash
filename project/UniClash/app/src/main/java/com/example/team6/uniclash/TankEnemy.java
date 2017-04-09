@@ -13,5 +13,6 @@ public class TankEnemy extends Enemy {
         setMaxX(screenX);
         setMaxY(screenY);
         setY(100);
+        setCollisionDetector();
     }
 }

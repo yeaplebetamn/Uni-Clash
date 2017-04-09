@@ -13,5 +13,6 @@ public class FastEnemy extends Enemy {
         setMaxX(screenX);
         setMaxY(screenY);
         setY(150);
+        setCollisionDetector();
     }
 }

@@ -15,19 +15,18 @@ public class RocketTower extends Tower {
 
         setAttack(20);
         setAttackDelay(1.2);
-        setRange(150);
-        setRangeDetector(getRange());
-
+        setRange(600);
         this.setX(screenX);
         this.setY(screenY);
+        setRangeDetector(getRange());
     }
 
     @Override
     public void attack(Enemy target, ArrayList<Enemy> enemies) {
-        Rect aoe = new Rect(target.getX()-100, target.getY()-100, target.getX()+100, target.getY()+100);
+        Rect aoe = new Rect(target.getX()-150, target.getY()-150, target.getX()+150, target.getY()+150);
         ArrayList<Enemy> nearbyEnemies = new ArrayList();
         for (Enemy enemy: enemies) {
-            if (aoe.intersect(enemy.getCollisionDetector())) {
+            if (Rect.intersects(aoe, target.getCollisionDetector())) {
                 nearbyEnemies.add(enemy);
             }
         }

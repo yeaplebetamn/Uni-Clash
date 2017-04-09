@@ -12,11 +12,10 @@ public class FreezeTower extends Tower {
 
         setAttack(0);
         setAttackDelay(0);
-        setRange(100);
-        setRangeDetector(getRange());
-
+        setRange(600);
         this.setX(screenX);
         this.setY(screenY);
+        setRangeDetector(getRange());
     }
 
     @Override

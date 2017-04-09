@@ -88,7 +88,7 @@ public class Tower {
     
     public void update(ArrayList<Enemy> enemies) {
         if (hasTarget) {
-            if (rangeDetector.intersect(target.getCollisionDetector())) {
+            if (Rect.intersects(getRangeDetector(), target.getCollisionDetector())) {
                 attack(target, enemies);
             } else {
                 target = null;
@@ -96,9 +96,10 @@ public class Tower {
             }
         } else {
             for (Enemy enemy : enemies) {
-                if (getRangeDetector().intersect(enemy.getCollisionDetector())) {
+                if (Rect.intersects(getRangeDetector(), enemy.getCollisionDetector())) {
                     target = enemy;
                     hasTarget = true;
+                    break;
                 }
             }
         }

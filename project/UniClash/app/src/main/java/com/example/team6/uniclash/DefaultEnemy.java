@@ -13,5 +13,6 @@ public class DefaultEnemy extends Enemy {
         setMaxX(screenX);
         setMaxY(screenY);
         setY(50);
+        setCollisionDetector();
     }
 }

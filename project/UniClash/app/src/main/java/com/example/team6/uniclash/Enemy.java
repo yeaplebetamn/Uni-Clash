@@ -277,6 +277,7 @@ public class Enemy {
 
     public void update() {
         followPath1();
+        setCollisionDetector();
     }
 
 }

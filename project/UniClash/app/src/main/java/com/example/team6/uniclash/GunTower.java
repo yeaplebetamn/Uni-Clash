@@ -12,9 +12,9 @@ public class GunTower extends Tower {
 
         setAttack(10);
         setAttackDelay(0.8);
-        setRange(100);
-        setRangeDetector(getRange());
+        setRange(600);
         this.setX(screenX);
         this.setY(screenY);
+        setRangeDetector(getRange());
     }
 }

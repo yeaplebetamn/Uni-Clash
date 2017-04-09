@@ -13,10 +13,9 @@ public class SniperTower extends Tower {
 
         setAttack(60);
         setAttackDelay(1.5);
-        setRange(300);
-        setRangeDetector(getRange());
-
+        setRange(1000);
         this.setX(screenX);
         this.setY(screenY);
+        setRangeDetector(getRange());
     }
 }
