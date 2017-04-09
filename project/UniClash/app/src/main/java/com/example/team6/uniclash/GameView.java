@@ -229,12 +229,17 @@ public class GameView extends SurfaceView implements Runnable {
 
             //drawing shop box
             if (shopOpen) {
-                canvas.drawRect(
+                canvas.drawBitmap(
+                        BitmapFactory.decodeResource(context.getResources(), R.drawable.shop_menu),
                         300,
                         300,
-                        700,
-                        700,
                         paint);
+//                canvas.drawRect(  //old shop UI
+//                        300,
+//                        300,
+//                        700,
+//                        700,
+//                        paint);
             }
 
             if(upgradeMenuOpen){
@@ -488,6 +493,15 @@ public class GameView extends SurfaceView implements Runnable {
 
         if(upgradeMenuOpen && !shopOpen && (shopButton.contains((int) event.getX(), (int) event.getY()))){ //exiting upgrade menu by pressing shop button
             upgradeMenuOpen=false;
+        }
+        //upgrade menu buttons clicked
+        if(upgradeMenuOpen && event.getX()>299 && event.getX()<700 && event.getY()>299 && event.getY()<700){
+            CharSequence text = "Upgrading tower";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
         }
 
         //on clicking wave info button
