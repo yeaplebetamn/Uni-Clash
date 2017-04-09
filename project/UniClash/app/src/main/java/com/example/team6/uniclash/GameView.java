@@ -88,9 +88,17 @@ public class GameView extends SurfaceView implements Runnable {
 
 
         spawnBase(context, screenX, screenY);
+
+//        //for testing
+//        //when you don't want to go through 61 enemies in the debugger
+//        spawnTankEnemies(1, context, screenX, screenY);
+//        spawnDefaultEnemies(1, context, screenX, screenY);
+//        spawnFastEnemies(1, context, screenX, screenY);
+
+
+        spawnTankEnemies(1, context, screenX, screenY);
         spawnDefaultEnemies(5, context, screenX, screenY);
         spawnFastEnemies(50, context, screenX, screenY);
-        spawnTankEnemies(6, context, screenX, screenY);
 
         //initializing drawing objects
         surfaceHolder = getHolder();
@@ -207,6 +215,10 @@ public class GameView extends SurfaceView implements Runnable {
                 Enemy enemy = (Enemy) enemies.get(i);
                 enemy.update();
             }
+
+            for (Tower tower: towers) {
+                tower.update(enemies);
+            }
         }
     }
 
@@ -274,10 +286,15 @@ public class GameView extends SurfaceView implements Runnable {
             //Drawing towers
             for (int i = 0; i < towers.size(); i++) {
                 Tower tower = (Tower) towers.get(i);
+//                ///////test range
+//                Paint newpaint = new Paint();
+//                newpaint.setColor(Color.RED);
+//                canvas.drawRect(tower.getRangeDetector(),newpaint);
+//                //////
                 canvas.drawBitmap(
                         tower.getBitmap(),
-                        tower.getX(),
-                        tower.getY(),
+                        tower.getX()-(tower.getBitmap().getWidth()/2),
+                        tower.getY()-(tower.getBitmap().getHeight()/2),
                         paint
                 );
             }
