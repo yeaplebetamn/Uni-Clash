@@ -401,7 +401,7 @@ public class GameView extends SurfaceView implements Runnable {
             int x = (Math.round(event.getX()/(float)gridX))*gridX;//snapping to grid
             int y = (Math.round(event.getY()/(float)gridY))*gridY;
 
-
+            //checking for invalid tower placement
             for(Tower tower : towers){
                 if(tower.getX()==x && tower.getY()==y){
                     CharSequence text = "There's already a tower here. Get you're own spot!";
@@ -411,28 +411,41 @@ public class GameView extends SurfaceView implements Runnable {
                     toast.show();
                     invalidTower=true;
                     towerSpawned=true;
-                }
-                else{
+                }else if (tower.getX() != x && tower.getY() != y){
 
                     invalidTower=false;
                 }
             }
+            if((y<70 && y<80 && x<0 && x>=800) && (x< 790 && x>=800 && y>70 && y<=800) && (x>790 && y>790 && y<=800)){//checking if tower placed on path
+                CharSequence text = "This is the enemy's path. Don't be rude.";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+                invalidTower = true;
+            }
+
+
             if(!invalidTower) {
                 switch (selectedShopQuadrant) {
                     case 1: //shop quadrant 1
                         towers.add(new GunTower(context, x, y));//TODO: bank deductions for each tower bought
+                        towerSpawned = false; //player is done selecting tower location
                         break;
                     case 2: //shop quadrant 2
                         towers.add(new SniperTower(context, x, y));//TODO: bank deduct
+                        towerSpawned = false; //player is done selecting tower location
                         break;
                     case 3: //shop quadrant 3
                         towers.add(new FreezeTower(context, x, y));//TODO: bank deduct
+                        towerSpawned = false; //player is done selecting tower location
                         break;
                     case 4: //shop quadrant 4
                         towers.add(new RocketTower(context, x, y));//TODO: bank deduct
+                        towerSpawned = false; //player is done selecting tower location
                         break;
                 }
-                towerSpawned = false; //player is done selecting tower location
             }
 
         }
