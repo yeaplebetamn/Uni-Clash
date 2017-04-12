@@ -37,10 +37,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     private ArrayList enemies = new ArrayList();
 
-    private int incomingRams = 0;
-    private int incomingSpiders = 0;
-    private int incomingTurkeys = 0;
-
     private Base base;
 
     private boolean gameOver = false;
@@ -106,7 +102,6 @@ public class GameView extends SurfaceView implements Runnable {
             TankEnemy enemy = new TankEnemy(context, screenX, screenY, base);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
-            incomingTurkeys++;
         }
     }
 
@@ -115,8 +110,6 @@ public class GameView extends SurfaceView implements Runnable {
             DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
-            incomingRams++;
-
         }
     }
 
@@ -125,7 +118,6 @@ public class GameView extends SurfaceView implements Runnable {
             FastEnemy enemy = new FastEnemy(context, screenX, screenY, base);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
-            incomingSpiders++;
         }
     }
 
@@ -166,7 +158,7 @@ public class GameView extends SurfaceView implements Runnable {
         return baseHealth;
     }
 
-    public void setCredits(int credits) {
+    public void addCredits(int credits) {
         credit += credits;
     }
 
@@ -202,18 +194,18 @@ public class GameView extends SurfaceView implements Runnable {
                 spawnWave1 = false;
             }
 
-            if(spawnWave2){
+            else if(spawnWave2){
                 spawnTankEnemies(wave2.getNumTurkeys(), context, maxX, maxY);
                 spawnDefaultEnemies(wave2.getNumRams(), context, maxX, maxY);
                 spawnFastEnemies(wave2.getNumSpiders(), context, maxX, maxY);
                 spawnWave2 = false;
             }
 
-            if(spawnWave3){
+            else if(spawnWave3){
                 spawnTankEnemies(wave3.getNumTurkeys(), context, maxX, maxY);
                 spawnDefaultEnemies(wave3.getNumRams(), context, maxX, maxY);
                 spawnFastEnemies(wave3.getNumSpiders(), context, maxX, maxY);
-                spawnWave2 = false;
+                spawnWave3 = false;
             }
 
             for (int i = 0; i < enemies.size(); i++) {
@@ -222,8 +214,7 @@ public class GameView extends SurfaceView implements Runnable {
 
                 if (enemy.dead) {
                     enemies.remove(enemy);
-                    setCredits(2);
-                    continue;
+                    addCredits(5);
                 }
             }
 
@@ -282,7 +273,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             //wave info button
             canvas.drawRect(waveInfoButton, paint);
-            canvas.drawText("Wave Info", waveInfoButton.left + 20, waveInfoButton.centerY() + 20, paint1);
+            canvas.drawText("Wave " + waveNumber + " Info", waveInfoButton.left + 20, waveInfoButton.centerY() + 20, paint1);
 
             //start wave button
             canvas.drawRect(startWaveButton, paint);
@@ -312,7 +303,7 @@ public class GameView extends SurfaceView implements Runnable {
 //                canvas.drawRect(enemy.getCollisionDetector(),newpaint2);
 //                //////
 
-                if (enemy.dead == false) {
+                if (!enemy.dead) {
                     canvas.drawBitmap(enemy.getBitmap(), enemy.getX(), enemy.getY(), paint
                     );
                 }
@@ -348,7 +339,7 @@ public class GameView extends SurfaceView implements Runnable {
                         paint);
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(75);
-                canvas.drawText("Main Menu", maxX / 2 - 580 + 65, maxY / 2 + 300, paint);
+                canvas.drawText("Main Menu", maxX >> 1 - 580 + 65, maxY >> 1 + 300, paint);
 
 
                 // restart button
@@ -507,7 +498,7 @@ public class GameView extends SurfaceView implements Runnable {
                             shopPopUp.setPositiveButton("yes",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            setCredits(-25);
+                                            addCredits(-25);
                                             towers.add(new GunTower(context, x, y));
                                         }
                                     });
@@ -529,7 +520,7 @@ public class GameView extends SurfaceView implements Runnable {
                             shopPopUp1.setPositiveButton("yes",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            setCredits(-30);
+                                            addCredits(-30);
                                             towers.add(new SniperTower(context, x, y));
                                         }
                                     });
@@ -549,7 +540,7 @@ public class GameView extends SurfaceView implements Runnable {
                             shopPopUp2.setPositiveButton("yes",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            setCredits(-40);
+                                            addCredits(-40);
                                             towers.add(new FreezeTower(context, x, y));
                                         }
                                     });
@@ -569,7 +560,7 @@ public class GameView extends SurfaceView implements Runnable {
                             shopPopUp3.setPositiveButton("yes",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            setCredits(-50);
+                                            addCredits(-50);
                                             towers.add(new RocketTower(context, x, y));
                                         }
                                     });
@@ -630,7 +621,7 @@ public class GameView extends SurfaceView implements Runnable {
                         shopPopUp.setPositiveButton("yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        setCredits(-10);//deducting money
+                                        addCredits(-10);//deducting money
                                         tower.setLevel(tower.getLevel() + 1); //upgrading
                                         upgrading = false;
 
