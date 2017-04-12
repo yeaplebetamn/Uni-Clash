@@ -23,9 +23,11 @@ public class GameView extends SurfaceView implements Runnable {
     public int credit = 100;
 
     Wave wave1 = new Wave(5, 10, 1);
-    Wave wave2 = new Wave(80, 20, 50);
+    Wave wave2 = new Wave(10, 15, 4);
+    Wave wave3 = new Wave(12, 17, 8);
     public boolean spawnWave1 = true;
     public boolean spawnWave2 = false;
+    public boolean spawnWave3 = false;
 
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
@@ -207,6 +209,13 @@ public class GameView extends SurfaceView implements Runnable {
                 spawnWave2 = false;
             }
 
+            if(spawnWave3){
+                spawnTankEnemies(wave3.getNumTurkeys(), context, maxX, maxY);
+                spawnDefaultEnemies(wave3.getNumRams(), context, maxX, maxY);
+                spawnFastEnemies(wave3.getNumSpiders(), context, maxX, maxY);
+                spawnWave2 = false;
+            }
+
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
                 enemy.update();
@@ -289,12 +298,6 @@ public class GameView extends SurfaceView implements Runnable {
                         300,
                         300,
                         paint);
-//                canvas.drawRect(  //old shop UI
-//                        300,
-//                        300,
-//                        700,
-//                        700,
-//                        paint);
             }
 
 
@@ -684,6 +687,7 @@ public class GameView extends SurfaceView implements Runnable {
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
             }
+
         if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
             waveStarted = true;
 
@@ -691,8 +695,16 @@ public class GameView extends SurfaceView implements Runnable {
             spawnWave1 = true;
             }
 
-            if(waveNumber == 2){
+            else if(waveNumber == 2){
                 spawnWave2 = true;
+            }
+
+            else if(waveNumber == 2){
+                spawnWave2 = true;
+            }
+
+            else if(waveNumber == 3){
+                spawnWave3 = true;
             }
         }
 
