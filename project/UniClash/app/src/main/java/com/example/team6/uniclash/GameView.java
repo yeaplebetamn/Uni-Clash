@@ -203,6 +203,11 @@ public class GameView extends SurfaceView implements Runnable {
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
                 enemy.update();
+
+                if (enemy.dead) {
+                    enemies.remove(enemy);
+                    continue;
+                }
             }
 
             for (Tower tower: towers) {
