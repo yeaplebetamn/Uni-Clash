@@ -27,7 +27,7 @@ public class RocketTower extends Tower {
         Rect aoe = new Rect(target.getX()-150, target.getY()-150, target.getX()+150, target.getY()+150);
         ArrayList<Enemy> nearbyEnemies = new ArrayList();
         for (Enemy enemy: enemies) {
-            if (Rect.intersects(aoe, target.getCollisionDetector())) {
+            if (Rect.intersects(aoe, enemy.getCollisionDetector())) {
                 nearbyEnemies.add(enemy);
             }
         }
