@@ -1,9 +1,12 @@
 package com.example.team6.uniclash;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Point;
+import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +31,34 @@ public class GameActivity extends AppCompatActivity {
     int health;
     
     private GameView gameView;
+    private boolean mIsBound = false;
+    private Music mServ;
+    private ServiceConnection Scon =new ServiceConnection(){
+
+        public void onServiceConnected(ComponentName name, IBinder
+                binder) {
+            mServ = ((Music.ServiceBinder)binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
+
+    void doBindService(){
+        bindService(new Intent(this,Music.class),
+                Scon,Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+    void doUnbindService()
+    {
+        if(mIsBound)
+        {
+            unbindService(Scon);
+            mIsBound = false;
+        }
+    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -35,7 +66,9 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
 
-
+        Intent music = new Intent();
+        music.setClass(this,Music.class);
+        startService(music);
 
     //Getting display object
         Display display = getWindowManager().getDefaultDisplay();
@@ -80,10 +113,10 @@ public class GameActivity extends AppCompatActivity {
     }
     public static void pressShopButton(View view){
             AlertDialog.Builder shopPopUp = new AlertDialog.Builder(view.getContext());
-            shopPopUp.setTitle("Shop");   //Title of shop menu
+          //  shopPopUp.setTitle("Shop");   //Title of shop menu
       //  shopPopUp.setView(im);
-            shopPopUp.setMessage(""); //shop menu dialogue
-            shopPopUp.setPositiveButton("Back",
+            shopPopUp.setMessage("Are you sure you want to place your tower here?"); //shop menu dialogue
+            shopPopUp.setPositiveButton("yes",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //closes popup
@@ -111,6 +144,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         gameView.pause();
+        mServ.pauseMusic();
     }
 
     //running the game when activity is resumed

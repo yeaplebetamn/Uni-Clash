@@ -31,7 +31,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_game_view"
             android:screenOrientation="landscape"
-            android:theme="@style/FullscreenTheme" />
+            android:theme="@style/FullscreenTheme"
+            />
+            <service android:name="Music"
+            android:enabled="true"
+            />
         <activity android:name=".SettingsMenu" />
         <activity android:name=".ShopActivity" />
         <!--<activity android:name=".GameActivity"></activity>-->
