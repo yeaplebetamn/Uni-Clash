@@ -22,6 +22,11 @@ public class GameView extends SurfaceView implements Runnable {
     private Context context;
     public int credit = 100;
 
+    Wave wave1 = new Wave(5, 10, 1);
+    Wave wave2 = new Wave(80, 20, 50);
+    public boolean spawnWave1 = true;
+    public boolean spawnWave2 = false;
+
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
 
@@ -38,7 +43,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber;
+    private int waveNumber = 1;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -75,19 +80,7 @@ public class GameView extends SurfaceView implements Runnable {
         gridX = maxX / 10;  //grid tile width
         gridY = maxY / 5;  //grid tile height
 
-
         spawnBase(context, screenX, screenY);
-
-//        //for testing
-//        //when you don't want to go through 61 enemies in the debugger
-//        spawnTankEnemies(1, context, screenX, screenY);
-//        spawnDefaultEnemies(1, context, screenX, screenY);
-//        spawnFastEnemies(1, context, screenX, screenY);
-
-
-        spawnTankEnemies(1, context, screenX, screenY);
-        spawnDefaultEnemies(5, context, screenX, screenY);
-        spawnFastEnemies(50, context, screenX, screenY);
 
         //initializing drawing objects
         surfaceHolder = getHolder();
@@ -200,6 +193,20 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void update() {
         if (!gameOver && waveStarted) {
+            if(spawnWave1){
+                spawnTankEnemies(wave1.getNumTurkeys(), context, maxX, maxY);
+                spawnDefaultEnemies(wave1.getNumRams(), context, maxX, maxY);
+                spawnFastEnemies(wave1.getNumSpiders(), context, maxX, maxY);
+                spawnWave1 = false;
+            }
+
+            if(spawnWave2){
+                spawnTankEnemies(wave2.getNumTurkeys(), context, maxX, maxY);
+                spawnDefaultEnemies(wave2.getNumRams(), context, maxX, maxY);
+                spawnFastEnemies(wave2.getNumSpiders(), context, maxX, maxY);
+                spawnWave2 = false;
+            }
+
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
                 enemy.update();
@@ -212,6 +219,11 @@ public class GameView extends SurfaceView implements Runnable {
 
             for (Tower tower: towers) {
                 tower.update(enemies);
+            }
+
+            if(enemies.size() == 0){
+                waveStarted = false;
+                waveNumber++;
             }
         }
     }
@@ -458,7 +470,7 @@ public class GameView extends SurfaceView implements Runnable {
                 //checking for invalid tower placement
                 for (Tower tower : towers) {
                     if (tower.getX() == x && tower.getY() == y) {
-                        CharSequence text = "There's already a tower here. Get you're own spot!";
+                        CharSequence text = "There's already a tower here. Get your own spot!";
                         int duration = Toast.LENGTH_SHORT;
 
                         Toast toast = Toast.makeText(context, text, duration);
@@ -602,12 +614,6 @@ public class GameView extends SurfaceView implements Runnable {
 
             }
 
-                //old shop
-//        if (shopButton.contains((int) event.getX(), (int) event.getY())) {
-//            GameActivity.pressShopButton(this);
-//        }
-
-
             if (upgrading) {
                 final int x = ((int) event.getX() / gridX) * gridX;//snapping to grid
                 final int y = ((int) event.getY() / gridY) * gridY;
@@ -678,9 +684,17 @@ public class GameView extends SurfaceView implements Runnable {
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
             }
-                if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
-                    waveStarted = true;
-                }
+        if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
+            waveStarted = true;
+
+            if(waveNumber == 1){
+            spawnWave1 = true;
+            }
+
+            if(waveNumber == 2){
+                spawnWave2 = true;
+            }
+        }
 
                 //on clicking pause
                 if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
