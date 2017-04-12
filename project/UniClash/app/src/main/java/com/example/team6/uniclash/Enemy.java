@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Enemy {
     private int health;
-    private int speed;
+    private double speed;
     private int attack;
     private int x = 0;
     private int minX;
@@ -20,6 +20,7 @@ public class Enemy {
     private int maxY;
     private Bitmap bitmap;
     public boolean dead = false;
+    public boolean slowed = false;
     private Base base;
     boolean turn[] = new boolean[10];
     private Rect collisionDetector;
@@ -47,11 +48,11 @@ public class Enemy {
         this.health = health;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 

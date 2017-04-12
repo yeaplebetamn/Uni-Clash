@@ -230,17 +230,18 @@ public class GameView extends SurfaceView implements Runnable {
 
             //Drawing towers
             for (int i = 0; i < towers.size(); i++) {
+                Tower tower = towers.get(i);
+
 //                ///////test range
 //                Paint newpaint = new Paint();
 //                newpaint.setColor(Color.RED);
 //                canvas.drawRect(tower.getRangeDetector(),newpaint);
 //                //////
 
-                Tower tower = towers.get(i);
                 canvas.drawBitmap(
                         tower.getBitmap(),
-                        tower.getX(),
-                        tower.getY(),
+                        tower.getX()-(tower.getBitmap().getWidth()/2),
+                        tower.getY()-(tower.getBitmap().getHeight()/2),
                         paint
                 );
             }
@@ -288,6 +289,13 @@ public class GameView extends SurfaceView implements Runnable {
             //Drawing the enemies
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
+
+//                ///////test hitbox
+//                Paint newpaint2 = new Paint();
+//                newpaint2.setColor(Color.BLUE);
+//                canvas.drawRect(enemy.getCollisionDetector(),newpaint2);
+//                //////
+
                 if (enemy.dead == false) {
                     canvas.drawBitmap(enemy.getBitmap(), enemy.getX(), enemy.getY(), paint
                     );

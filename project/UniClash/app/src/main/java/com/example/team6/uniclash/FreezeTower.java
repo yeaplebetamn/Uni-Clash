@@ -7,10 +7,13 @@ import java.util.ArrayList;
 
 //slows enemies in range, no damage.
 public class FreezeTower extends Tower {
+
+    private double slowPercent = 0.5;
+
     public FreezeTower(Context context, int screenX, int screenY) {
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
 
-        setFireRate(10);
+        setFireRate(0);
         setAttack(0);
         setAttackDelay(0);
         setRange(600);
@@ -22,8 +25,12 @@ public class FreezeTower extends Tower {
     @Override
     public void attack(Enemy target, ArrayList<Enemy> enemies) {
         for (Enemy enemy: enemies) {
-            if (getRangeDetector().intersect(enemy.getCollisionDetector())) {
-                //enemy = slowed
+            if (getRangeDetector().intersects(getRangeDetector(), enemy.getCollisionDetector()) && !enemy.slowed) {
+                enemy.setSpeed(enemy.getSpeed() * 0.1);
+                enemy.slowed = true;
+            } else if (enemy.slowed){
+                enemy.setSpeed(enemy.getSpeed() / 0.1);
+                enemy.slowed = false;
             }
         }
     }

@@ -10,7 +10,7 @@ public class GunTower extends Tower {
     public GunTower(Context context, int screenX, int screenY) {
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.gun_tower));
 
-        setFireRate(5);
+        setFireRate(3);
         setAttack(10);
         setAttackDelay(0.8);
         setRange(600);
