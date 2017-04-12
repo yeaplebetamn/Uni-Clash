@@ -2,11 +2,13 @@ package com.example.team6.uniclash;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -59,11 +61,14 @@ public class GameView extends SurfaceView implements Runnable {
     private boolean towerSpawned = false; //true if user has just selected tower
     private boolean invalidTower;
 
+    //button Rects
     private Rect shopButton;
     private Rect startWaveButton;
     private Rect pauseButton;
     private Rect waveInfoButton;
     private Rect upgradeButton;
+    private Rect gameOverMenuButton;
+    private Rect gameOverRestartButton;
 
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
@@ -99,6 +104,8 @@ public class GameView extends SurfaceView implements Runnable {
         startWaveButton = new Rect(maxX / 2 - 150, maxY - 200, maxX / 2 + 150, maxY - 100);
         pauseButton = new Rect(maxX - 250, 20, maxX - 20, 120);
         waveInfoButton = new Rect(maxX / 2 - 150, 20, maxX / 2 + 150, 120);
+        gameOverMenuButton = new Rect(maxX / 2 - 580, maxY / 2 + 180, maxX / 2 - 80, maxY / 2 + 380);
+        gameOverRestartButton = new Rect(maxX / 2 - 570, maxY / 2 + 190, maxX / 2 - 90, maxY / 2 + 370);
     }
 
     public void setGameOver() {
@@ -317,19 +324,9 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawText("GAME OVER", maxX / 2 - 420, maxY / 2, paint);
 
                 // main menu button
-                canvas.drawRect(
-                        maxX / 2 - 580,
-                        maxY / 2 + 180,
-                        maxX / 2 - 80,
-                        maxY / 2 + 380,
-                        paint);
+                canvas.drawRect(gameOverMenuButton, paint);
                 paint.setColor(Color.YELLOW);
-                canvas.drawRect(
-                        maxX / 2 - 570,
-                        maxY / 2 + 190,
-                        maxX / 2 - 90,
-                        maxY / 2 + 370,
-                        paint);
+                canvas.drawRect(gameOverRestartButton, paint);
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(75);
                 canvas.drawText("Main Menu", maxX / 2 - 580 + 65, maxY / 2 + 300, paint);
@@ -678,19 +675,47 @@ public class GameView extends SurfaceView implements Runnable {
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
             }
-                if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
-                    waveStarted = true;
-                }
 
-                //on clicking pause
-                if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
-                    if (playing) {
-                        pause();
-                    } else {
-                        resume();
-                    }
-                }
-
-                return false;
+            if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
+                waveStarted = true;
             }
+
+            //on clicking pause
+            if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
+                if (playing) {
+                    pause();
+                } else {
+                    resume();
+                }
+            }
+
+            if(gameOver) {
+                if(gameOverMenuButton.contains((int) event.getX(), (int) event.getY())) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Are you sure you want to exit?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    Intent startMain = new Intent(context, MainMenu.class);
+//                        startMain.addCategory(Intent.CATEGORY_HOME);
+//                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(startMain);
+                                    //finish();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+                }
+            }
+
+            //END OF ONTOUCH
+            return false;
         }
+    }
