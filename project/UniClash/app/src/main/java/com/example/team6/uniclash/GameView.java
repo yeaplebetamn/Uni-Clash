@@ -22,9 +22,9 @@ public class GameView extends SurfaceView implements Runnable {
     private Context context;
     public int credit = 100;
 
-    Wave wave1 = new Wave(5, 10, 1);
-    Wave wave2 = new Wave(10, 15, 4);
-    Wave wave3 = new Wave(12, 17, 8);
+    Wave wave1 = new Wave(1, 2, 3);
+    Wave wave2 = new Wave(4, 5, 6);
+    Wave wave3 = new Wave(7, 8, 9);
     public boolean spawnWave1 = true;
     public boolean spawnWave2 = false;
     public boolean spawnWave3 = false;
@@ -222,6 +222,7 @@ public class GameView extends SurfaceView implements Runnable {
 
                 if (enemy.dead) {
                     enemies.remove(enemy);
+                    setCredits(2);
                     continue;
                 }
             }
@@ -663,7 +664,15 @@ public class GameView extends SurfaceView implements Runnable {
 
             //on clicking wave info button
             if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
-                GameActivity.pressWaveNumButton(this, incomingRams, incomingTurkeys, incomingSpiders);
+                if(waveNumber == 1){
+                    GameActivity.pressWaveNumButton(this, wave1.getNumRams(), wave1.getNumTurkeys(), wave1.getNumSpiders());
+                }
+                if(waveNumber == 2){
+                    GameActivity.pressWaveNumButton(this, wave2.getNumRams(), wave2.getNumTurkeys(), wave2.getNumSpiders());
+                }
+                if(waveNumber == 3){
+                    GameActivity.pressWaveNumButton(this, wave3.getNumRams(), wave3.getNumTurkeys(), wave3.getNumSpiders());
+                }
             }
 
             //on clicking upgrade button
