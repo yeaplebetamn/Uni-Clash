@@ -13,6 +13,7 @@ public class RocketTower extends Tower {
     public RocketTower(Context context, int screenX, int screenY) {
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.rocket_tower));
 
+        setFireRate(15);
         setAttack(20);
         setAttackDelay(1.2);
         setRange(600);

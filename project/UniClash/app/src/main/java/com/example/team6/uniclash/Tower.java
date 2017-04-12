@@ -11,6 +11,8 @@ public class Tower {
     private int range;
     private int x;
     private int y;
+    public int frameTimer = 0;
+    public int fireRate;
     private Bitmap bitmap;
     private Rect rangeDetector;
     private Enemy target;
@@ -57,6 +59,10 @@ public class Tower {
 
     public void setLevel(int level){this.level = level;}
 
+    public void setFireRate(int fireRate){
+        this.fireRate = fireRate;
+    }
+
     public double getAttackDelay() {
         return attackDelay;
     }
@@ -87,18 +93,22 @@ public class Tower {
     }
     
     public void update(ArrayList<Enemy> enemies) {
-        if (hasTarget) {
+        frameTimer++;
+        if (hasTarget && frameTimer > fireRate) {
             if (Rect.intersects(getRangeDetector(), target.getCollisionDetector())) {
                 attack(target, enemies);
+                frameTimer = 0;
             } else {
                 target = null;
                 hasTarget = false;
+                frameTimer++;
             }
         } else {
             for (Enemy enemy : enemies) {
                 if (Rect.intersects(getRangeDetector(), enemy.getCollisionDetector())) {
                     target = enemy;
                     hasTarget = true;
+                    frameTimer++;
                     break;
                 }
             }

@@ -10,6 +10,7 @@ public class FreezeTower extends Tower {
     public FreezeTower(Context context, int screenX, int screenY) {
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
 
+        setFireRate(10);
         setAttack(0);
         setAttackDelay(0);
         setRange(600);
