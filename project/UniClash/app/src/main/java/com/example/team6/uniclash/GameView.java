@@ -21,7 +21,7 @@ public class GameView extends SurfaceView implements Runnable {
     private SurfaceHolder surfaceHolder;
     private Context context;
     public int credit = 100;
-
+    private Music mServ;
     Wave wave1 = new Wave(1, 2, 3);
     Wave wave2 = new Wave(4, 5, 6);
     Wave wave3 = new Wave(7, 8, 9);
@@ -326,7 +326,7 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawText(getBaseHealthText(), maxX - 500, maxY - 100, paint);
             paint.setTextSize(50);
             shopButton = new Rect(20, maxY - 200, 250, maxY - 100);
-            canvas.drawText(toStringCredit(), maxX - 1500, maxY - 100, paint);
+            canvas.drawText(toStringCredit(), maxX - 700, maxY - 100, paint);
 
             if (gameOver) {
                 paint.setTextSize(150);
@@ -403,6 +403,7 @@ public class GameView extends SurfaceView implements Runnable {
     public void pause() {
         //when the game is paused
         //setting the variable to false
+        mServ.pauseMusic();
         playing = false;
         try {
             //stopping the thread
@@ -421,7 +422,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     //prints toast when is not enough points in bank to buy a tower
     public void ToastShop() {
-        CharSequence text = "Not enough points to buy a tower!";
+        CharSequence text = "Not enough credits!";
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
@@ -498,7 +499,7 @@ public class GameView extends SurfaceView implements Runnable {
                 }
 
 
-                if (!invalidTower) {
+                if (!invalidTower&&getCredits()>25) {
                     switch (selectedShopQuadrant) {
                         case 1: //shop quadrant 1
 
@@ -584,7 +585,8 @@ public class GameView extends SurfaceView implements Runnable {
                             break;
                     }
                 }
-
+                else
+                    ToastShop();
             }
 
             //Shop Menu is up
@@ -618,7 +620,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             }
 
-            if (upgrading) {
+            if(upgrading) {
                 final int x = ((int) event.getX() / gridX) * gridX;//snapping to grid
                 final int y = ((int) event.getY() / gridY) * gridY;
 
@@ -649,7 +651,7 @@ public class GameView extends SurfaceView implements Runnable {
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
 
-                               upgrading = false;
+                                upgrading = false;
                             }
                         });
                         android.support.v7.app.AlertDialog helpDialog = shopPopUp.create();
@@ -658,9 +660,9 @@ public class GameView extends SurfaceView implements Runnable {
                         break;
                     }
                 }
-
-
             }
+
+
 
             //on clicking wave info button
             if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
@@ -677,7 +679,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             //on clicking upgrade button
             if(upgradeButton.contains((int) event.getX(), (int) event.getY()) && towers.size()>0){
-                if(!upgrading){
+                if(!upgrading&&getCredits()>10){
                     upgrading = true;
 
                     CharSequence text = "Press a tower to upgrade it";
@@ -687,6 +689,7 @@ public class GameView extends SurfaceView implements Runnable {
                     toast.show();
                 }else{
                     upgrading = false;
+                    ToastShop();
                 }
             }
             if(upgradeButton.contains((int) event.getX(), (int) event.getY()) && towers.size()==0){
