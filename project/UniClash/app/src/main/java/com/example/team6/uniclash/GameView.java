@@ -49,10 +49,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     //tower variables
     private ArrayList<Tower> towers = new ArrayList<>();
-    //private Tower[][] towersGrid = new Tower[5][10];   //2d array of all towers, array based on map grid system
     int gridX; //10 by 5 grid based off of maxX and maxY
     int gridY;
-    //private Integer[][] gridCoordinates = new Integer[5][10];
+    Rect[][] gridCoordinates = new Rect[9][16]; //divides screen into rect
 
 
     //shop variables
@@ -74,9 +73,6 @@ public class GameView extends SurfaceView implements Runnable {
         this.context = context;
         maxX = screenX;
         maxY = screenY;
-        //setting up grid
-        gridX = maxX / 10;  //grid tile width
-        gridY = maxY / 5;  //grid tile height
 
         spawnBase(context, screenX, screenY);
 
@@ -90,6 +86,26 @@ public class GameView extends SurfaceView implements Runnable {
         startWaveButton = new Rect(maxX / 2 - 150, maxY - 200, maxX / 2 + 150, maxY - 100);
         pauseButton = new Rect(maxX - 250, 20, maxX - 20, 120);
         waveInfoButton = new Rect(maxX / 2 - 150, 20, maxX / 2 + 150, 120);
+
+        //initializing grid for map
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 16; x++) {
+                gridCoordinates[y][x] = (new GridTile(maxX,maxY,x,y)).getGridTile();
+            }
+        }
+
+    }
+
+    //finds what tile the given x,y coordinates are in
+    public Rect findTile(float x, float y){ //mainly used for ontouch
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 16; j++) {
+                if(gridCoordinates[i][j].contains(Math.round(x),Math.round(y))){  //looking for which tile was touched
+                    return gridCoordinates[i][j];
+                }
+            }
+        }
+        return null; //if tile not found
     }
 
     public void setGameOver() {
@@ -361,10 +377,19 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawText("Restart", maxX / 2 + 245, maxY / 2 + 300, paint);
             }
 
-            //temporary grid points for visualization
-            for (int x = 1; x <= 10; x++) {
-                for (int y = 1; y <= 5; y++) {
-                    canvas.drawCircle(x * gridX, y * gridY, 4, paint);
+            //temporary grid points for visualization - corners are black, center is gray
+            for (int y = 0; y < 9; y++) {
+                for (int x = 0; x < 16; x++) {
+                    Rect tile = gridCoordinates[y][x];
+
+                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
+                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
+                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
+                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
+                    paint.setColor(Color.LTGRAY);
+                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
+                    paint.setColor(Color.BLACK);
+
 
 //                    paint.setTextSize(15);
 //                    canvas.drawText(
@@ -437,8 +462,9 @@ public class GameView extends SurfaceView implements Runnable {
 
         //tower press
         if (!shopOpen && !towerSpawned && !upgrading) {
-            int x = ((int) event.getX() / gridX) * gridX;//snapping to grid
-            int y = ((int) event.getY() / gridY) * gridY;
+            //snapping to grid, x,y is center of tile
+            final int x = findTile(event.getX(),event.getY()).centerX();
+            final int y = findTile(event.getX(),event.getY()).centerY();
 
             for (int i = 0; i < towers.size(); i++) {
                 if (towers.get(i).getX() == x && towers.get(i).getY() == y) {
@@ -459,8 +485,9 @@ public class GameView extends SurfaceView implements Runnable {
             }
             //if player just bought a tower and is placing it
             if (towerSpawned && !shopOpen && !upgrading) {
-                final int x = ((int) event.getX() / gridX) * gridX;//snapping to grid
-                final int y = ((int) event.getY() / gridY) * gridY;
+                //snapping to grid, x,y is center of tile
+                final int x = findTile(event.getX(),event.getY()).centerX();
+                final int y = findTile(event.getX(),event.getY()).centerY();
 
 
                 //checking for invalid tower placement
@@ -612,8 +639,9 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             if(upgrading) {
-                final int x = ((int) event.getX() / gridX) * gridX;//snapping to grid
-                final int y = ((int) event.getY() / gridY) * gridY;
+                //snapping to grid, x,y is center of tile
+                final int x = findTile(event.getX(),event.getY()).centerX();
+                final int y = findTile(event.getX(),event.getY()).centerY();
 
                 for (final Tower tower : towers) {
                     if (tower.getX() == x && tower.getY() == y) {

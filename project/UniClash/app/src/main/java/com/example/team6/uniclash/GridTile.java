@@ -13,13 +13,13 @@ import android.graphics.Rect;
  * bottom=y coordinate of bottom wall
  */
 
-public class GridTile{
+ public class GridTile{
     int width;
     int height;
     Rect tile;
     boolean occupied;
 
-    GridTile(int maxX, int maxY, int x, int y){
+    public GridTile(int maxX, int maxY, int x, int y){
         this.width = maxX/16;
         this.height = maxY/9;
 
