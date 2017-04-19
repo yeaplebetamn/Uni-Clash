@@ -53,7 +53,7 @@ public class GameView extends SurfaceView implements Runnable {
     private ArrayList<Tower> towers = new ArrayList<>();
     int gridX; //10 by 5 grid based off of maxX and maxY
     int gridY;
-    Rect[][] gridCoordinates = new Rect[9][16]; //divides screen into rect
+    GridTile[][] gridCoordinates = new GridTile[9][16]; //divides screen into rect
 
 
     //shop variables
@@ -101,7 +101,7 @@ public class GameView extends SurfaceView implements Runnable {
         //initializing grid for map
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 16; x++) {
-                gridCoordinates[y][x] = (new GridTile(maxX,maxY,x,y)).getGridTile();
+                gridCoordinates[y][x] = new GridTile(context, maxX,maxY,x,y);
             }
         }
 
@@ -111,8 +111,8 @@ public class GameView extends SurfaceView implements Runnable {
     public Rect findTile(float x, float y){ //mainly used for ontouch
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 16; j++) {
-                if(gridCoordinates[i][j].contains(Math.round(x),Math.round(y))){  //looking for which tile was touched
-                    return gridCoordinates[i][j];
+                if(gridCoordinates[i][j].getGridTile().contains(Math.round(x),Math.round(y))){  //looking for which tile was touched
+                    return gridCoordinates[i][j].getGridTile();
                 }
             }
         }
@@ -264,6 +264,17 @@ public class GameView extends SurfaceView implements Runnable {
             //drawing a background color for canvas
             canvas.drawColor(Color.WHITE);
 
+            for (int y = 0; y < 9; y++) {
+                for (int x = 0; x < 16; x++) {
+                    canvas.drawBitmap(
+                            gridCoordinates[y][x].getBitmap(),
+                            gridCoordinates[y][x].x,
+                            gridCoordinates[y][x].y,
+                            paint
+                    );
+                }
+            }
+
             //Drawing the base
             //need to use a variable for the y instead of 800
             canvas.drawBitmap(base.getBitmap(), maxX - base.getBitmap().getWidth(), 800, paint);
@@ -372,7 +383,7 @@ public class GameView extends SurfaceView implements Runnable {
             //temporary grid points for visualization - corners are black, center is gray
             for (int y = 0; y < 9; y++) {
                 for (int x = 0; x < 16; x++) {
-                    Rect tile = gridCoordinates[y][x];
+                    Rect tile = gridCoordinates[y][x].getGridTile();
 
                     canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
                     canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
