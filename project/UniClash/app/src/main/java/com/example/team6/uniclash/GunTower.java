@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class GunTower extends Tower {
     public GunTower(Context context, int screenX, int screenY) {
-        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.gun_tower));
+        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_basic_tower_icon));
 
         setFireRate(3);
         setAttack(10);

@@ -153,7 +153,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnTankEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base);
+            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base, path);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -161,7 +161,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base);
+            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base, path);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -169,7 +169,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnFastEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base);
+            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base, path);
             enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -306,23 +306,6 @@ public class GameView extends SurfaceView implements Runnable {
             //need to use a variable for the y instead of 800
             canvas.drawBitmap(base.getBitmap(), maxX - base.getBitmap().getWidth(), 800, paint);
 
-            //Drawing towers
-            for (int i = 0; i < towers.size(); i++) {
-                Tower tower = towers.get(i);
-
-//                ///////test range
-//                Paint newpaint = new Paint();
-//                newpaint.setColor(Color.RED);
-//                canvas.drawRect(tower.getRangeDetector(),newpaint);
-//                //////
-
-                canvas.drawBitmap(
-                        tower.getBitmap(),
-                        tower.getX()-(tower.getBitmap().getWidth()/2),
-                        tower.getY()-(tower.getBitmap().getHeight()/2),
-                        paint
-                );
-            }
 
             //shop button
             paint1.setColor(Color.RED);
@@ -357,6 +340,23 @@ public class GameView extends SurfaceView implements Runnable {
                         paint);
             }
 
+            //Drawing towers
+            for (int i = 0; i < towers.size(); i++) {
+                Tower tower = towers.get(i);
+
+//                ///////test range
+//                Paint newpaint = new Paint();
+//                newpaint.setColor(Color.RED);
+//                canvas.drawRect(tower.getRangeDetector(),newpaint);
+//                //////
+
+                canvas.drawBitmap(
+                        tower.getBitmap(),
+                        tower.getX()-(tower.getBitmap().getWidth()/2),
+                        tower.getY()-(tower.getBitmap().getHeight()/2),
+                        paint
+                );
+            }
 
             //Drawing the enemies
             for (int i = 0; i < enemies.size(); i++) {
@@ -369,7 +369,11 @@ public class GameView extends SurfaceView implements Runnable {
 //                //////
 
                 if (!enemy.dead) {
-                    canvas.drawBitmap(enemy.getBitmap(), enemy.getX(), enemy.getY(), paint
+                    canvas.drawBitmap(
+                            enemy.getBitmap(),
+                            enemy.getX() - (enemy.getBitmap().getWidth()/2),
+                            enemy.getY() - (enemy.getBitmap().getHeight()/2),
+                            paint
                     );
                 }
             }

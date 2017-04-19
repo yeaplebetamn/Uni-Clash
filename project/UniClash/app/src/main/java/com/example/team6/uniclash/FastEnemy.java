@@ -3,8 +3,10 @@ package com.example.team6.uniclash;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
+import java.util.ArrayList;
+
 public class FastEnemy extends Enemy {
-    public FastEnemy(Context context, int screenX, int screenY, Base base) {
+    public FastEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path) {
         setHealth(50);
         setSpeed(3);
         setAttack(3);
@@ -12,7 +14,8 @@ public class FastEnemy extends Enemy {
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.richmond_spiders));
         setMaxX(screenX);
         setMaxY(screenY);
-        setY(150);
+        setX(path.get(0).getXCenter() - path.get(0).width);
+        setY(path.get(0).getYCenter());
         setCollisionDetector();
     }
 }
