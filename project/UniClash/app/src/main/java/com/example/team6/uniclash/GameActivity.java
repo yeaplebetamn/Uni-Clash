@@ -70,7 +70,7 @@ public class GameActivity extends AppCompatActivity {
         music.setClass(this,Music.class);
         startService(music);
 
-    //Getting display object
+        //Getting display object
         Display display = getWindowManager().getDefaultDisplay();
 
         //Getting the screen resolution into point object
@@ -79,7 +79,7 @@ public class GameActivity extends AppCompatActivity {
 
         //Initializing game view object
         //this time we are also passing the screen size to the GameView constructor
-            gameView = new GameView(this, size.x, size.y);
+        gameView = new GameView(this, size.x, size.y);
 
         //adding it to contentview
         setContentView(gameView);
@@ -163,10 +163,9 @@ public class GameActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-                        Intent startMain = new Intent(Intent.ACTION_MAIN);
-                        startMain.addCategory(Intent.CATEGORY_HOME);
-                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent startMain = new Intent(GameActivity.this, MainMenu.class);
+//                        startMain.addCategory(Intent.CATEGORY_HOME);
+//                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(startMain);
                         finish();
                     }
