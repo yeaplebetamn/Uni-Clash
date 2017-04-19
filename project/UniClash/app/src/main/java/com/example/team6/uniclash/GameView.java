@@ -54,6 +54,7 @@ public class GameView extends SurfaceView implements Runnable {
     int gridX; //10 by 5 grid based off of maxX and maxY
     int gridY;
     GridTile[][] gridCoordinates = new GridTile[9][16]; //divides screen into rect
+    private ArrayList<GridTile> path = new ArrayList<>();
 
 
     //shop variables
@@ -105,6 +106,8 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
+        setPath();
+
     }
 
     //finds what tile the given x,y coordinates are in
@@ -117,6 +120,30 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         return null; //if tile not found
+    }
+
+    public void setPath() {
+        int pathX = 0;
+        int pathY = 1;
+
+        while(pathX < 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+        while (pathY < 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathY++;
+        }
+        while(pathX < 16) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
     }
 
     public void setGameOver() {

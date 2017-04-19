@@ -23,6 +23,7 @@ import android.graphics.Rect;
     int height;
     Rect tile;
     boolean occupied;
+    boolean isPath = false;
     Bitmap bitmap;
 
     public GridTile(Context context, int maxX, int maxY, int col, int row) {
