@@ -711,7 +711,7 @@ public class GameView extends SurfaceView implements Runnable {
                 toast.show();
             }
 
-        if (startWaveButton.contains((int) event.getX(), (int) event.getY())) {
+        if (!waveStarted && (startWaveButton.contains((int) event.getX(), (int) event.getY()))) {
             waveStarted = true;
 
             if(waveNumber == 1){

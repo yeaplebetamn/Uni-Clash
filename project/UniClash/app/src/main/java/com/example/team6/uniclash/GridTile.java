@@ -1,5 +1,6 @@
 package com.example.team6.uniclash;
 
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 /**
@@ -14,21 +15,34 @@ import android.graphics.Rect;
  */
 
  public class GridTile{
+    int x;
+    int y;
     int width;
     int height;
     Rect tile;
     boolean occupied;
+    Bitmap bitmap;
 
-    public GridTile(int maxX, int maxY, int x, int y){
+    public GridTile(int maxX, int maxY, int col, int row){
         this.width = maxX/16;
         this.height = maxY/9;
+        this.x = col * this.width;
+        this.y = row * this.height;
 
 
-        this.tile = new Rect(x*width, y*height, (x*width)+width, (y*height)+height);
+        this.tile = new Rect(x, y, x+width, y+height);
     }
 
     public Rect getGridTile(){return tile;}
     public boolean getOccupied(){return occupied;}
+    public int getXCenter() {
+        return (x + (width/2));
+    }
+
+    public int getYCenter() {
+        return (y + (height/2));
+    }
+
 
     public void setOccupied(boolean taken){
         this.occupied = taken;
