@@ -321,26 +321,29 @@ public class GameView extends SurfaceView implements Runnable {
             //need to use a variable for the y instead of 800
             canvas.drawBitmap(base.getBitmap(), maxX - base.getBitmap().getWidth(), 800, paint);
 
+            //DRAW BUTTONS
 
-            //shop button
+            //Button text paint
             paint1.setColor(Color.RED);
             paint1.setTextSize(50);
+
+            if(!waveStarted) {
+                //start wave button
+                canvas.drawRect(startWaveButton, paint);
+                canvas.drawText("Start Wave", startWaveButton.left + 20, startWaveButton.centerY() + 20, paint1);
+            }
 
             //upgrade button
             canvas.drawRect(upgradeButton, paint);
             canvas.drawText("Upgrade", upgradeButton.left + 20, upgradeButton.centerY() + 20, paint1);
 
-            //canvas.drawRect(20, 1000, 250, 900, paint);
+            //shop button
             canvas.drawRect(shopButton, paint);
             canvas.drawText("Shop", shopButton.left + 20, shopButton.centerY() + 20, paint1);
 
             //wave info button
             canvas.drawRect(waveInfoButton, paint);
             canvas.drawText("Wave " + (waveNumber+1) + " Info", waveInfoButton.left + 20, waveInfoButton.centerY() + 20, paint1);
-
-            //start wave button
-            canvas.drawRect(startWaveButton, paint);
-            canvas.drawText("Start Wave", startWaveButton.left + 20, startWaveButton.centerY() + 20, paint1);
 
             //pause button
             canvas.drawRect(pauseButton, paint);
@@ -521,7 +524,7 @@ public class GameView extends SurfaceView implements Runnable {
 
                     for (Tower tower : towers) {
                         if (tower.getX() == x && tower.getY() == y) {
-                            CharSequence text = "This is a tower";
+                            CharSequence text = tower.toString();
                             int duration = Toast.LENGTH_SHORT;
 
                             Toast toast = Toast.makeText(context, text, duration);
@@ -701,7 +704,7 @@ public class GameView extends SurfaceView implements Runnable {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCredits(-10);//deducting money
-                                        tower.setLevel(tower.getLevel() + 1); //upgrading
+                                        tower.increaseLevel(); //upgrading
                                         upgrading = false;
 
                                         CharSequence text = "Upgrading tower to level " + tower.getLevel();

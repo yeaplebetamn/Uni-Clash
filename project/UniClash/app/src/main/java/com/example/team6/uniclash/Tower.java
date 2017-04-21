@@ -18,6 +18,7 @@ public class Tower {
     private Enemy target;
     private boolean hasTarget;
     public int level;
+    private String name;
 
     public int getLevel(){return level;   }
 
@@ -58,6 +59,18 @@ public class Tower {
     }
 
     public void setLevel(int level){this.level = level;}
+
+    public void increaseLevel() {
+        this.level++;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setFireRate(int fireRate){
         this.fireRate = fireRate;
@@ -118,5 +131,11 @@ public class Tower {
     //to be overridden by certain subclasses
     public void attack(Enemy target, ArrayList<Enemy> enemies) {
         target.takeDamage(getAttack());
+    }
+
+
+    @Override
+    public String toString(){
+        return name + ", level " + level;
     }
 }
