@@ -285,8 +285,14 @@ public class GameView extends SurfaceView implements Runnable {
                 enemy.update();
 
                 if (enemy.dead) {
+                    if(enemy instanceof TankEnemy){
+                        addCredits(5);
+                    }
+                    else if(enemy instanceof DefaultEnemy){
+                        addCredits(3);
+                    }
+                    else{addCredits(1);}
                     enemies.remove(enemy);
-                    addCredits(5);
                 }
             }
 
