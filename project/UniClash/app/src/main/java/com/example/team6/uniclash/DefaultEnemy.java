@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import java.util.ArrayList;
 
 public class DefaultEnemy extends Enemy {
+
     public DefaultEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path) {
+        this.type = 2;
         setHealth(100);
         setSpeed(2);
         setAttack(5);

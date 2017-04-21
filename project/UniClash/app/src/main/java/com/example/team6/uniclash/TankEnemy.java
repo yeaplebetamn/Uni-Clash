@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class TankEnemy extends Enemy {
     public TankEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path) {
+        this.type = 1;
         setHealth(200);
         setSpeed(1);
         setAttack(7);

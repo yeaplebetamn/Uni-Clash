@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class FastEnemy extends Enemy {
     public FastEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path) {
+        this.type = 3;
         setHealth(50);
         setSpeed(3);
         setAttack(3);
