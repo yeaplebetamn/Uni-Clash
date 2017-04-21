@@ -156,19 +156,19 @@ public class GameView extends SurfaceView implements Runnable {
 
         while(pathX < 5) {
             gridCoordinates[pathY][pathX].isPath = true;
-            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.path_tile));
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
             path.add(gridCoordinates[pathY][pathX]);
             pathX++;
         }
         while (pathY < 5) {
             gridCoordinates[pathY][pathX].isPath = true;
-            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.path_tile));
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
             path.add(gridCoordinates[pathY][pathX]);
             pathY++;
         }
         while(pathX < 16) {
             gridCoordinates[pathY][pathX].isPath = true;
-            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.path_tile));
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
             path.add(gridCoordinates[pathY][pathX]);
             pathX++;
         }

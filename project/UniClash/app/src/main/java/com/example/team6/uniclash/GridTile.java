@@ -34,7 +34,7 @@ import android.graphics.Rect;
 
         this.tile = new Rect(x, y, x + width, y + height);
 
-        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.brick_tile));
+        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_brick_tile));
     }
 
     public Rect getGridTile(){return tile;}
