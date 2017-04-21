@@ -30,6 +30,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
+    public boolean win = false;
 
     //the game thread
     private Thread gameThread = null;
@@ -48,8 +49,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     //tower variables
     private ArrayList<Tower> towers = new ArrayList<>();
-    int gridX; //10 by 5 grid based off of maxX and maxY
-    int gridY;
     GridTile[][] gridCoordinates = new GridTile[9][16]; //divides screen into rect
     private ArrayList<GridTile> path = new ArrayList<>();
 
@@ -80,9 +79,9 @@ public class GameView extends SurfaceView implements Runnable {
 
         //initialize waves array
         java.util.Arrays.fill(spawnWave, false);
-        spawnWave[0] = true;
+        spawnWave[waveNumber] = true;
         initializeWaves();
-        currentWave = wave[0];
+        currentWave = wave[waveNumber];
 
 
         spawnBase(context, screenX, screenY);
@@ -97,7 +96,7 @@ public class GameView extends SurfaceView implements Runnable {
         upgradeButton = new Rect(maxX/4-150, maxY-200, maxX/4 +150,maxY-100);
         startWaveButton = new Rect(maxX / 2 - 150, maxY - 200, maxX / 2 + 150, maxY - 100);
         pauseButton = new Rect(maxX - 250, 20, maxX - 20, 120);
-        waveInfoButton = new Rect(maxX / 2 - 150, 20, maxX / 2 + 150, 120);
+        waveInfoButton = new Rect(maxX / 2 - 165, 20, maxX / 2 + 210, 120);
         mainMenuBack = new Rect(maxX / 2 - 580, maxY / 2 + 180, maxX / 2 - 80,maxY / 2 + 380);
         mainMenuButton = new Rect(maxX / 2 - 570, maxY / 2 + 190, maxX / 2 - 90, maxY / 2 + 370);
         restartBack = new Rect(maxX / 2 + 120, maxY / 2 + 180, maxX / 2 + 620, maxY / 2 + 380);
@@ -273,8 +272,10 @@ public class GameView extends SurfaceView implements Runnable {
                 spawnTankEnemies(currentWave.getNumTurkeys(), context, maxX, maxY);
                 spawnDefaultEnemies(currentWave.getNumRams(), context, maxX, maxY);
                 spawnFastEnemies(currentWave.getNumSpiders(), context, maxX, maxY);
-                currentWave = wave[waveNumber + 1];
                 spawnWave[waveNumber] = false;
+                if(waveNumber + 1 <20){
+                    currentWave = wave[waveNumber + 1];
+                }
             }
 
             for (int i = 0; i < enemies.size(); i++) {
@@ -294,6 +295,7 @@ public class GameView extends SurfaceView implements Runnable {
             if(enemies.size() == 0){
                 waveStarted = false;
                 waveNumber++;
+                if(waveNumber == 20){win = true;}
             }
         }
     }
@@ -327,23 +329,27 @@ public class GameView extends SurfaceView implements Runnable {
             paint1.setColor(Color.RED);
             paint1.setTextSize(50);
 
-            if(!waveStarted) {
+            if(!waveStarted && !win) {
                 //start wave button
                 canvas.drawRect(startWaveButton, paint);
                 canvas.drawText("Start Wave", startWaveButton.left + 20, startWaveButton.centerY() + 20, paint1);
             }
 
             //upgrade button
-            canvas.drawRect(upgradeButton, paint);
-            canvas.drawText("Upgrade", upgradeButton.left + 20, upgradeButton.centerY() + 20, paint1);
+            if(!waveStarted) {
+                canvas.drawRect(upgradeButton, paint);
+                canvas.drawText("Upgrade", upgradeButton.left + 20, upgradeButton.centerY() + 20, paint1);
+            }
 
             //shop button
-            canvas.drawRect(shopButton, paint);
-            canvas.drawText("Shop", shopButton.left + 20, shopButton.centerY() + 20, paint1);
+            if(!waveStarted) {
+                canvas.drawRect(shopButton, paint);
+                canvas.drawText("Shop", shopButton.left + 20, shopButton.centerY() + 20, paint1);
+            }
 
             //wave info button
             canvas.drawRect(waveInfoButton, paint);
-            canvas.drawText("Wave " + (waveNumber+1) + " Info", waveInfoButton.left + 20, waveInfoButton.centerY() + 20, paint1);
+            canvas.drawText("Wave " + (waveNumber+1) + "/20 Info", waveInfoButton.left + 20, waveInfoButton.centerY() + 20, paint1);
 
             //pause button
             canvas.drawRect(pauseButton, paint);
@@ -429,6 +435,14 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawText("Restart", maxX / 2 + 245, maxY / 2 + 300, paint);
             }
 
+            if(win){
+                paint.setColor(Color.YELLOW);
+                paint.setTextSize(200);
+                canvas.drawText("CONGRATULATIONS!", maxX / 2 - 950, maxY / 2, paint);
+                paint.setTextSize(150);
+                canvas.drawText("You've Graduated!", maxX / 2 - 575, maxY / 2 + 200, paint);
+            }
+
             //temporary grid points for visualization - corners are black, center is gray
             for (int y = 0; y < 9; y++) {
                 for (int x = 0; x < 16; x++) {
@@ -462,7 +476,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void control() {
         try {
-            gameThread.sleep(17);
+            gameThread.sleep(9);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
