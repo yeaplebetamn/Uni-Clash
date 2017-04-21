@@ -24,12 +24,9 @@ public class GameView extends SurfaceView implements Runnable {
     private Context context;
     public int credit = 100;
     private Music mServ;
-    Wave wave1 = new Wave(1, 2, 3);
-    Wave wave2 = new Wave(4, 5, 6);
-    Wave wave3 = new Wave(7, 8, 9);
-    public boolean spawnWave1 = true;
-    public boolean spawnWave2 = false;
-    public boolean spawnWave3 = false;
+    Wave currentWave;
+    Wave wave[] = new Wave[20];
+    public boolean[] spawnWave = new boolean[20];
 
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
@@ -43,7 +40,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber = 1;
+    private int waveNumber = 0;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -81,6 +78,13 @@ public class GameView extends SurfaceView implements Runnable {
         maxX = screenX;
         maxY = screenY;
 
+        //initialize waves array
+        java.util.Arrays.fill(spawnWave, false);
+        spawnWave[0] = true;
+        initializeWaves();
+        currentWave = wave[0];
+
+
         spawnBase(context, screenX, screenY);
 
         //initializing drawing objects
@@ -88,6 +92,7 @@ public class GameView extends SurfaceView implements Runnable {
         paint = new Paint();
         paint1 = new Paint();
 
+        //todo: move buttons to their own constructor
         shopButton = new Rect(20, maxY - 200, 250, maxY - 100);
         upgradeButton = new Rect(maxX/4-150, maxY-200, maxX/4 +150,maxY-100);
         startWaveButton = new Rect(maxX / 2 - 150, maxY - 200, maxX / 2 + 150, maxY - 100);
@@ -109,6 +114,29 @@ public class GameView extends SurfaceView implements Runnable {
         setPath();
 
     }
+    public void initializeWaves(){
+        wave[0] = new Wave(1, 2, 3);
+        wave[1] = new Wave(4, 5, 6);
+        wave[2] = new Wave(7, 8, 9);
+        wave[3] = new Wave(10, 5, 12);
+        wave[4] = new Wave(13, 10, 15);
+        wave[5] = new Wave(15, 12, 14);
+        wave[6] = new Wave(17, 14, 16);
+        wave[7] = new Wave(19, 15, 17);
+        wave[8] = new Wave(21, 17, 18);
+        wave[9] = new Wave(0, 25, 0);
+        wave[10] = new Wave(22, 18, 19);
+        wave[11] = new Wave(23, 19, 20);
+        wave[12] = new Wave(24, 20, 21);
+        wave[13] = new Wave(24, 20, 21);
+        wave[14] = new Wave(24, 20, 21);
+        wave[15] = new Wave(24, 20, 21);
+        wave[16] = new Wave(24, 20, 21);
+        wave[17] = new Wave(24, 20, 21);
+        wave[18] = new Wave(24, 20, 21);
+        wave[19] = new Wave(24, 20, 21);
+
+    }
 
     //finds what tile the given x,y coordinates are in
     public Rect findTile(float x, float y){ //mainly used for ontouch
@@ -128,19 +156,19 @@ public class GameView extends SurfaceView implements Runnable {
 
         while(pathX < 5) {
             gridCoordinates[pathY][pathX].isPath = true;
-            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.path_tile));
             path.add(gridCoordinates[pathY][pathX]);
             pathX++;
         }
         while (pathY < 5) {
             gridCoordinates[pathY][pathX].isPath = true;
-            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.path_tile));
             path.add(gridCoordinates[pathY][pathX]);
             pathY++;
         }
         while(pathX < 16) {
             gridCoordinates[pathY][pathX].isPath = true;
-            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.path_tile));
             path.add(gridCoordinates[pathY][pathX]);
             pathX++;
         }
@@ -240,26 +268,13 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void update() {
-        if (!gameOver && waveStarted) {
-            if(spawnWave1){
-                spawnTankEnemies(wave1.getNumTurkeys(), context, maxX, maxY);
-                spawnDefaultEnemies(wave1.getNumRams(), context, maxX, maxY);
-                spawnFastEnemies(wave1.getNumSpiders(), context, maxX, maxY);
-                spawnWave1 = false;
-            }
-
-            else if(spawnWave2){
-                spawnTankEnemies(wave2.getNumTurkeys(), context, maxX, maxY);
-                spawnDefaultEnemies(wave2.getNumRams(), context, maxX, maxY);
-                spawnFastEnemies(wave2.getNumSpiders(), context, maxX, maxY);
-                spawnWave2 = false;
-            }
-
-            else if(spawnWave3){
-                spawnTankEnemies(wave3.getNumTurkeys(), context, maxX, maxY);
-                spawnDefaultEnemies(wave3.getNumRams(), context, maxX, maxY);
-                spawnFastEnemies(wave3.getNumSpiders(), context, maxX, maxY);
-                spawnWave3 = false;
+        if (!gameOver && waveStarted && waveNumber < 20) {
+            if(spawnWave[waveNumber]) {
+                spawnTankEnemies(currentWave.getNumTurkeys(), context, maxX, maxY);
+                spawnDefaultEnemies(currentWave.getNumRams(), context, maxX, maxY);
+                spawnFastEnemies(currentWave.getNumSpiders(), context, maxX, maxY);
+                currentWave = wave[waveNumber + 1];
+                spawnWave[waveNumber] = false;
             }
 
             for (int i = 0; i < enemies.size(); i++) {
@@ -321,7 +336,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             //wave info button
             canvas.drawRect(waveInfoButton, paint);
-            canvas.drawText("Wave " + waveNumber + " Info", waveInfoButton.left + 20, waveInfoButton.centerY() + 20, paint1);
+            canvas.drawText("Wave " + (waveNumber+1) + " Info", waveInfoButton.left + 20, waveInfoButton.centerY() + 20, paint1);
 
             //start wave button
             canvas.drawRect(startWaveButton, paint);
@@ -719,15 +734,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             //on clicking wave info button
             if (waveInfoButton.contains((int) event.getX(), (int) event.getY())) {
-                if(waveNumber == 1){
-                    GameActivity.pressWaveNumButton(this, wave1.getNumRams(), wave1.getNumTurkeys(), wave1.getNumSpiders());
-                }
-                if(waveNumber == 2){
-                    GameActivity.pressWaveNumButton(this, wave2.getNumRams(), wave2.getNumTurkeys(), wave2.getNumSpiders());
-                }
-                if(waveNumber == 3){
-                    GameActivity.pressWaveNumButton(this, wave3.getNumRams(), wave3.getNumTurkeys(), wave3.getNumSpiders());
-                }
+                GameActivity.pressWaveNumButton(this, currentWave.getNumRams(), currentWave.getNumTurkeys(), currentWave.getNumSpiders());
             }
 
             //on clicking upgrade button
@@ -755,22 +762,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         if (!waveStarted && (startWaveButton.contains((int) event.getX(), (int) event.getY()))) {
             waveStarted = true;
-
-            if(waveNumber == 1){
-            spawnWave1 = true;
-            }
-
-            else if(waveNumber == 2){
-                spawnWave2 = true;
-            }
-
-            else if(waveNumber == 2){
-                spawnWave2 = true;
-            }
-
-            else if(waveNumber == 3){
-                spawnWave3 = true;
-            }
+            spawnWave[waveNumber] = true;
         }
 
         //on clicking pause
