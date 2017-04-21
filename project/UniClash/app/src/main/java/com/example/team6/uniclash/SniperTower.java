@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class SniperTower extends Tower {
     public SniperTower(Context context, int screenX, int screenY) {
         setName("Sniper Tower");
-        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.sniper_tower));
+        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.sniper_tower_icon));
 
         setFireRate(12);
         setAttack(60);

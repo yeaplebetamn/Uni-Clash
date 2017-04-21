@@ -84,7 +84,7 @@ public class GameView extends SurfaceView implements Runnable {
         currentWave = wave[waveNumber];
 
 
-        spawnBase(context, screenX, screenY);
+
 
         //initializing drawing objects
         surfaceHolder = getHolder();
@@ -111,6 +111,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         setPath();
+        spawnBase(context);
 
     }
     public void initializeWaves(){
@@ -202,8 +203,9 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-    public void spawnBase(Context context, int screenX, int screenY) {
-        this.base = new Base(context, screenX, screenY, this);
+    public void spawnBase(Context context) {
+        this.base = new Base(context, path.get(path.size()-1).getXCenter(),
+                path.get(path.size()-1).getYCenter(), this);
     }
 
     public String getBaseHealthText() {
@@ -321,7 +323,11 @@ public class GameView extends SurfaceView implements Runnable {
 
             //Drawing the base
             //need to use a variable for the y instead of 800
-            canvas.drawBitmap(base.getBitmap(), maxX - base.getBitmap().getWidth(), 800, paint);
+            canvas.drawBitmap(
+                    base.getBitmap(),
+                    base.getX() - (base.getBitmap().getWidth() / 2),
+                    base.getY() - (base.getBitmap().getHeight() / 2),
+                    paint);
 
             //DRAW BUTTONS
 

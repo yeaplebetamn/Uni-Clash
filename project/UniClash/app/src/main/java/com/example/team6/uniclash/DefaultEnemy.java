@@ -14,6 +14,7 @@ public class DefaultEnemy extends Enemy {
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ram_icon));
         setMaxX(screenX);
         setMaxY(screenY);
+        this.path = path;
         setX(path.get(0).getXCenter() - path.get(0).width);
         setY(path.get(0).getYCenter());
         setCollisionDetector();

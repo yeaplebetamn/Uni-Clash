@@ -5,10 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Base{
-    public Base(Context context, int screenX, int screenY, GameView gameview){
+    public Base(Context context, int pathCenterX, int pathCenterY, GameView gameview){
         bitmap = (BitmapFactory.decodeResource(context.getResources(), R.drawable.base));
         this.gameview = gameview;
+        this.x = pathCenterX;
+        this.y = pathCenterY;
     }
+
     public Bitmap bitmap;
     public int x, y;
     public GameView gameview;

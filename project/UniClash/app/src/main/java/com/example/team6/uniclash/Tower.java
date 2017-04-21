@@ -19,6 +19,7 @@ public class Tower {
     private boolean hasTarget;
     public int level;
     private String name;
+    private int cost;
 
     public int getLevel(){return level;   }
 

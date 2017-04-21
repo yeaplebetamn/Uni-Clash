@@ -14,6 +14,7 @@ public class FastEnemy extends Enemy {
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.richmond_spiders));
         setMaxX(screenX);
         setMaxY(screenY);
+        this.path = path;
         setX(path.get(0).getXCenter() - path.get(0).width);
         setY(path.get(0).getYCenter());
         setCollisionDetector();

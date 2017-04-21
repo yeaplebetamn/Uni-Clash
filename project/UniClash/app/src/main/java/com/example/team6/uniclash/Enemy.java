@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Enemy {
@@ -24,12 +25,14 @@ public class Enemy {
     private Base base;
     boolean turn[] = new boolean[10];
     private Rect collisionDetector;
+    ArrayList<GridTile> path;
+    private int currentTile = 0;
 
     short currentDirection = 4;
-    short directionUp = 1;
-    short directionDown = 2;
-    short directionLeft = 3;
-    short directionRight = 4;
+    final short directionUp = 1;
+    final short directionDown = 2;
+    final short directionLeft = 3;
+    final short directionRight = 4;
 
     public Enemy(){
         Random rand = new Random();
@@ -277,8 +280,65 @@ public class Enemy {
 
 
     public void update() {
-        followPath1();
+        //followPath1();
+        followPath();
+
+
         setCollisionDetector();
+    }
+
+    private void followPath() {
+        switch (currentDirection) {
+            case (directionRight):
+                if (this.x < path.get(currentTile).getXCenter()) {
+                    this.x += this.speed * 5;
+                } else {
+                    findNextTile();
+                }
+                break;
+            case (directionDown):
+                if (this.y < path.get(currentTile).getYCenter()) {
+                    this.y += this.speed * 5;
+                } else {
+                    findNextTile();
+                }
+                break;
+            case (directionLeft):
+                if (this.x > path.get(currentTile).getXCenter()) {
+                    this.x += this.speed * 5;
+                } else {
+                    findNextTile();
+                }
+                break;
+            case (directionUp):
+                if (this.y > path.get(currentTile).getYCenter()) {
+                    this.y += this.speed * 5;
+                } else {
+                    findNextTile();
+                }
+                break;
+        }
+    }
+
+    private void findNextTile() {
+        if (currentTile < path.size()-1) {
+            if (path.get(currentTile + 1).getXCenter() > path.get(currentTile).getXCenter()) {
+                currentDirection = directionRight;
+                currentTile++;
+            } else if (path.get(currentTile + 1).getYCenter() > path.get(currentTile).getYCenter()) {
+                currentDirection = directionDown;
+                currentTile++;
+            } else if (path.get(currentTile + 1).getXCenter() < path.get(currentTile).getXCenter()) {
+                currentDirection = directionLeft;
+                currentTile++;
+            } else if (path.get(currentTile + 1).getYCenter() < path.get(currentTile).getYCenter()) {
+                currentDirection = directionUp;
+                currentTile++;
+            }
+        } else {
+            applyDamage(base);
+            die();
+        }
     }
 
 }
