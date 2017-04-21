@@ -12,7 +12,7 @@ public class FreezeTower extends Tower {
 
     public FreezeTower(Context context, int screenX, int screenY) {
         setName("Freeze Tower");
-        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower));
+        setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.freeze_tower_icon));
 
         slowPercent = 0.5;
         setFireRate(0);
@@ -41,7 +41,7 @@ public class FreezeTower extends Tower {
     public void increaseLevel() {
         this.level++;
         //level     0   1   2   3
-        //slow     0.5 0.6 0.7 0.8
-        slowPercent += 0.1;
+        //slow     0.5 0.4 0.3 0.2
+        slowPercent -= 0.1;
     }
 }
