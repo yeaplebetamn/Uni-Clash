@@ -76,9 +76,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private int spawnCounter = 0;
     private int enemyType = 1;          //0-none(wait), 1-tank, 2-default, 3-fast
-    private int fCounter = 3;
-    private int dCounter = 2;
-    private int tCounter = 1;
+    private int fCounter = 6;
+    private int dCounter = 4;
+    private int tCounter = 2;
 
     private boolean[] level = new boolean[3];
 
@@ -356,17 +356,17 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private int resetFCounter() {
-        int fCounterBase = 3 + ((waveNumber+4) / 4);   //wave 20 = 9
+        int fCounterBase = (waveNumber / 2) + 1;
         return fCounterBase;
     }
 
     private int resetDCounter() {
-        int dCounterBase = 2 + ((waveNumber+4) / 6);   //wave 20 = 6
+        int dCounterBase = (waveNumber / 5) + 1;
         return dCounterBase;
     }
 
     private int resetTCounter() {
-        int tCounterBase = 1 + ((waveNumber+5) / 10);  //wave 20 = 3
+        int tCounterBase = (waveNumber / 10) + 1;
         return tCounterBase;
     }
 
@@ -794,11 +794,22 @@ public class GameView extends SurfaceView implements Runnable {
                 //snapping to grid, x,y is center of tile
                 final int x = findTile(event.getX(),event.getY()).centerX();
                 final int y = findTile(event.getX(),event.getY()).centerY();
-                GridTile tilePressed = findGridTile(event.getX(),event.getY());
+                final GridTile tilePressed = findGridTile(event.getX(),event.getY());
 
 
+                //checking for invalid tower placement
+                //checking for previously placed tower
+                if (tilePressed.occupied) {
+                    CharSequence text = "There's already a tower here. Get your own spot!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    invalidTower = true;
+                    towerSpawned = true;
+                }
                 //checking if tower placed on path
-                if (tilePressed.isPath) {
+                else if (tilePressed.isPath) {
                     CharSequence text = "This is the enemy's path. Don't be rude.";
                     int duration = Toast.LENGTH_SHORT;
 
@@ -806,26 +817,11 @@ public class GameView extends SurfaceView implements Runnable {
                     toast.show();
 
                     invalidTower = true;
-                    towerSpawned=true;
-                }else{
-                    invalidTower = false;
+                    towerSpawned = true;
                 }
-                //checking for invalid tower placement
-                for (Tower tower : towers) {
-                    if (tower.getX() == x && tower.getY() == y) {
-                        CharSequence text = "There's already a tower here. Get your own spot!";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                        invalidTower = true;
-                        towerSpawned = true;
-                        break;
-                    } else if (tower.getX() != x && tower.getY() != y) {
-
+                else {
                         invalidTower = false;
                     }
-                }
 
 
 
@@ -840,6 +836,7 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-25);
                                             towers.add(new GunTower(context, x, y));
+                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -862,6 +859,7 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-30);
                                             towers.add(new SniperTower(context, x, y));
+                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -882,6 +880,7 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-40);
                                             towers.add(new FreezeTower(context, x, y));
+                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp2.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -902,6 +901,7 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-50);
                                             towers.add(new RocketTower(context, x, y));
+                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp3.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -923,33 +923,57 @@ public class GameView extends SurfaceView implements Runnable {
                 float yTouch = event.getY();
 
                 //different tower selections based on x,y coordinates
+                //Gun tower
                 if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch < maxX/2 && yTouch > gridCoordinates[2][0].getTop() && yTouch<gridCoordinates[3][0].getBottom()) {   //upper left quadrant of shop
+                    if(getCredits()<25){
+                        ToastShop();
+                        shopOpen=true;
+                    }else {
+                        selectedShopQuadrant = 1;
 
-                    selectedShopQuadrant = 1;
-
-                    shopOpen = false;
-                    towerSpawned = true;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
                 }
+                //Sniper tower
                 if (xTouch > maxX/2 && xTouch<gridCoordinates[0][9].getXCenter() && yTouch > gridCoordinates[2][0].getTop() && yTouch<gridCoordinates[3][0].getBottom()) {   //upper right quadrant of shop
-                    selectedShopQuadrant = 2;
+                    if(getCredits()<30){
+                        ToastShop();
+                        shopOpen=true;
+                    }else {
+                        selectedShopQuadrant = 2;
 
-                    shopOpen = false;
-                    towerSpawned = true;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
                 }
+                //Freeze tower
                 if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch<maxX/2 && yTouch > gridCoordinates[4][0].getTop() && yTouch<gridCoordinates[5][0].getBottom()) {   //lower left quadrant of shop
-                    selectedShopQuadrant = 3;
+                    if(getCredits()<40){
+                        ToastShop();
+                        shopOpen=true;
+                    }else {
+                        selectedShopQuadrant = 3;
 
-                    shopOpen = false;
-                    towerSpawned = true;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
                 }
+                //Rocket tower
                 if (xTouch > maxX/2 && xTouch<gridCoordinates[0][9].getXCenter()  && yTouch > gridCoordinates[4][0].getTop() && yTouch<gridCoordinates[5][0].getBottom()) {   //lower right quadrant of shop
-                    selectedShopQuadrant = 4;
+                    if(getCredits()<50){
+                        ToastShop();
+                        shopOpen=true;
+                    }else {
+                        selectedShopQuadrant = 4;
 
-                    shopOpen = false;
-                    towerSpawned = true;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
                 }
+                //student loans pack
                 if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch<gridCoordinates[0][9].getXCenter() && yTouch>gridCoordinates[6][0].getTop() && yTouch<gridCoordinates[6][0].getBottom()){  //bottom bar of shop
-                    //student loans pack
+                    //heal
                 }
 
 
