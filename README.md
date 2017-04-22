@@ -69,7 +69,7 @@ Other difficulties included keeping this list short and sweet.
 
 
  ***************
-SECOND ITERATION\
+THIRD ITERATION\
 User story 14\
 Successfully implemented and tested all scenarios.\
 See "Video Tests" at the head of this repo for tests.\
