@@ -797,17 +797,19 @@ public class GameView extends SurfaceView implements Runnable {
                 GridTile tilePressed = findGridTile(event.getX(),event.getY());
 
 
-//                //checking if tower placed on path
-//                if (tilePressed.isPath) {
-//                    CharSequence text = "This is the enemy's path. Don't be rude.";
-//                    int duration = Toast.LENGTH_SHORT;
-//
-//                    Toast toast = Toast.makeText(context, text, duration);
-//                    toast.show();
-//
-//                    invalidTower = true;
-//                    towerSpawned=true;
-//                }
+                //checking if tower placed on path
+                if (tilePressed.isPath) {
+                    CharSequence text = "This is the enemy's path. Don't be rude.";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    invalidTower = true;
+                    towerSpawned=true;
+                }else{
+                    invalidTower = false;
+                }
                 //checking for invalid tower placement
                 for (Tower tower : towers) {
                     if (tower.getX() == x && tower.getY() == y) {
