@@ -16,6 +16,7 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
-    public boolean win = false;
+    private boolean win = false;
+    private boolean canWriteToSave = true;
 
     //the game thread
     private Thread gameThread = null;
@@ -45,7 +47,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber = 0;
+    private int waveNumber = 19;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -81,6 +83,8 @@ public class GameView extends SurfaceView implements Runnable {
     private int tCounter = 2;
 
     private boolean[] level = new boolean[3];
+    private int currentLevel;
+    private int unlockedLevel;
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
@@ -148,6 +152,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
             levelString = stringBuffer.toString();
             level = Integer.parseInt(levelString);
+            currentLevel = level;
             level--;
             this.level[level] = true;
         } catch (IOException e) {
@@ -249,6 +254,7 @@ public class GameView extends SurfaceView implements Runnable {
             pathX++;
         }
     }
+
     public void setPath3() {
         int pathX = 0;
         int pathY = 6;
@@ -272,8 +278,6 @@ public class GameView extends SurfaceView implements Runnable {
             pathX++;
         }
     }
-
-
 
     public void setGameOver() {
         gameOver = true;
@@ -352,6 +356,38 @@ public class GameView extends SurfaceView implements Runnable {
 
     public String toStringCredit() {
         return getCredits() + "";
+    }
+
+    private void unlockNextLevel(){
+        String unlockedLevelString = "";
+        //load the unlocked level
+        try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    context.openFileInput("unlocked_levels")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString);
+            }
+            unlockedLevelString = stringBuffer.toString();
+            unlockedLevel = Integer.parseInt(unlockedLevelString);
+            unlockedLevel++;
+            unlockedLevelString = "";
+            unlockedLevelString += unlockedLevel;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String filename = "unlocked_levels";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(unlockedLevelString.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -450,7 +486,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
     }
-    
+
     private void update() {
         if (!gameOver && waveStarted && waveNumber < 20) {
             if(spawnWave[waveNumber]) {
@@ -492,7 +528,14 @@ public class GameView extends SurfaceView implements Runnable {
                 waveNumber++;
                 if(waveNumber == 20){win = true;}
             }
+
         }
+        /*
+        if(win && canWriteToSave){
+            unlockNextLevel();
+            canWriteToSave = false;
+        }
+        */
     }
 
     private void draw() {
