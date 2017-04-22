@@ -889,9 +889,27 @@ public class GameView extends SurfaceView implements Runnable {
         if (pauseButton.contains((int) event.getX(), (int) event.getY())) {
             if (playing) {
                 pause();
-            } else {
-                resume();
+                //crashes when switching activity
+//                android.support.v7.app.AlertDialog.Builder shopPopUp = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+//                shopPopUp.setMessage("Do you want to go to settings menu?"); //shop menu dialogue
+//                shopPopUp.setPositiveButton("yes",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                // Intent pauseMenu= new Intent();
+//                                getContext().startActivity(new Intent(getContext(), pauseActivity.class));
+//                            }
+//                        });
+//                shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                        resume();
+//                    }
+//                });
+//                android.support.v7.app.AlertDialog helpDialog = shopPopUp.create();
+//                helpDialog.show();
             }
+            else
+                resume();
         }
 
         if (gameOver) {

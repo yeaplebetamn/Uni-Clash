@@ -66,9 +66,9 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
 
-        Intent music = new Intent();
-        music.setClass(this,Music.class);
-        startService(music);
+//        Intent music = new Intent();
+//        music.setClass(this,Music.class);
+//        startService(music);
 
         //Getting display object
         Display display = getWindowManager().getDefaultDisplay();

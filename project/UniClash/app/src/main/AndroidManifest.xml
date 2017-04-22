@@ -37,7 +37,7 @@
             android:enabled="true"
             />
         <activity android:name=".SettingsMenu" />
-        <activity android:name=".ShopActivity" />
+        <activity android:name=".pauseActivity" />
         <!--<activity android:name=".GameActivity"></activity>-->
     </application>
 
