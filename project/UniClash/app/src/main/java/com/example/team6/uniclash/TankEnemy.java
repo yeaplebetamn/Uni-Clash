@@ -6,10 +6,10 @@ import android.graphics.BitmapFactory;
 import java.util.ArrayList;
 
 public class TankEnemy extends Enemy {
-    public TankEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path) {
+    public TankEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path, int waveNum) {
         this.type = 1;
-        setHealth(200);
-        setSpeed(1);
+        setHealth(200 + (10 * waveNum));
+        setSpeed(2.5 + (0.01 * waveNum));
         setAttack(7);
         setBase(base);
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turkey_icon));

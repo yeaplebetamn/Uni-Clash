@@ -287,7 +287,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnTankEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base, path);
+            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -295,7 +295,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base, path);
+            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -303,7 +303,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnFastEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base, path);
+            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
