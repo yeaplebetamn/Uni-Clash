@@ -309,14 +309,14 @@ public class Enemy {
                 break;
             case (directionLeft):
                 if (this.x > path.get(currentTile).getXCenter()) {
-                    this.x += this.speed * 5;
+                    this.x -= this.speed * 5;
                 } else {
                     findNextTile();
                 }
                 break;
             case (directionUp):
                 if (this.y > path.get(currentTile).getYCenter()) {
-                    this.y += this.speed * 5;
+                    this.y -= this.speed * 5;
                 } else {
                     findNextTile();
                 }
@@ -325,7 +325,7 @@ public class Enemy {
     }
 
     private void findNextTile() {
-        if (currentTile < path.size()-1) {
+        if (currentTile < path.size() - 1) {
             if (path.get(currentTile + 1).getXCenter() > path.get(currentTile).getXCenter()) {
                 currentDirection = directionRight;
                 currentTile++;
