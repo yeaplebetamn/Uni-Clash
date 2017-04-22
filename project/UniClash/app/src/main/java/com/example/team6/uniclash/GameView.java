@@ -3,6 +3,7 @@ package com.example.team6.uniclash;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -49,7 +50,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     //tower variables
     private ArrayList<Tower> towers = new ArrayList<>();
-    GridTile[][] gridCoordinates = new GridTile[9][16]; //divides screen into rect
+    private GridTile[][] gridCoordinates = new GridTile[9][16]; //divides screen into rect
     private ArrayList<GridTile> path = new ArrayList<>();
 
 
@@ -144,7 +145,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
-    //finds what tile the given x,y coordinates are in
+    //finds what tile the given x,y coordinates are in, returns only Rect
     public Rect findTile(float x, float y){ //mainly used for ontouch
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 16; j++) {
@@ -154,6 +155,17 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         return null; //if tile not found
+    }
+    //actually returns gridtile
+    public GridTile findGridTile(float x, float y){
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 16; j++) {
+                if(gridCoordinates[i][j].getGridTile().contains(Math.round(x),Math.round(y))){  //looking for which tile was touched
+                    return gridCoordinates[i][j];
+                }
+            }
+        }
+        return null; //if gridTile not found
     }
 
     public void setPath() {
@@ -458,12 +470,16 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawRect(pauseButton, paint);
             canvas.drawText("Pause", pauseButton.left + 20, pauseButton.centerY() + 20, paint1);
 
-            //drawing shop box
+           // drawing shop box
             if (shopOpen) {
+                Bitmap shopBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.shop_menu);
+                Bitmap shopBitmapScaled = Bitmap.createScaledBitmap(shopBitmap, maxX/16*5, maxY/9*5, false);
+
+
                 canvas.drawBitmap(
-                        BitmapFactory.decodeResource(context.getResources(), R.drawable.shop_menu),
-                        300,
-                        300,
+                        shopBitmapScaled,
+                        gridCoordinates[2][5].getXCenter(),
+                        gridCoordinates[2][4].getTop(),
                         paint);
             }
 
@@ -657,7 +673,7 @@ public class GameView extends SurfaceView implements Runnable {
                 //snapping to grid, x,y is center of tile
                 final int x = findTile(event.getX(),event.getY()).centerX();
                 final int y = findTile(event.getX(),event.getY()).centerY();
-
+                GridTile tilePressed = findGridTile(event.getX(),event.getY());
 
                 //checking for invalid tower placement
                 for (Tower tower : towers) {
@@ -675,7 +691,8 @@ public class GameView extends SurfaceView implements Runnable {
                         invalidTower = false;
                     }
                 }
-                if ((y < 70 && y < 80 && x < 0 && x >= 800) && (x < 790 && x >= 800 && y > 70 && y <= 800) && (x > 790 && y > 790 && y <= 800)) {//checking if tower placed on path
+                //checking if tower placed on path
+                if (tilePressed.isPath) {
                     CharSequence text = "This is the enemy's path. Don't be rude.";
                     int duration = Toast.LENGTH_SHORT;
 
@@ -779,7 +796,7 @@ public class GameView extends SurfaceView implements Runnable {
             //Shop Menu is up
             if (shopOpen) {
                 //different tower selections based on x,y coordinates
-                if (event.getX() > 299 && event.getX() < 600 && event.getY() > 299 && event.getY() < 600) {   //upper left quadrant of shop
+                if (event.getX() > gridCoordinates[5][2].getXCenter() && event.getX() < maxX/2 && event.getY() < 600) {   //upper left quadrant of shop
                     selectedShopQuadrant = 1;
 
                     shopOpen = false;
