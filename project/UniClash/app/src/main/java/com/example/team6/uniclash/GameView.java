@@ -76,9 +76,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private int spawnCounter = 0;
     private int enemyType = 1;          //0-none(wait), 1-tank, 2-default, 3-fast
-    private int fCounter = 6;
-    private int dCounter = 4;
-    private int tCounter = 2;
+    private int fCounter = 3;
+    private int dCounter = 2;
+    private int tCounter = 1;
 
     private boolean[] level = new boolean[3];
 
@@ -356,17 +356,17 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private int resetFCounter() {
-        int fCounterBase = (waveNumber / 2) + 1;
+        int fCounterBase = 3 + ((waveNumber+4) / 4);   //wave 20 = 9
         return fCounterBase;
     }
 
     private int resetDCounter() {
-        int dCounterBase = (waveNumber / 5) + 1;
+        int dCounterBase = 2 + ((waveNumber+4) / 6);   //wave 20 = 6
         return dCounterBase;
     }
 
     private int resetTCounter() {
-        int tCounterBase = (waveNumber / 10) + 1;
+        int tCounterBase = 1 + ((waveNumber+5) / 10);  //wave 20 = 3
         return tCounterBase;
     }
 
