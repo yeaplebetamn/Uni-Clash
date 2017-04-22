@@ -52,6 +52,8 @@ import android.graphics.Rect;
         this.occupied = taken;
     }
 
+    public boolean getOccupiedStatus(){return occupied;}
+
     public Bitmap getBitmap() {
         return bitmap;
     }
@@ -60,5 +62,11 @@ import android.graphics.Rect;
         this.bitmap = bitmap;
     }
 
+    public float getLeft(){return tile.left;}
 
+    public float getRight(){return tile.right;}
+
+    public float getTop(){return tile.top;}
+
+    public float getBottom(){return tile.bottom;}
 }
