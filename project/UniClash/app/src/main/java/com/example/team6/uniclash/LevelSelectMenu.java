@@ -39,6 +39,18 @@ public class LevelSelectMenu extends AppCompatActivity {
         teamNameView = (TextView) findViewById(R.id.teamNameTextView);
         String teamName = "";
 
+        String filename = "first_run";
+        String n = "-1";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(n.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //this modified from http://chrisrisner.com/31-Days-of-Android-Day-23-Writing-and-Reading-Files
         try {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(
@@ -53,6 +65,7 @@ public class LevelSelectMenu extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
     public boolean isUnlocked(int level){
         String levelString;

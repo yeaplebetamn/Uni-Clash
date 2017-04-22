@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -181,7 +182,7 @@ public class GameView extends SurfaceView implements Runnable {
         wave[16] = new Wave(24, 20, 21);
         wave[17] = new Wave(24, 20, 21);
         wave[18] = new Wave(24, 20, 21);
-        wave[19] = new Wave(24, 20, 21);
+        wave[19] = new Wave(1, 1, 1);
 
     }
 
@@ -550,12 +551,13 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
         }
-        /*
+
         if(win && canWriteToSave){
+            Log.i("GAME VIEW: ","Attempting to unlock next level");
             unlockNextLevel();
             canWriteToSave = false;
         }
-        */
+
     }
 
     private void draw() {
