@@ -86,7 +86,7 @@ See "Tests" at the head of this repo for tests.\
 User story 9 \
 Successfully implemented and tested all scenarios \
 For Scenario 1, waves were changed to increment on wavestart  to denote the next wave to come (ie. after selecting "Start Wave" wave 1 begins and the wave number shown shows wave 2 as it is the next wave to come after the current)\
-See "Tests" at the head of this repo for tests.\
+See "Tests" at the head of this repo for tests.
 
 
 \
@@ -94,7 +94,7 @@ DIFFICULTIES
 \
 To house the actual game we created a custom View within our GameActivity. When trying to switch back to MainMenu activity, the app would crash. After a lot of hair pulling a.k.a. "research" this was fixed.\
 Developing a good coordinate system required us to take into account different screen resolutions/sizes.\
-Because our understanding of the game development progressed we were required to add functionalities we did not initially think of in earlier iterations. Because of this, some of our methods within GameView became large. While still working well (not causing lag) we realized after looking back improvements that could've been made to make the code more organized and easier to alter later. \
+Because our understanding of the game development progressed we were required to add functionalities we did not initially think of in earlier iterations. Because of this, some of our methods within GameView became large. While still working well (not causing lag) we realized after looking back improvements that could've been made to make the code more organized and easier to alter later. 
 
 ******************
 
