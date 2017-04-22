@@ -985,8 +985,6 @@ public class GameView extends SurfaceView implements Runnable {
 
             //Shop Menu is up
             if (shopOpen) {
-                float xTouch = event.getX();
-                float yTouch = event.getY();
                 //shop drawn starting from shopLeft,shopTop
                 int shopLeft = gridCoordinates[0][5].getXCenter();
                 int shopTop = (int)(gridCoordinates[2][0].getTop());
@@ -1006,6 +1004,12 @@ public class GameView extends SurfaceView implements Runnable {
 
                         shopOpen = false;
                         towerSpawned = true;
+
+                        CharSequence text = "Tap map to place Gun Tower";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                     }
                 }
                 //Sniper tower
@@ -1018,6 +1022,12 @@ public class GameView extends SurfaceView implements Runnable {
 
                         shopOpen = false;
                         towerSpawned = true;
+
+                        CharSequence text = "Tap map to place Sniper Tower";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                     }
                 }
                 //Freeze tower
@@ -1030,6 +1040,12 @@ public class GameView extends SurfaceView implements Runnable {
 
                         shopOpen = false;
                         towerSpawned = true;
+
+                        CharSequence text = "Tap map to place Freeze Tower";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                     }
                 }
                 //Rocket tower
@@ -1042,6 +1058,12 @@ public class GameView extends SurfaceView implements Runnable {
 
                         shopOpen = false;
                         towerSpawned = true;
+
+                        CharSequence text = "Tap map to place Rocket Tower";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
                     }
                 }
                 //student loans pack
