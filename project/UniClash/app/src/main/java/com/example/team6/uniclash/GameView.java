@@ -921,10 +921,17 @@ public class GameView extends SurfaceView implements Runnable {
             if (shopOpen) {
                 float xTouch = event.getX();
                 float yTouch = event.getY();
+                //shop drawn starting from shopLeft,shopTop
+                int shopLeft = gridCoordinates[0][5].getXCenter();
+                int shopTop = (int)(gridCoordinates[2][0].getTop());
+                int shopRight = gridCoordinates[0][10].getXCenter();
+                int shopBottom = (int) (gridCoordinates[6][0].getBottom());
+                int shopWidth = shopRight - shopLeft;
+                int shopHeight = shopBottom - shopTop;
 
                 //different tower selections based on x,y coordinates
                 //Gun tower
-                if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch < maxX/2 && yTouch > gridCoordinates[2][0].getTop() && yTouch<gridCoordinates[3][0].getBottom()) {   //upper left quadrant of shop
+                if (event.getX() > shopLeft && event.getX()<(shopLeft+shopWidth/2) && event.getY()>shopTop && event.getY()<(shopTop+shopHeight/3)) {   //upper left quadrant of shop
                     if(getCredits()<25){
                         ToastShop();
                         shopOpen=true;
@@ -936,7 +943,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //Sniper tower
-                if (xTouch > maxX/2 && xTouch<gridCoordinates[0][9].getXCenter() && yTouch > gridCoordinates[2][0].getTop() && yTouch<gridCoordinates[3][0].getBottom()) {   //upper right quadrant of shop
+                if (event.getX() > (shopLeft+shopWidth/2) && event.getX()<shopRight && event.getY() > shopTop && event.getY()<(shopTop+shopHeight/3)) {   //upper right quadrant of shop
                     if(getCredits()<30){
                         ToastShop();
                         shopOpen=true;
@@ -948,7 +955,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //Freeze tower
-                if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch<maxX/2 && yTouch > gridCoordinates[4][0].getTop() && yTouch<gridCoordinates[5][0].getBottom()) {   //lower left quadrant of shop
+                if (event.getX() > shopLeft && event.getX()<(shopLeft+shopWidth/2) && event.getY() > (shopTop+shopHeight/3) && event.getY()<(shopTop+shopHeight/3*2)) {   //lower left quadrant of shop
                     if(getCredits()<40){
                         ToastShop();
                         shopOpen=true;
@@ -960,7 +967,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //Rocket tower
-                if (xTouch > maxX/2 && xTouch<gridCoordinates[0][9].getXCenter()  && yTouch > gridCoordinates[4][0].getTop() && yTouch<gridCoordinates[5][0].getBottom()) {   //lower right quadrant of shop
+                if (event.getX() > (shopLeft+shopWidth/2) && event.getX()<shopRight  && event.getY() > (shopTop+shopHeight/3) && event.getY()< (shopTop+shopHeight/3*2)) {   //lower right quadrant of shop
                     if(getCredits()<50){
                         ToastShop();
                         shopOpen=true;
@@ -972,8 +979,20 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //student loans pack
-                if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch<gridCoordinates[0][9].getXCenter() && yTouch>gridCoordinates[6][0].getTop() && yTouch<gridCoordinates[6][0].getBottom()){  //bottom bar of shop
-                    //heal
+                if (event.getX() > shopLeft && event.getX()< shopRight && event.getY()> (shopTop+shopHeight/3*2) && event.getY()<shopBottom){  //bottom bar of shop
+                    if(getCredits()<100){
+                        base.heal(50);
+                        shopOpen = true;
+
+                        CharSequence text = "Healing base 50 points.";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }else{
+                        ToastShop();
+                        shopOpen = false;
+                    }
                 }
 
 
