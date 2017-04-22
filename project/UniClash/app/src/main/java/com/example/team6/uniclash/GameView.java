@@ -871,30 +871,30 @@ public class GameView extends SurfaceView implements Runnable {
 
                 //checking for invalid tower placement
                 //checking for previously placed tower
-                if (tilePressed.occupied) {
-                    CharSequence text = "There's already a tower here. Get your own spot!";
-                    int duration = Toast.LENGTH_SHORT;
+                for(Tower tower : towers) {
+                    if (tower.getX()==x && tower.getY()==y) {
+                        CharSequence text = "There's already a tower here. Get your own spot!";
+                        int duration = Toast.LENGTH_SHORT;
 
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                    invalidTower = true;
-                    towerSpawned = true;
-                }
-                //checking if tower placed on path
-                else if (tilePressed.isPath) {
-                    CharSequence text = "This is the enemy's path. Don't be rude.";
-                    int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                        invalidTower = true;
+                        towerSpawned = true;
+                    }
+                    //checking if tower placed on path
+                    else if (tilePressed.isPath) {
+                        CharSequence text = "This is the enemy's path. Don't be rude.";
+                        int duration = Toast.LENGTH_SHORT;
 
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
 
-                    invalidTower = true;
-                    towerSpawned = true;
-                }
-                else {
+                        invalidTower = true;
+                        towerSpawned = true;
+                    } else {
                         invalidTower = false;
                     }
-
+                }
 
 
                 if (!invalidTower){
@@ -908,7 +908,6 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-25);
                                             towers.add(new GunTower(context, x, y));
-                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -931,7 +930,6 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-30);
                                             towers.add(new SniperTower(context, x, y));
-                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -952,7 +950,6 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-40);
                                             towers.add(new FreezeTower(context, x, y));
-                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp2.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -973,7 +970,6 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-50);
                                             towers.add(new RocketTower(context, x, y));
-                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp3.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -1134,7 +1130,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
             }
-            if(!upgrading && !waveStarted) {
+            if(!upgrading && !waveStarted && !shopOpen && !towerSpawned) {
                 final int x = findTile(event.getX(), event.getY()).centerX();
                 final int y = findTile(event.getX(), event.getY()).centerY();
                 for (final Tower tower : towers) {
@@ -1147,7 +1143,6 @@ public class GameView extends SurfaceView implements Runnable {
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCredits(10);//Adding partial credit
                                         towers.remove(tower); //destroys tower
-                                        gridCoordinates[y][x].occupied = false;
                                     }
                                 });
                         shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {

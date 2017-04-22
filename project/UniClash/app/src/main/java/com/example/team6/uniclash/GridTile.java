@@ -48,12 +48,6 @@ import android.graphics.Rect;
     }
 
 
-    public void setOccupied(boolean taken){
-        this.occupied = taken;
-    }
-
-    public boolean getOccupiedStatus(){return occupied;}
-
     public Bitmap getBitmap() {
         return bitmap;
     }
