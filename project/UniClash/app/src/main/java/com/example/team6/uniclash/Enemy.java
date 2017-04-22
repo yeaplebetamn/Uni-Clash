@@ -345,4 +345,12 @@ public class Enemy {
         }
     }
 
+    public boolean inBounds() {
+        if (this.x > 0 && this.y > 0 && this.x < maxX && this.y < maxY) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
