@@ -122,7 +122,15 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        setPath();
+        if(level[0]){
+            setPath1();
+        }
+        if(level[1]) {
+            setPath2();
+        }
+        if(level[2]){
+            setPath3();
+        }
         spawnBase(context);
     }
 
@@ -182,7 +190,7 @@ public class GameView extends SurfaceView implements Runnable {
         return null; //if tile not found
     }
 
-    public void setPath() {
+    public void setPath1() {
         int pathX = 0;
         int pathY = 1;
 
@@ -205,6 +213,55 @@ public class GameView extends SurfaceView implements Runnable {
             pathX++;
         }
     }
+
+    public void setPath2() {
+        int pathX = 0;
+        int pathY = 4;
+
+        while(pathX < 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+        while (pathY < 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathY++;
+        }
+        while(pathX < 16) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+    }
+    public void setPath3() {
+        int pathX = 0;
+        int pathY = 6;
+
+        while(pathX < 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+        while (pathY > 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathY--;
+        }
+        while(pathX < 16) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+    }
+
+
 
     public void setGameOver() {
         gameOver = true;
