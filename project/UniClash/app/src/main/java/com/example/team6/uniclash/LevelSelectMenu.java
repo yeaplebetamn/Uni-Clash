@@ -69,7 +69,6 @@ public class LevelSelectMenu extends AppCompatActivity {
 
     public boolean isUnlocked(int level){
         String levelString;
-        boolean unlocked = false;
         int unlockedLevel = 1;
         try {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(

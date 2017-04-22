@@ -48,7 +48,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber = 0;
+    private int waveNumber = 19;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -205,8 +205,8 @@ public class GameView extends SurfaceView implements Runnable {
         wave[16] = new Wave(48, 35, 15);
         wave[17] = new Wave(54, 42, 18);
         wave[18] = new Wave(54, 42, 21);
-        wave[19] = new Wave(63, 48, 24);
-
+        //wave[19] = new Wave(63, 48, 24);
+        wave[19] = new Wave(0, 0, 1);
     }
 
     //finds what tile the given x,y coordinates are in, returns only Rect
@@ -576,6 +576,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         if(win && canWriteToSave){
+            gameOver = true;
             Log.i("GAME VIEW: ","Attempting to unlock next level");
             unlockNextLevel();
             canWriteToSave = false;
@@ -691,9 +692,10 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawText(toStringCredit(), maxX - 700, maxY - 100, paint);
 
             if (gameOver) {
-                paint.setTextSize(150);
-                canvas.drawText("GAME OVER", maxX / 2 - 420, maxY / 2, paint);
-
+                if(!win) {
+                    paint.setTextSize(150);
+                    canvas.drawText("GAME OVER", maxX / 2 - 420, maxY / 2, paint);
+                }
 
                 // main menu button
                 canvas.drawRect(mainMenuBack, paint);
@@ -734,9 +736,10 @@ public class GameView extends SurfaceView implements Runnable {
             if(win){
                 paint.setColor(Color.YELLOW);
                 paint.setTextSize(200);
-                canvas.drawText("CONGRATULATIONS!", maxX / 2 - 950, maxY / 2, paint);
+                canvas.drawText("CONGRATULATIONS!", maxX / 2 - 950, maxY / 2 - 100, paint);
                 paint.setTextSize(150);
-                canvas.drawText("You've Graduated!", maxX / 2 - 575, maxY / 2 + 200, paint);
+                canvas.drawText("You've Graduated!", maxX / 2 - 575, maxY / 2 + 100, paint);
+                paint.setColor(Color.BLACK);
             }
 
             // drawing shop box
