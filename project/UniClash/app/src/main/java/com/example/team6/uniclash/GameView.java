@@ -16,6 +16,7 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
-    public boolean win = false;
+    private boolean win = false;
+    private boolean canWriteToSave = true;
 
     //the game thread
     private Thread gameThread = null;
@@ -76,11 +78,13 @@ public class GameView extends SurfaceView implements Runnable {
 
     private int spawnCounter = 0;
     private int enemyType = 1;          //0-none(wait), 1-tank, 2-default, 3-fast
-    private int fCounter = 6;
-    private int dCounter = 4;
-    private int tCounter = 2;
+    private int fCounter = 4;
+    private int dCounter = 3;
+    private int tCounter = 1;
 
     private boolean[] level = new boolean[3];
+    private int currentLevel;
+    private int unlockedLevel;
 
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
@@ -149,6 +153,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
             levelString = stringBuffer.toString();
             level = Integer.parseInt(levelString);
+            currentLevel = level;
             level--;
             this.level[level] = true;
         } catch (IOException e) {
@@ -157,26 +162,48 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void initializeWaves(){
-        wave[0] = new Wave(1, 2, 3);
-        wave[1] = new Wave(4, 5, 6);
-        wave[2] = new Wave(7, 8, 9);
-        wave[3] = new Wave(10, 5, 12);
-        wave[4] = new Wave(13, 10, 15);
-        wave[5] = new Wave(15, 12, 14);
-        wave[6] = new Wave(17, 14, 16);
-        wave[7] = new Wave(19, 15, 17);
-        wave[8] = new Wave(21, 17, 18);
-        wave[9] = new Wave(0, 25, 0);
-        wave[10] = new Wave(22, 18, 19);
-        wave[11] = new Wave(23, 19, 20);
-        wave[12] = new Wave(24, 20, 21);
-        wave[13] = new Wave(24, 20, 21);
-        wave[14] = new Wave(24, 20, 21);
-        wave[15] = new Wave(24, 20, 21);
-        wave[16] = new Wave(24, 20, 21);
-        wave[17] = new Wave(24, 20, 21);
-        wave[18] = new Wave(24, 20, 21);
-        wave[19] = new Wave(24, 20, 21);
+//        wave: 0   f: 4   d: 3   t: 1
+//        wave: 1   f: 5   d: 3   t: 1
+//        wave: 2   f: 5   d: 3   t: 1
+//        wave: 3   f: 5   d: 3   t: 1
+//        wave: 4   f: 5   d: 3   t: 2
+//        wave: 5   f: 6   d: 4   t: 2
+//        wave: 6   f: 6   d: 4   t: 2
+//        wave: 7   f: 6   d: 4   t: 2
+//        wave: 8   f: 6   d: 4   t: 2
+//        wave: 9   f: 7   d: 4   t: 2
+//        wave: 10   f: 7   d: 4   t: 2
+//        wave: 11   f: 7   d: 5   t: 2
+//        wave: 12   f: 7   d: 5   t: 2
+//        wave: 13   f: 8   d: 5   t: 2
+//        wave: 14   f: 8   d: 5   t: 3
+//        wave: 15   f: 8   d: 5   t: 3
+//        wave: 16   f: 8   d: 5   t: 3
+//        wave: 17   f: 9   d: 6   t: 3
+//        wave: 18   f: 9   d: 6   t: 3
+//        wave: 19   f: 9   d: 6   t: 3
+
+
+        wave[0] = new Wave(4, 3, 1);
+        wave[1] = new Wave(5, 3, 2);
+        wave[2] = new Wave(10, 3, 2);
+        wave[3] = new Wave(10, 6, 3);
+        wave[4] = new Wave(15, 8, 4);
+        wave[5] = new Wave(18, 8, 4);
+        wave[6] = new Wave(24, 12, 6);
+        wave[7] = new Wave(24, 12, 6);
+        wave[8] = new Wave(24, 16, 6);
+        wave[9] = new Wave(28, 16, 8);
+        wave[10] = new Wave(28, 20, 8);
+        wave[11] = new Wave(35, 25, 8);
+        wave[12] = new Wave(35, 25, 10);
+        wave[13] = new Wave(40, 30, 12);
+        wave[14] = new Wave(0, 0, 30);
+        wave[15] = new Wave(40, 30, 15);
+        wave[16] = new Wave(48, 35, 15);
+        wave[17] = new Wave(54, 42, 18);
+        wave[18] = new Wave(54, 42, 21);
+        wave[19] = new Wave(63, 48, 24);
 
     }
 
@@ -250,6 +277,7 @@ public class GameView extends SurfaceView implements Runnable {
             pathX++;
         }
     }
+
     public void setPath3() {
         int pathX = 0;
         int pathY = 6;
@@ -274,8 +302,6 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-
-
     public void setGameOver() {
         gameOver = true;
 
@@ -283,7 +309,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnTankEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base, path);
+            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -291,7 +317,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base, path);
+            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -299,7 +325,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnFastEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base, path);
+            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -355,18 +381,50 @@ public class GameView extends SurfaceView implements Runnable {
         return getCredits() + "";
     }
 
+    private void unlockNextLevel() {
+        String unlockedLevelString = "";
+        //load the unlocked level
+        try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    context.openFileInput("unlocked_levels")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString);
+            }
+            unlockedLevelString = stringBuffer.toString();
+            unlockedLevel = Integer.parseInt(unlockedLevelString);
+            unlockedLevel++;
+            unlockedLevelString = "";
+            unlockedLevelString += unlockedLevel;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String filename = "unlocked_levels";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(unlockedLevelString.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private int resetFCounter() {
-        int fCounterBase = (waveNumber / 2) + 1;
+        int fCounterBase = 3 + ((waveNumber+6) / 4);
         return fCounterBase;
     }
 
     private int resetDCounter() {
-        int dCounterBase = (waveNumber / 5) + 1;
+        int dCounterBase = 2 + ((waveNumber+6) / 6);
         return dCounterBase;
     }
 
     private int resetTCounter() {
-        int tCounterBase = (waveNumber / 10) + 1;
+        int tCounterBase = 1 + ((waveNumber+5) / 10);
         return tCounterBase;
     }
 
@@ -470,6 +528,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
     }
+
     private void update() {
         if (!gameOver && waveStarted && waveNumber < 20) {
             if(spawnWave[waveNumber]) {
@@ -511,7 +570,14 @@ public class GameView extends SurfaceView implements Runnable {
                 waveNumber++;
                 if(waveNumber == 20){win = true;}
             }
+
         }
+        /*
+        if(win && canWriteToSave){
+            unlockNextLevel();
+            canWriteToSave = false;
+        }
+        */
     }
 
     private void draw() {
@@ -683,18 +749,18 @@ public class GameView extends SurfaceView implements Runnable {
                         paint);
             }
 
-            //temporary grid points for visualization - corners are black, center is gray
-            for (int y = 0; y < 9; y++) {
-                for (int x = 0; x < 16; x++) {
-                    Rect tile = gridCoordinates[y][x].getGridTile();
-
-                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
-                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
-                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
-                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
-                    paint.setColor(Color.LTGRAY);
-                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
-                    paint.setColor(Color.BLACK);
+//            //temporary grid points for visualization - corners are black, center is gray
+//            for (int y = 0; y < 9; y++) {
+//                for (int x = 0; x < 16; x++) {
+//                    Rect tile = gridCoordinates[y][x].getGridTile();
+//
+//                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
+//                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
+//                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
+//                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
+//                    paint.setColor(Color.LTGRAY);
+//                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
+//                    paint.setColor(Color.BLACK);
 
 
 //                    paint.setTextSize(15);
@@ -705,8 +771,8 @@ public class GameView extends SurfaceView implements Runnable {
 //                            paint
 //                            );
 
-                }
-            }
+//                }
+//            }
 
 
             //Unlocking the canvas
@@ -1040,6 +1106,33 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
             }
+            if(!upgrading) {
+                final int x = findTile(event.getX(), event.getY()).centerX();
+                final int y = findTile(event.getX(), event.getY()).centerY();
+                for (final Tower tower : towers) {
+                    if (tower.getX() == x && tower.getY() == y) {
+
+                        android.support.v7.app.AlertDialog.Builder shopPopUp = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                        shopPopUp.setMessage("Do you want to destroy your tower?"); //shop menu dialogue
+                        shopPopUp.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        addCredits(10);//Adding partial credit
+                                        towers.remove(tower); //destroys tower
+                                    }
+                                });
+                        shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        android.support.v7.app.AlertDialog helpDialog = shopPopUp.create();
+                        helpDialog.show();
+
+                        break;
+                    }
+                }
+            }
 
 
 
@@ -1113,10 +1206,7 @@ public class GameView extends SurfaceView implements Runnable {
                             public void onClick(DialogInterface dialog, int id) {
 
                                 Intent startMain = new Intent(context, MainMenu.class);
-//                              startMain.addCategory(Intent.CATEGORY_HOME);
-//                              startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(startMain);
-                                //finish();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -1127,6 +1217,26 @@ public class GameView extends SurfaceView implements Runnable {
                 AlertDialog alert = builder.create();
                 alert.show();
             }
+        }
+
+        if (restartBack.contains((int) event.getX(), (int) event.getY())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Are you sure you want to exit?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Intent startMain = new Intent(context, GameActivity.class);
+                            context.startActivity(startMain);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
 
         return false; //onTouch always returns false

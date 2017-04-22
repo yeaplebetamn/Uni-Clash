@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class DefaultEnemy extends Enemy {
 
-    public DefaultEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path) {
+    public DefaultEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path, int waveNum) {
         this.type = 2;
-        setHealth(100);
-        setSpeed(2);
+        setHealth(100 + (20 * waveNum));
+        setSpeed(2 + (0.02 * waveNum));
         setAttack(5);
         setBase(base);
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ram_icon));

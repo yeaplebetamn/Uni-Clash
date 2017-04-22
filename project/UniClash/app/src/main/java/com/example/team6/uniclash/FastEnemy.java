@@ -6,10 +6,10 @@ import android.graphics.BitmapFactory;
 import java.util.ArrayList;
 
 public class FastEnemy extends Enemy {
-    public FastEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path) {
+    public FastEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path, int waveNum) {
         this.type = 3;
-        setHealth(50);
-        setSpeed(3);
+        setHealth(50 + (10 * waveNum));
+        setSpeed(2.7 + (0.05 * waveNum));
         setAttack(3);
         setBase(base);
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spider_icon));
