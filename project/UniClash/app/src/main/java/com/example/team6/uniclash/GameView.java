@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -162,6 +163,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void initializeWaves(){
+
 //        wave: 0   f: 4   d: 3   t: 1
 //        wave: 1   f: 5   d: 3   t: 1
 //        wave: 2   f: 5   d: 3   t: 1
@@ -572,12 +574,13 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
         }
-        /*
+
         if(win && canWriteToSave){
+            Log.i("GAME VIEW: ","Attempting to unlock next level");
             unlockNextLevel();
             canWriteToSave = false;
         }
-        */
+
     }
 
     private void draw() {
@@ -1239,26 +1242,27 @@ public class GameView extends SurfaceView implements Runnable {
                 AlertDialog alert = builder.create();
                 alert.show();
             }
-        }
 
-        if (restartBack.contains((int) event.getX(), (int) event.getY())) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Are you sure you want to exit?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
 
-                            Intent startMain = new Intent(context, GameActivity.class);
-                            context.startActivity(startMain);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
+            if (restartBack.contains((int) event.getX(), (int) event.getY())) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Are you sure you want to exit?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                Intent startMain = new Intent(context, GameActivity.class);
+                                context.startActivity(startMain);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
         }
 
         return false; //onTouch always returns false

@@ -12,8 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class MainMenu extends AppCompatActivity {
 
+    boolean firstTimePlay;
     Button playButton;
     Button settingsButton;
 
@@ -30,6 +36,42 @@ public class MainMenu extends AppCompatActivity {
 //        music.setClass(this,Music.class);
 //        startService(music);
        // doBindService();
+
+        try {
+            String temp;
+            int m;
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    openFileInput("first_run")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString);
+            }
+            temp = stringBuffer.toString();
+            m = Integer.parseInt(temp);
+            if (m > 0){
+                firstTimePlay = true;
+            }
+            else{firstTimePlay = false;}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //sets up the unlocked_level save file
+        if(firstTimePlay) {
+            String filename = "unlocked_levels";
+            String n = "1";
+            FileOutputStream outputStream;
+
+            try {
+                outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                outputStream.write(n.getBytes());
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 
         playButton = (Button) findViewById(R.id.PlayButton);
         settingsButton = (Button) findViewById(R.id.SettingsButton);
