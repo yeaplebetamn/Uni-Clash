@@ -368,7 +368,89 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    private void spawnEnemies(){
+        switch (enemyType) {
+            case(0):
+                if (spawnCounter < 30) {
+                    spawnCounter++;
+                } else {
+                    enemyType = 1;
+                    spawnCounter = 0;
+                    fCounter = 6;
+                    dCounter = 4;
+                    tCounter = 2;
+                }
+                break;
+            case(1):
+                if (spawnCounter < 15) {
+                    spawnCounter++;
+                } else {
+                    if (tCounter > 0) {
+                        for (Enemy enemy: enemies) {
+                            if (enemy.type == 1 && enemy.waiting) {
+                                enemy.waiting = false;
+                                tCounter--;
+                                break;
+                            } else if (enemies.get(enemies.size()-1) == enemy){
+                                tCounter = 0;
+                                enemyType = 2;
+                            }
+                        }
+                        spawnCounter = 0;
+                    } else {
+                        enemyType = 2;
+                        spawnCounter = 0;
+                    }
+                }
+                break;
+            case(2):
+                if (spawnCounter < 10) {
+                    spawnCounter++;
+                } else {
+                    if (dCounter > 0) {
+                        for (Enemy enemy: enemies) {
+                            if (enemy.type == 2 && enemy.waiting) {
+                                enemy.waiting = false;
+                                dCounter--;
+                                break;
+                            } else if (enemies.get(enemies.size()-1) == enemy) {
+                                dCounter = 0;
+                                enemyType = 3;
+                            }
+                        }
+                        spawnCounter = 0;
+                    } else {
+                        enemyType = 3;
+                        spawnCounter = 0;
+                    }
+                }
+                break;
+            case(3):
+                if (spawnCounter < 5) {
+                    spawnCounter++;
+                } else {
+                    if (fCounter > 0) {
+                        for (Enemy enemy: enemies) {
+                            if (enemy.type == 3 && enemy.waiting) {
+                                enemy.waiting = false;
+                                fCounter--;
+                                break;
+                            } else if (enemies.get(enemies.size()-1) == enemy) {
+                                fCounter = 0;
+                                enemyType = 0;
+                            }
+                        }
+                        spawnCounter = 0;
+                    } else {
+                        enemyType = 0;
+                        spawnCounter = 0;
+                    }
+                }
+                break;
+        }
 
+    }
+    
     private void update() {
         if (!gameOver && waveStarted && waveNumber < 20) {
             if(spawnWave[waveNumber]) {
@@ -380,88 +462,7 @@ public class GameView extends SurfaceView implements Runnable {
                     currentWave = wave[waveNumber + 1];
                 }
             }
-            ////////////////////////////////////////////////////////////////////////
-            switch (enemyType) {
-                case(0):
-                    if (spawnCounter < 30) {
-                        spawnCounter++;
-                    } else {
-                        enemyType = 1;
-                        spawnCounter = 0;
-                        fCounter = 6;
-                        dCounter = 4;
-                        tCounter = 2;
-                    }
-                    break;
-                case(1):
-                    if (spawnCounter < 15) {
-                        spawnCounter++;
-                    } else {
-                        if (tCounter > 0) {
-                            for (Enemy enemy: enemies) {
-                                if (enemy.type == 1 && enemy.waiting) {
-                                    enemy.waiting = false;
-                                    tCounter--;
-                                    break;
-                                } else if (enemies.get(enemies.size()-1) == enemy){
-                                    tCounter = 0;
-                                    enemyType = 2;
-                                }
-                            }
-                            spawnCounter = 0;
-                        } else {
-                            enemyType = 2;
-                            spawnCounter = 0;
-                        }
-                    }
-                    break;
-                case(2):
-                    if (spawnCounter < 10) {
-                        spawnCounter++;
-                    } else {
-                        if (dCounter > 0) {
-                            for (Enemy enemy: enemies) {
-                                if (enemy.type == 2 && enemy.waiting) {
-                                    enemy.waiting = false;
-                                    dCounter--;
-                                    break;
-                                } else if (enemies.get(enemies.size()-1) == enemy) {
-                                    dCounter = 0;
-                                    enemyType = 3;
-                                }
-                            }
-                            spawnCounter = 0;
-                        } else {
-                            enemyType = 3;
-                            spawnCounter = 0;
-                        }
-                    }
-                    break;
-                case(3):
-                    if (spawnCounter < 5) {
-                        spawnCounter++;
-                    } else {
-                        if (fCounter > 0) {
-                            for (Enemy enemy: enemies) {
-                                if (enemy.type == 3 && enemy.waiting) {
-                                    enemy.waiting = false;
-                                    fCounter--;
-                                    break;
-                                } else if (enemies.get(enemies.size()-1) == enemy) {
-                                    fCounter = 0;
-                                    enemyType = 0;
-                                }
-                            }
-                            spawnCounter = 0;
-                        } else {
-                            enemyType = 0;
-                            spawnCounter = 0;
-                        }
-                    }
-                    break;
-            }
-
-            ////////////////////////////////////////////////////////////////////////
+            spawnEnemies();
 
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
