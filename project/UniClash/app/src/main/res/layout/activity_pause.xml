@@ -20,6 +20,7 @@
         android:layout_centerHorizontal="true"
         android:text="Restart"
         android:layout_marginBottom="214dp"
+        android:onClick="pressRestart"
         android:id="@+id/restartButton"
         android:layout_alignParentBottom="true"/>
 
@@ -27,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_above="@+id/restartButton"
         android:text="Resume"
+        android:onClick="pressResume"
         android:layout_marginBottom="31dp"
         android:id="@+id/resumeButton"
         android:layout_alignStart="@+id/restartButton"/>

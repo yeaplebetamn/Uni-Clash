@@ -144,7 +144,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         gameView.pause();
-        mServ.pauseMusic();
+
     }
 
     //running the game when activity is resumed

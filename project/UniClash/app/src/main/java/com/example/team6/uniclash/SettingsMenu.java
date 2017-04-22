@@ -134,5 +134,6 @@ public class SettingsMenu  extends AppCompatActivity {
 
         Intent mainMenuIntent = new Intent(this, MainMenu.class);
         startActivity(mainMenuIntent);
+
     }
 }

@@ -20,32 +20,7 @@ public class MainMenu extends AppCompatActivity {
    // private boolean mIsBound = false;
     private boolean mIsBound = false;
     private Music mServ;
-  //  private ServiceConnection Scon =new ServiceConnection(){
 
-//        public void onServiceConnected(ComponentName name, IBinder
-//                binder) {
-//            mServ = ((Music.ServiceBinder)binder).getService();
-//        }
-//
-//        public void onServiceDisconnected(ComponentName name) {
-//            mServ = null;
-//        }
-//    };
-//
-//    void doBindService(){
-//        bindService(new Intent(this,Music.class),
-//                Scon,Context.BIND_AUTO_CREATE);
-//        mIsBound = true;
-//    }
-//
-//    void doUnbindService()
-//    {
-//        if(mIsBound)
-//        {
-//            unbindService(Scon);
-//            mIsBound = false;
-//        }
-//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

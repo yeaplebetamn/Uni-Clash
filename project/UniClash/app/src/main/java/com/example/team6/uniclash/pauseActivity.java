@@ -25,7 +25,7 @@ public class pauseActivity extends AppCompatActivity {
         resumeButton = (Button) findViewById(R.id.resumeButton);
         sound2 = (Switch) findViewById(R.id.sound2);
         sound = (Switch) findViewById(R.id.sound);
-        sound2.setChecked(sound.isChecked());
+       // sound2.setChecked();
         sound2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compound, boolean isChecked) {
@@ -43,10 +43,13 @@ public class pauseActivity extends AppCompatActivity {
         Intent mainMenuIntent = new Intent(this, MainMenu.class);
         startActivity(mainMenuIntent);
     }
-
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+    }
     public void pressResume(View view) {
-        Intent mainMenuIntent = new Intent(this, MainMenu.class);
-        startActivity(mainMenuIntent);
+        onBackPressed();
     }
 }
 
