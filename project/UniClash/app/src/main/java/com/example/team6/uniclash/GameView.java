@@ -1134,7 +1134,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
             }
-            if(!upgrading) {
+            if(!upgrading && !waveStarted) {
                 final int x = findTile(event.getX(), event.getY()).centerX();
                 final int y = findTile(event.getX(), event.getY()).centerY();
                 for (final Tower tower : towers) {
@@ -1147,6 +1147,7 @@ public class GameView extends SurfaceView implements Runnable {
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCredits(10);//Adding partial credit
                                         towers.remove(tower); //destroys tower
+                                        gridCoordinates[y][x].occupied = false;
                                     }
                                 });
                         shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
