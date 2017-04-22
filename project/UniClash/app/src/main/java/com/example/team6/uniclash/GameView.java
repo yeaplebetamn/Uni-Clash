@@ -836,6 +836,8 @@ public class GameView extends SurfaceView implements Runnable {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-30);
+//                                            SniperTower st=new SniperTower(context,x,y);
+//                                            towers.add(st);
                                             towers.add(new SniperTower(context, x, y));
                                         }
                                     });
@@ -877,6 +879,7 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-50);
                                             towers.add(new RocketTower(context, x, y));
+
                                         }
                                     });
                             shopPopUp3.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -967,6 +970,33 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
             }
+            if(!upgrading) {
+                final int x = findTile(event.getX(), event.getY()).centerX();
+                final int y = findTile(event.getX(), event.getY()).centerY();
+                for (final Tower tower : towers) {
+                    if (tower.getX() == x && tower.getY() == y) {
+
+                        android.support.v7.app.AlertDialog.Builder shopPopUp = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                        shopPopUp.setMessage("Do you want to destroy your tower?"); //shop menu dialogue
+                        shopPopUp.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        addCredits(10);//Adding partial credit
+                                        towers.remove(tower); //destroys tower
+                                    }
+                                });
+                        shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        android.support.v7.app.AlertDialog helpDialog = shopPopUp.create();
+                        helpDialog.show();
+
+                        break;
+                    }
+                }
+            }
 
 
 
@@ -1040,10 +1070,7 @@ public class GameView extends SurfaceView implements Runnable {
                             public void onClick(DialogInterface dialog, int id) {
 
                                 Intent startMain = new Intent(context, MainMenu.class);
-//                              startMain.addCategory(Intent.CATEGORY_HOME);
-//                              startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(startMain);
-                                //finish();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -1055,6 +1082,27 @@ public class GameView extends SurfaceView implements Runnable {
                 alert.show();
             }
         }
+
+        if (restartBack.contains((int) event.getX(), (int) event.getY())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Are you sure you want to exit?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Intent startMain = new Intent(context, GameActivity.class);
+                            context.startActivity(startMain);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
 
         return false; //onTouch always returns false
     }
