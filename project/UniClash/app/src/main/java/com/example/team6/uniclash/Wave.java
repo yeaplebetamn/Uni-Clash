@@ -4,7 +4,7 @@ public class Wave {
     int numSpiders;
     int numTurkeys;
 
-    public Wave(int numRams, int numSpiders, int numTurkeys){
+    public Wave(int numSpiders, int numRams, int numTurkeys){
         this.numRams = numRams;
         this.numSpiders = numSpiders;
         this.numTurkeys = numTurkeys;

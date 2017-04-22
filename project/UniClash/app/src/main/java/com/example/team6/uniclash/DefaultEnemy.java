@@ -9,7 +9,7 @@ public class DefaultEnemy extends Enemy {
 
     public DefaultEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path, int waveNum) {
         this.type = 2;
-        setHealth(100 + (5 * waveNum));
+        setHealth(100 + (20 * waveNum));
         setSpeed(2 + (0.02 * waveNum));
         setAttack(5);
         setBase(base);

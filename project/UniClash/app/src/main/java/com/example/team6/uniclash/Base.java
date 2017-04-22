@@ -42,6 +42,11 @@ public class Base{
     }
 
     public void heal(int amount) {
-        this.setHealth(this.getHealth() + amount);
+        if(this.getHealth()+amount>100){
+            this.setHealth(100);
+        }else {
+            this.setHealth(
+                    this.getHealth() + amount);
+        }
     }
 }
