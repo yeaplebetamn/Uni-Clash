@@ -1,5 +1,6 @@
 package com.example.team6.uniclash;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -53,24 +55,41 @@ public class LevelSelectMenu extends AppCompatActivity {
     }
 
 
+    public void setLevel(String levelName){
+        String filename = "level";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(levelName.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public void pressMainMenu(View view){
         Intent mainMenuIntent = new Intent(this, MainMenu.class);
         startActivity(mainMenuIntent);
+
     }
 
     public void pressLevel1Button(View view){
         Intent level1SelectIntent = new Intent(this, GameActivity.class);
         startActivity(level1SelectIntent);
+        setLevel("1");
     }
 
     public void pressLevel2Button(View view){
         Intent level2SelectIntent = new Intent(this, GameActivity.class);
         startActivity(level2SelectIntent);
+        setLevel("2");
     }
 
     public void pressLevel3Button(View view){
         Intent level3SelectIntent = new Intent(this, GameActivity.class);
         startActivity(level3SelectIntent);
+        setLevel("3");
     }
 }

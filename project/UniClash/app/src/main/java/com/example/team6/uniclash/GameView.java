@@ -15,6 +15,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -77,12 +80,15 @@ public class GameView extends SurfaceView implements Runnable {
     private int dCounter = 4;
     private int tCounter = 2;
 
+    private boolean[] level = new boolean[3];
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
         this.context = context;
         maxX = screenX;
         maxY = screenY;
+
+        loadLevel();
 
         //initialize waves array
         java.util.Arrays.fill(spawnWave, false);
@@ -117,10 +123,38 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
 
-        setPath();
+        if(level[0]){
+            setPath1();
+        }
+        if(level[1]) {
+            setPath2();
+        }
+        if(level[2]){
+            setPath3();
+        }
         spawnBase(context);
-
     }
+
+    public void loadLevel(){
+        String levelString;
+        int level;
+        try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    context.openFileInput("level")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString);
+            }
+            levelString = stringBuffer.toString();
+            level = Integer.parseInt(levelString);
+            level--;
+            this.level[level] = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void initializeWaves(){
         wave[0] = new Wave(1, 2, 3);
         wave[1] = new Wave(4, 5, 6);
@@ -168,7 +202,7 @@ public class GameView extends SurfaceView implements Runnable {
         return null; //if gridTile not found
     }
 
-    public void setPath() {
+    public void setPath1() {
         int pathX = 0;
         int pathY = 1;
 
@@ -191,6 +225,55 @@ public class GameView extends SurfaceView implements Runnable {
             pathX++;
         }
     }
+
+    public void setPath2() {
+        int pathX = 0;
+        int pathY = 4;
+
+        while(pathX < 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+        while (pathY < 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathY++;
+        }
+        while(pathX < 16) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+    }
+    public void setPath3() {
+        int pathX = 0;
+        int pathY = 6;
+
+        while(pathX < 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+        while (pathY > 5) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathY--;
+        }
+        while(pathX < 16) {
+            gridCoordinates[pathY][pathX].isPath = true;
+            gridCoordinates[pathY][pathX].setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.larger_path_tile));
+            path.add(gridCoordinates[pathY][pathX]);
+            pathX++;
+        }
+    }
+
+
 
     public void setGameOver() {
         gameOver = true;
@@ -552,6 +635,24 @@ public class GameView extends SurfaceView implements Runnable {
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(75);
                 canvas.drawText("Restart", maxX / 2 + 245, maxY / 2 + 300, paint);
+            }
+
+            if(level[0]){
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(50);
+                canvas.drawText("Level 1", maxX / 2 - 950, maxY / 4, paint);
+            }
+
+            else if(level[1]){
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(50);
+                canvas.drawText("Level 2", maxX / 2 - 950, maxY / 4, paint);
+            }
+
+            else{
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(50);
+                canvas.drawText("Level 3", maxX / 2 - 950, maxY / 4, paint);
             }
 
             if(win){
