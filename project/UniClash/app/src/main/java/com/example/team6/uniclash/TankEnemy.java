@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class TankEnemy extends Enemy {
     public TankEnemy(Context context, int screenX, int screenY, Base base, ArrayList<GridTile> path, int waveNum) {
         this.type = 1;
-        setHealth(200 + (10 * waveNum));
-        setSpeed(2.5 + (0.01 * waveNum));
+        setHealth(200 + (40 * waveNum));
+        setSpeed(1.3 + (0.01 * waveNum));
         setAttack(7);
         setBase(base);
         setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.turkey_icon));

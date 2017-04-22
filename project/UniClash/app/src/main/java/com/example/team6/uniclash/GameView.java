@@ -47,7 +47,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber = 19;
+    private int waveNumber = 0;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -78,9 +78,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     private int spawnCounter = 0;
     private int enemyType = 1;          //0-none(wait), 1-tank, 2-default, 3-fast
-    private int fCounter = 6;
-    private int dCounter = 4;
-    private int tCounter = 2;
+    private int fCounter = 4;
+    private int dCounter = 3;
+    private int tCounter = 1;
 
     private boolean[] level = new boolean[3];
     private int currentLevel;
@@ -162,26 +162,48 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void initializeWaves(){
-        wave[0] = new Wave(1, 2, 3);
-        wave[1] = new Wave(4, 5, 6);
-        wave[2] = new Wave(7, 8, 9);
-        wave[3] = new Wave(10, 5, 12);
-        wave[4] = new Wave(13, 10, 15);
-        wave[5] = new Wave(15, 12, 14);
-        wave[6] = new Wave(17, 14, 16);
-        wave[7] = new Wave(19, 15, 17);
-        wave[8] = new Wave(21, 17, 18);
-        wave[9] = new Wave(0, 25, 0);
-        wave[10] = new Wave(22, 18, 19);
-        wave[11] = new Wave(23, 19, 20);
-        wave[12] = new Wave(24, 20, 21);
-        wave[13] = new Wave(24, 20, 21);
-        wave[14] = new Wave(24, 20, 21);
-        wave[15] = new Wave(24, 20, 21);
-        wave[16] = new Wave(24, 20, 21);
-        wave[17] = new Wave(24, 20, 21);
-        wave[18] = new Wave(24, 20, 21);
-        wave[19] = new Wave(24, 20, 21);
+//        wave: 0   f: 4   d: 3   t: 1
+//        wave: 1   f: 5   d: 3   t: 1
+//        wave: 2   f: 5   d: 3   t: 1
+//        wave: 3   f: 5   d: 3   t: 1
+//        wave: 4   f: 5   d: 3   t: 2
+//        wave: 5   f: 6   d: 4   t: 2
+//        wave: 6   f: 6   d: 4   t: 2
+//        wave: 7   f: 6   d: 4   t: 2
+//        wave: 8   f: 6   d: 4   t: 2
+//        wave: 9   f: 7   d: 4   t: 2
+//        wave: 10   f: 7   d: 4   t: 2
+//        wave: 11   f: 7   d: 5   t: 2
+//        wave: 12   f: 7   d: 5   t: 2
+//        wave: 13   f: 8   d: 5   t: 2
+//        wave: 14   f: 8   d: 5   t: 3
+//        wave: 15   f: 8   d: 5   t: 3
+//        wave: 16   f: 8   d: 5   t: 3
+//        wave: 17   f: 9   d: 6   t: 3
+//        wave: 18   f: 9   d: 6   t: 3
+//        wave: 19   f: 9   d: 6   t: 3
+
+
+        wave[0] = new Wave(4, 3, 1);
+        wave[1] = new Wave(5, 3, 2);
+        wave[2] = new Wave(10, 3, 2);
+        wave[3] = new Wave(10, 6, 3);
+        wave[4] = new Wave(15, 8, 4);
+        wave[5] = new Wave(18, 8, 4);
+        wave[6] = new Wave(24, 12, 6);
+        wave[7] = new Wave(24, 12, 6);
+        wave[8] = new Wave(24, 16, 6);
+        wave[9] = new Wave(28, 16, 8);
+        wave[10] = new Wave(28, 20, 8);
+        wave[11] = new Wave(35, 25, 8);
+        wave[12] = new Wave(35, 25, 10);
+        wave[13] = new Wave(40, 30, 12);
+        wave[14] = new Wave(0, 0, 30);
+        wave[15] = new Wave(40, 30, 15);
+        wave[16] = new Wave(48, 35, 15);
+        wave[17] = new Wave(54, 42, 18);
+        wave[18] = new Wave(54, 42, 21);
+        wave[19] = new Wave(63, 48, 24);
 
     }
 
@@ -392,17 +414,17 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private int resetFCounter() {
-        int fCounterBase = (waveNumber / 2) + 1;
+        int fCounterBase = 3 + ((waveNumber+6) / 4);
         return fCounterBase;
     }
 
     private int resetDCounter() {
-        int dCounterBase = (waveNumber / 5) + 1;
+        int dCounterBase = 2 + ((waveNumber+6) / 6);
         return dCounterBase;
     }
 
     private int resetTCounter() {
-        int tCounterBase = (waveNumber / 10) + 1;
+        int tCounterBase = 1 + ((waveNumber+5) / 10);
         return tCounterBase;
     }
 
@@ -727,18 +749,18 @@ public class GameView extends SurfaceView implements Runnable {
                         paint);
             }
 
-            //temporary grid points for visualization - corners are black, center is gray
-            for (int y = 0; y < 9; y++) {
-                for (int x = 0; x < 16; x++) {
-                    Rect tile = gridCoordinates[y][x].getGridTile();
-
-                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
-                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
-                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
-                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
-                    paint.setColor(Color.LTGRAY);
-                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
-                    paint.setColor(Color.BLACK);
+//            //temporary grid points for visualization - corners are black, center is gray
+//            for (int y = 0; y < 9; y++) {
+//                for (int x = 0; x < 16; x++) {
+//                    Rect tile = gridCoordinates[y][x].getGridTile();
+//
+//                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
+//                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
+//                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
+//                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
+//                    paint.setColor(Color.LTGRAY);
+//                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
+//                    paint.setColor(Color.BLACK);
 
 
 //                    paint.setTextSize(15);
@@ -749,8 +771,8 @@ public class GameView extends SurfaceView implements Runnable {
 //                            paint
 //                            );
 
-                }
-            }
+//                }
+//            }
 
 
             //Unlocking the canvas
