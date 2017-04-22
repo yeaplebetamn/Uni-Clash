@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -80,6 +81,9 @@ public class GameActivity extends AppCompatActivity {
         //Initializing game view object
         //this time we are also passing the screen size to the GameView constructor
         gameView = new GameView(this, size.x, size.y);
+
+//        //hiding notifcation/status bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //adding it to contentview
         setContentView(gameView);

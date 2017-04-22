@@ -54,6 +54,29 @@ public class LevelSelectMenu extends AppCompatActivity {
         }
     }
 
+    public boolean isUnlocked(int level){
+        String levelString;
+        boolean unlocked = false;
+        int unlockedLevel = 1;
+        try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    openFileInput("unlocked_levels")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString);
+            }
+            levelString = stringBuffer.toString();
+            unlockedLevel = Integer.parseInt(levelString);
+            if (unlockedLevel == level){
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     public void setLevel(String levelName){
         String filename = "level";
@@ -82,14 +105,18 @@ public class LevelSelectMenu extends AppCompatActivity {
     }
 
     public void pressLevel2Button(View view){
-        Intent level2SelectIntent = new Intent(this, GameActivity.class);
-        startActivity(level2SelectIntent);
-        setLevel("2");
+        if(isUnlocked(2)){
+            Intent level2SelectIntent = new Intent(this, GameActivity.class);
+            startActivity(level2SelectIntent);
+            setLevel("2");
+        }
     }
 
     public void pressLevel3Button(View view){
-        Intent level3SelectIntent = new Intent(this, GameActivity.class);
-        startActivity(level3SelectIntent);
-        setLevel("3");
+        if(isUnlocked(3)) {
+            Intent level3SelectIntent = new Intent(this, GameActivity.class);
+            startActivity(level3SelectIntent);
+            setLevel("3");
+        }
     }
 }

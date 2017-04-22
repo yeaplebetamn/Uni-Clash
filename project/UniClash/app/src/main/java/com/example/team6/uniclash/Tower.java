@@ -120,10 +120,12 @@ public class Tower {
         } else {
             for (Enemy enemy : enemies) {
                 if (Rect.intersects(getRangeDetector(), enemy.getCollisionDetector())) {
-                    target = enemy;
-                    hasTarget = true;
-                    frameTimer++;
-                    break;
+                    if (enemy.inBounds() && !enemy.waiting) {
+                        target = enemy;
+                        hasTarget = true;
+                        frameTimer++;
+                        break;
+                    }
                 }
             }
         }

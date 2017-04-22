@@ -16,6 +16,7 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     //boolean variable to track if the game is playing or not
     volatile boolean playing;
-    public boolean win = false;
+    private boolean win = false;
+    private boolean canWriteToSave = true;
 
     //the game thread
     private Thread gameThread = null;
@@ -45,7 +47,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber = 0;
+    private int waveNumber = 19;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -81,6 +83,9 @@ public class GameView extends SurfaceView implements Runnable {
     private int tCounter = 2;
 
     private boolean[] level = new boolean[3];
+    private int currentLevel;
+    private int unlockedLevel;
+
     //Class constructor
     public GameView(Context context, int screenX, int screenY) {
         super(context);
@@ -148,6 +153,7 @@ public class GameView extends SurfaceView implements Runnable {
             }
             levelString = stringBuffer.toString();
             level = Integer.parseInt(levelString);
+            currentLevel = level;
             level--;
             this.level[level] = true;
         } catch (IOException e) {
@@ -249,6 +255,7 @@ public class GameView extends SurfaceView implements Runnable {
             pathX++;
         }
     }
+
     public void setPath3() {
         int pathX = 0;
         int pathY = 6;
@@ -273,8 +280,6 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
-
-
     public void setGameOver() {
         gameOver = true;
 
@@ -282,7 +287,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnTankEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base, path);
+            TankEnemy enemy = new TankEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -290,7 +295,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnDefaultEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base, path);
+            DefaultEnemy enemy = new DefaultEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -298,7 +303,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void spawnFastEnemies(int numberEnemies, Context context, int screenX, int screenY) {
         for (int i = 0; i < numberEnemies; i++) {
-            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base, path);
+            FastEnemy enemy = new FastEnemy(context, screenX, screenY, base, path, waveNumber);
             //enemy.setX(0 - (enemies.size() * enemy.getBitmap().getWidth()));
             enemies.add(enemy);
         }
@@ -354,6 +359,53 @@ public class GameView extends SurfaceView implements Runnable {
         return getCredits() + "";
     }
 
+    private void unlockNextLevel() {
+        String unlockedLevelString = "";
+        //load the unlocked level
+        try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    context.openFileInput("unlocked_levels")));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString);
+            }
+            unlockedLevelString = stringBuffer.toString();
+            unlockedLevel = Integer.parseInt(unlockedLevelString);
+            unlockedLevel++;
+            unlockedLevelString = "";
+            unlockedLevelString += unlockedLevel;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String filename = "unlocked_levels";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(unlockedLevelString.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int resetFCounter() {
+        int fCounterBase = (waveNumber / 2) + 1;
+        return fCounterBase;
+    }
+
+    private int resetDCounter() {
+        int dCounterBase = (waveNumber / 5) + 1;
+        return dCounterBase;
+    }
+
+    private int resetTCounter() {
+        int tCounterBase = (waveNumber / 10) + 1;
+        return tCounterBase;
+    }
+
     @Override
     public void run() {
         while (playing) {
@@ -368,6 +420,92 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+    private void spawnEnemies(){
+        switch (enemyType) {
+            case(0): //wait
+                //wavenum   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20
+                //timer     30  28  28  26  26  24  24  22  22  20  20  18  18  16  16  14  14  12  12  10
+
+                if (spawnCounter < (30 - ((waveNumber/2)*2))) {
+
+                    spawnCounter++;
+                } else {
+                    enemyType = 1;
+                    spawnCounter = 0;
+                    fCounter = resetFCounter();
+                    dCounter = resetDCounter();
+                    tCounter = resetTCounter();
+                }
+                break;
+            case(1): //tanks
+                if (spawnCounter < 15) {
+                    spawnCounter++;
+                } else {
+                    if (tCounter > 0) {
+                        for (Enemy enemy: enemies) {
+                            if (enemy.type == 1 && enemy.waiting) {
+                                enemy.waiting = false;
+                                tCounter--;
+                                break;
+                            } else if (enemies.get(enemies.size()-1) == enemy){
+                                tCounter = 0;
+                                enemyType = 2;
+                            }
+                        }
+                        spawnCounter = 0;
+                    } else {
+                        enemyType = 2;
+                        spawnCounter = 0;
+                    }
+                }
+                break;
+            case(2): //defaults
+                if (spawnCounter < 10) {
+                    spawnCounter++;
+                } else {
+                    if (dCounter > 0) {
+                        for (Enemy enemy: enemies) {
+                            if (enemy.type == 2 && enemy.waiting) {
+                                enemy.waiting = false;
+                                dCounter--;
+                                break;
+                            } else if (enemies.get(enemies.size()-1) == enemy) {
+                                dCounter = 0;
+                                enemyType = 3;
+                            }
+                        }
+                        spawnCounter = 0;
+                    } else {
+                        enemyType = 3;
+                        spawnCounter = 0;
+                    }
+                }
+                break;
+            case(3): //fast bois
+                if (spawnCounter < 5) {
+                    spawnCounter++;
+                } else {
+                    if (fCounter > 0) {
+                        for (Enemy enemy: enemies) {
+                            if (enemy.type == 3 && enemy.waiting) {
+                                enemy.waiting = false;
+                                fCounter--;
+                                break;
+                            } else if (enemies.get(enemies.size()-1) == enemy) {
+                                fCounter = 0;
+                                enemyType = 0;
+                            }
+                        }
+                        spawnCounter = 0;
+                    } else {
+                        enemyType = 0;
+                        spawnCounter = 0;
+                    }
+                }
+                break;
+        }
+
+    }
 
     private void update() {
         if (!gameOver && waveStarted && waveNumber < 20) {
@@ -380,88 +518,7 @@ public class GameView extends SurfaceView implements Runnable {
                     currentWave = wave[waveNumber + 1];
                 }
             }
-            ////////////////////////////////////////////////////////////////////////
-            switch (enemyType) {
-                case(0):
-                    if (spawnCounter < 30) {
-                        spawnCounter++;
-                    } else {
-                        enemyType = 1;
-                        spawnCounter = 0;
-                        fCounter = 6;
-                        dCounter = 4;
-                        tCounter = 2;
-                    }
-                    break;
-                case(1):
-                    if (spawnCounter < 15) {
-                        spawnCounter++;
-                    } else {
-                        if (tCounter > 0) {
-                            for (Enemy enemy: enemies) {
-                                if (enemy.type == 1 && enemy.waiting) {
-                                    enemy.waiting = false;
-                                    tCounter--;
-                                    break;
-                                } else if (enemies.get(enemies.size()-1) == enemy){
-                                    tCounter = 0;
-                                    enemyType = 2;
-                                }
-                            }
-                            spawnCounter = 0;
-                        } else {
-                            enemyType = 2;
-                            spawnCounter = 0;
-                        }
-                    }
-                    break;
-                case(2):
-                    if (spawnCounter < 10) {
-                        spawnCounter++;
-                    } else {
-                        if (dCounter > 0) {
-                            for (Enemy enemy: enemies) {
-                                if (enemy.type == 2 && enemy.waiting) {
-                                    enemy.waiting = false;
-                                    dCounter--;
-                                    break;
-                                } else if (enemies.get(enemies.size()-1) == enemy) {
-                                    dCounter = 0;
-                                    enemyType = 3;
-                                }
-                            }
-                            spawnCounter = 0;
-                        } else {
-                            enemyType = 3;
-                            spawnCounter = 0;
-                        }
-                    }
-                    break;
-                case(3):
-                    if (spawnCounter < 5) {
-                        spawnCounter++;
-                    } else {
-                        if (fCounter > 0) {
-                            for (Enemy enemy: enemies) {
-                                if (enemy.type == 3 && enemy.waiting) {
-                                    enemy.waiting = false;
-                                    fCounter--;
-                                    break;
-                                } else if (enemies.get(enemies.size()-1) == enemy) {
-                                    fCounter = 0;
-                                    enemyType = 0;
-                                }
-                            }
-                            spawnCounter = 0;
-                        } else {
-                            enemyType = 0;
-                            spawnCounter = 0;
-                        }
-                    }
-                    break;
-            }
-
-            ////////////////////////////////////////////////////////////////////////
+            spawnEnemies();
 
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
@@ -491,7 +548,14 @@ public class GameView extends SurfaceView implements Runnable {
                 waveNumber++;
                 if(waveNumber == 20){win = true;}
             }
+
         }
+        /*
+        if(win && canWriteToSave){
+            unlockNextLevel();
+            canWriteToSave = false;
+        }
+        */
     }
 
     private void draw() {
@@ -552,19 +616,6 @@ public class GameView extends SurfaceView implements Runnable {
             //pause button
             canvas.drawRect(pauseButton, paint);
             canvas.drawText("Pause", pauseButton.left + 20, pauseButton.centerY() + 20, paint1);
-
-           // drawing shop box
-            if (shopOpen) {
-                Bitmap shopBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.shop_menu);
-                Bitmap shopBitmapScaled = Bitmap.createScaledBitmap(shopBitmap, maxX/16*5, maxY/9*5, false);
-
-
-                canvas.drawBitmap(
-                        shopBitmapScaled,
-                        gridCoordinates[2][5].getXCenter(),
-                        gridCoordinates[2][4].getTop(),
-                        paint);
-            }
 
             //Drawing towers
             for (int i = 0; i < towers.size(); i++) {
@@ -663,6 +714,19 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawText("You've Graduated!", maxX / 2 - 575, maxY / 2 + 200, paint);
             }
 
+            // drawing shop box
+            if (shopOpen) {
+                Bitmap shopBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.shop_menu);
+                Bitmap shopBitmapScaled = Bitmap.createScaledBitmap(shopBitmap, maxX/16*5, maxY/9*5, false);
+
+
+                canvas.drawBitmap(
+                        shopBitmapScaled,
+                        gridCoordinates[2][5].getXCenter(),
+                        gridCoordinates[2][4].getTop(),
+                        paint);
+            }
+
             //temporary grid points for visualization - corners are black, center is gray
             for (int y = 0; y < 9; y++) {
                 for (int x = 0; x < 16; x++) {
@@ -735,7 +799,7 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgrading) {   //if shop button selected
+        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgrading && !towerSpawned) {   //if shop button selected
             if (shopOpen) {
                 shopOpen = false;
             } else if (!shopOpen && waveStarted) {
@@ -774,26 +838,22 @@ public class GameView extends SurfaceView implements Runnable {
                 //snapping to grid, x,y is center of tile
                 final int x = findTile(event.getX(),event.getY()).centerX();
                 final int y = findTile(event.getX(),event.getY()).centerY();
-                GridTile tilePressed = findGridTile(event.getX(),event.getY());
+                final GridTile tilePressed = findGridTile(event.getX(),event.getY());
+
 
                 //checking for invalid tower placement
-                for (Tower tower : towers) {
-                    if (tower.getX() == x && tower.getY() == y) {
-                        CharSequence text = "There's already a tower here. Get your own spot!";
-                        int duration = Toast.LENGTH_SHORT;
+                //checking for previously placed tower
+                if (tilePressed.occupied) {
+                    CharSequence text = "There's already a tower here. Get your own spot!";
+                    int duration = Toast.LENGTH_SHORT;
 
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                        invalidTower = true;
-                        towerSpawned = true;
-                        break;
-                    } else if (tower.getX() != x && tower.getY() != y) {
-
-                        invalidTower = false;
-                    }
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    invalidTower = true;
+                    towerSpawned = true;
                 }
                 //checking if tower placed on path
-                if (tilePressed.isPath) {
+                else if (tilePressed.isPath) {
                     CharSequence text = "This is the enemy's path. Don't be rude.";
                     int duration = Toast.LENGTH_SHORT;
 
@@ -801,10 +861,15 @@ public class GameView extends SurfaceView implements Runnable {
                     toast.show();
 
                     invalidTower = true;
+                    towerSpawned = true;
                 }
+                else {
+                        invalidTower = false;
+                    }
 
 
-                if (!invalidTower&&getCredits()>25) {
+
+                if (!invalidTower){
                     switch (selectedShopQuadrant) {
                         case 1: //shop quadrant 1
 
@@ -815,6 +880,7 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-25);
                                             towers.add(new GunTower(context, x, y));
+                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -836,9 +902,8 @@ public class GameView extends SurfaceView implements Runnable {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-30);
-//                                            SniperTower st=new SniperTower(context,x,y);
-//                                            towers.add(st);
                                             towers.add(new SniperTower(context, x, y));
+                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -859,6 +924,7 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-40);
                                             towers.add(new FreezeTower(context, x, y));
+                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp2.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -879,7 +945,7 @@ public class GameView extends SurfaceView implements Runnable {
                                         public void onClick(DialogInterface dialog, int which) {
                                             addCredits(-50);
                                             towers.add(new RocketTower(context, x, y));
-
+                                            tilePressed.occupied=true;
                                         }
                                     });
                             shopPopUp3.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -893,36 +959,65 @@ public class GameView extends SurfaceView implements Runnable {
                             break;
                     }
                 }
-                else
-                    ToastShop();
             }
 
             //Shop Menu is up
             if (shopOpen) {
+                float xTouch = event.getX();
+                float yTouch = event.getY();
+
                 //different tower selections based on x,y coordinates
-                if (event.getX() > gridCoordinates[5][2].getXCenter() && event.getX() < maxX/2 && event.getY() < 600) {   //upper left quadrant of shop
-                    selectedShopQuadrant = 1;
+                //Gun tower
+                if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch < maxX/2 && yTouch > gridCoordinates[2][0].getTop() && yTouch<gridCoordinates[3][0].getBottom()) {   //upper left quadrant of shop
+                    if(getCredits()<25){
+                        ToastShop();
+                        shopOpen=true;
+                    }else {
+                        selectedShopQuadrant = 1;
 
-                    shopOpen = false;
-                    towerSpawned = true;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
                 }
-                if (event.getX() > 600 && event.getX() < 900 && event.getY() > 299 && event.getY() < 600) {   //upper right quadrant of shop
-                    selectedShopQuadrant = 2;
+                //Sniper tower
+                if (xTouch > maxX/2 && xTouch<gridCoordinates[0][9].getXCenter() && yTouch > gridCoordinates[2][0].getTop() && yTouch<gridCoordinates[3][0].getBottom()) {   //upper right quadrant of shop
+                    if(getCredits()<30){
+                        ToastShop();
+                        shopOpen=true;
+                    }else {
+                        selectedShopQuadrant = 2;
 
-                    shopOpen = false;
-                    towerSpawned = true;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
                 }
-                if (event.getX() > 299 && event.getX() < 600 && event.getY() > 600 && event.getY() < 900) {   //lower left quadrant of shop
-                    selectedShopQuadrant = 3;
+                //Freeze tower
+                if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch<maxX/2 && yTouch > gridCoordinates[4][0].getTop() && yTouch<gridCoordinates[5][0].getBottom()) {   //lower left quadrant of shop
+                    if(getCredits()<40){
+                        ToastShop();
+                        shopOpen=true;
+                    }else {
+                        selectedShopQuadrant = 3;
 
-                    shopOpen = false;
-                    towerSpawned = true;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
                 }
-                if (event.getX() > 600 && event.getX() < 900 && event.getY() > 600 && event.getY() < 900) {   //lower right quadrant of shop
-                    selectedShopQuadrant = 4;
+                //Rocket tower
+                if (xTouch > maxX/2 && xTouch<gridCoordinates[0][9].getXCenter()  && yTouch > gridCoordinates[4][0].getTop() && yTouch<gridCoordinates[5][0].getBottom()) {   //lower right quadrant of shop
+                    if(getCredits()<50){
+                        ToastShop();
+                        shopOpen=true;
+                    }else {
+                        selectedShopQuadrant = 4;
 
-                    shopOpen = false;
-                    towerSpawned = true;
+                        shopOpen = false;
+                        towerSpawned = true;
+                    }
+                }
+                //student loans pack
+                if (xTouch > gridCoordinates[0][5].getXCenter() && xTouch<gridCoordinates[0][9].getXCenter() && yTouch>gridCoordinates[6][0].getTop() && yTouch<gridCoordinates[6][0].getBottom()){  //bottom bar of shop
+                    //heal
                 }
 
 
@@ -1102,7 +1197,6 @@ public class GameView extends SurfaceView implements Runnable {
             AlertDialog alert = builder.create();
             alert.show();
         }
-
 
         return false; //onTouch always returns false
     }
