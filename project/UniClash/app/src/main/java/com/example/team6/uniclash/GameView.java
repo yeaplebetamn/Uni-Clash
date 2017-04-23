@@ -48,7 +48,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber = 19;
+    private int waveNumber = 0;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -205,8 +205,7 @@ public class GameView extends SurfaceView implements Runnable {
         wave[16] = new Wave(48, 35, 15);
         wave[17] = new Wave(54, 42, 18);
         wave[18] = new Wave(54, 42, 21);
-        //wave[19] = new Wave(63, 48, 24);
-        wave[19] = new Wave(0, 0, 1);
+        wave[19] = new Wave(63, 48, 24);
     }
 
     //finds what tile the given x,y coordinates are in, returns only Rect
@@ -384,9 +383,9 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void unlockNextLevel() {
-        String unlockedLevelString = "" + (currentLevel + 1);
+        String unlockedLevelString = "";
         //load the unlocked level
-        /*
+
         try {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(
                     context.openFileInput("unlocked_levels")));
@@ -396,14 +395,19 @@ public class GameView extends SurfaceView implements Runnable {
                 stringBuffer.append(inputString);
             }
             unlockedLevelString = stringBuffer.toString();
-            unlockedLevel = Integer.parseInt(unlockedLevelString);
-            unlockedLevel++;
-            unlockedLevelString = "";
-            unlockedLevelString += unlockedLevel;
+            if(!unlockedLevelString.isEmpty()){
+                unlockedLevel = Integer.parseInt(unlockedLevelString);
+                unlockedLevel++;
+                unlockedLevelString = "";
+                unlockedLevelString += unlockedLevel;
+            }
+            else{
+                unlockedLevelString = "" + (currentLevel + 1);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
+
 
         String filename = "unlocked_levels";
         FileOutputStream outputStream;
