@@ -13,13 +13,14 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainMenu extends AppCompatActivity {
 
-    boolean firstTimePlay;
+    boolean firstTimePlay = true;
     Button playButton;
     Button settingsButton;
 

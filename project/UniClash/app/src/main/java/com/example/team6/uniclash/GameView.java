@@ -384,8 +384,9 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void unlockNextLevel() {
-        String unlockedLevelString = "";
+        String unlockedLevelString = "" + (currentLevel + 1);
         //load the unlocked level
+        /*
         try {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(
                     context.openFileInput("unlocked_levels")));
@@ -402,6 +403,7 @@ public class GameView extends SurfaceView implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
 
         String filename = "unlocked_levels";
         FileOutputStream outputStream;

@@ -80,7 +80,7 @@ public class LevelSelectMenu extends AppCompatActivity {
             }
             levelString = stringBuffer.toString();
             unlockedLevel = Integer.parseInt(levelString);
-            if (unlockedLevel == level){
+            if (unlockedLevel >= level){
                 return true;
             }
         } catch (IOException e) {
