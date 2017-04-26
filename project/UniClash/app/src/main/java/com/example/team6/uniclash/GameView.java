@@ -1070,7 +1070,8 @@ public class GameView extends SurfaceView implements Runnable {
                 }
                 //student loans pack
                 if (event.getX() > shopLeft && event.getX()< shopRight && event.getY()> (shopTop+shopHeight/3*2) && event.getY()<shopBottom){  //bottom bar of shop
-                    if(getCredits()<100){
+                    if(getCredits()>99){
+                        credit -= 100;
                         base.heal(50);
                         shopOpen = true;
 
