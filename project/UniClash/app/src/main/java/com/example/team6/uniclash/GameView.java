@@ -111,9 +111,9 @@ public class GameView extends SurfaceView implements Runnable {
         paint1 = new Paint();
 
         //todo: move buttons to their own constructor
-        shopButton = new Rect(20, maxY - 200, 250, maxY - 100);
-        upgradeButton = new Rect(maxX/4-150, maxY-200, maxX/4 +150,maxY-100);
-        startWaveButton = new Rect(maxX / 2 - 150, maxY - 200, maxX / 2 + 150, maxY - 100);
+        shopButton = new Rect(20, maxY - 120, 250, maxY - 20); //initialized as a new rect below as well
+        upgradeButton = new Rect(maxX/4-150, maxY-120, maxX/4 +150,maxY-20);
+        startWaveButton = new Rect(maxX / 2 - 150, maxY - 120, maxX / 2 + 150, maxY - 20);
         pauseButton = new Rect(maxX - 250, 20, maxX - 20, 120);
         waveInfoButton = new Rect(maxX / 2 - 165, 20, maxX / 2 + 210, 120);
         mainMenuBack = new Rect(maxX / 2 - 580, maxY / 2 + 180, maxX / 2 - 80,maxY / 2 + 380);
@@ -688,7 +688,7 @@ public class GameView extends SurfaceView implements Runnable {
             paint.setTextSize(100);
             canvas.drawText(getBaseHealthText(), maxX - 500, maxY - 100, paint);
             paint.setTextSize(50);
-            shopButton = new Rect(20, maxY - 200, 250, maxY - 100);
+            shopButton = new Rect(20, maxY - 120, 250, maxY - 20); //second time Button is initialized
             canvas.drawText(toStringCredit(), maxX - 700, maxY - 100, paint);
 
             if (gameOver) {
@@ -745,28 +745,28 @@ public class GameView extends SurfaceView implements Runnable {
             // drawing shop box
             if (shopOpen) {
                 Bitmap shopBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.shop_menu);
-                Bitmap shopBitmapScaled = Bitmap.createScaledBitmap(shopBitmap, maxX/16*5, maxY/9*5, false);
+                Bitmap shopBitmapScaled = Bitmap.createScaledBitmap(shopBitmap, maxX/16*6, maxY/9*6, false);
 
 
                 canvas.drawBitmap(
                         shopBitmapScaled,
-                        gridCoordinates[2][5].getXCenter(),
-                        gridCoordinates[2][4].getTop(),
+                        gridCoordinates[0][5].getLeft(),
+                        gridCoordinates[1][0].getYCenter(),
                         paint);
             }
 
-//            //temporary grid points for visualization - corners are black, center is gray
-//            for (int y = 0; y < 9; y++) {
-//                for (int x = 0; x < 16; x++) {
-//                    Rect tile = gridCoordinates[y][x].getGridTile();
-//
-//                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
-//                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
-//                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
-//                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
-//                    paint.setColor(Color.LTGRAY);
-//                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
-//                    paint.setColor(Color.BLACK);
+            //temporary grid points for visualization - corners are black, center is gray
+            for (int y = 0; y < 9; y++) {
+                for (int x = 0; x < 16; x++) {
+                    Rect tile = gridCoordinates[y][x].getGridTile();
+
+                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
+                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
+                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
+                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
+                    paint.setColor(Color.LTGRAY);
+                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
+                    paint.setColor(Color.BLACK);
 
 
 //                    paint.setTextSize(15);
@@ -777,8 +777,8 @@ public class GameView extends SurfaceView implements Runnable {
 //                            paint
 //                            );
 
-//                }
-//            }
+                }
+            }
 
 
             //Unlocking the canvas
@@ -989,15 +989,14 @@ public class GameView extends SurfaceView implements Runnable {
             if (shopOpen) {
                 //shop drawn starting from shopLeft,shopTop
                 int shopLeft = gridCoordinates[0][5].getXCenter();
-                int shopTop = (int)(gridCoordinates[2][0].getTop());
+                int shopTop = (int)(gridCoordinates[1][0].getYCenter());
                 int shopRight = gridCoordinates[0][10].getXCenter();
-                int shopBottom = (int) (gridCoordinates[6][0].getBottom());
-                int shopWidth = shopRight - shopLeft;
-                int shopHeight = shopBottom - shopTop;
+                int shopBottom = (int) (gridCoordinates[5][0].getBottom());
+                int shopXMiddle = gridCoordinates[0][7].getXCenter();
 
                 //different tower selections based on x,y coordinates
                 //Gun tower
-                if (event.getX() > shopLeft && event.getX()<(shopLeft+shopWidth/2) && event.getY()>shopTop && event.getY()<(shopTop+shopHeight/3)) {   //upper left quadrant of shop
+                if (event.getX() > shopLeft && event.getX()<shopXMiddle && event.getY()>shopTop && event.getY()<gridCoordinates[3][0].getYCenter()) {   //upper left quadrant of shop
                     if(getCredits()<25){
                         ToastShop();
                         shopOpen=true;
@@ -1015,7 +1014,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //Sniper tower
-                if (event.getX() > (shopLeft+shopWidth/2) && event.getX()<shopRight && event.getY() > shopTop && event.getY()<(shopTop+shopHeight/3)) {   //upper right quadrant of shop
+                if (event.getX() > shopXMiddle && event.getX()<shopRight && event.getY() > shopTop && event.getY()<gridCoordinates[3][0].getYCenter()) {   //upper right quadrant of shop
                     if(getCredits()<30){
                         ToastShop();
                         shopOpen=true;
@@ -1033,7 +1032,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //Freeze tower
-                if (event.getX() > shopLeft && event.getX()<(shopLeft+shopWidth/2) && event.getY() > (shopTop+shopHeight/3) && event.getY()<(shopTop+shopHeight/3*2)) {   //lower left quadrant of shop
+                if (event.getX() > shopLeft && event.getX()< shopXMiddle && event.getY() > gridCoordinates[3][0].getYCenter() && event.getY()< gridCoordinates[5][0].getTop()) {   //lower left quadrant of shop
                     if(getCredits()<40){
                         ToastShop();
                         shopOpen=true;
@@ -1051,7 +1050,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //Rocket tower
-                if (event.getX() > (shopLeft+shopWidth/2) && event.getX()<shopRight  && event.getY() > (shopTop+shopHeight/3) && event.getY()< (shopTop+shopHeight/3*2)) {   //lower right quadrant of shop
+                if (event.getX() > gridCoordinates[3][0].getYCenter() && event.getX()<shopRight  && event.getY() > gridCoordinates[3][0].getYCenter() && event.getY()< gridCoordinates[5][0].getTop()) {   //lower right quadrant of shop
                     if(getCredits()<50){
                         ToastShop();
                         shopOpen=true;
@@ -1069,7 +1068,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //student loans pack
-                if (event.getX() > shopLeft && event.getX()< shopRight && event.getY()> (shopTop+shopHeight/3*2) && event.getY()<shopBottom){  //bottom bar of shop
+                if (event.getX() > shopLeft && event.getX()< shopRight && event.getY()> gridCoordinates[5][0].getTop() && event.getY()<shopBottom){  //bottom bar of shop
                     if(getCredits()>99){
                         credit -= 100;
                         base.heal(50);
