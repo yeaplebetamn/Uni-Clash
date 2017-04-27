@@ -756,29 +756,29 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             //temporary grid points for visualization - corners are black, center is gray
-            for (int y = 0; y < 9; y++) {
-                for (int x = 0; x < 16; x++) {
-                    Rect tile = gridCoordinates[y][x].getGridTile();
-
-                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
-                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
-                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
-                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
-                    paint.setColor(Color.LTGRAY);
-                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
-                    paint.setColor(Color.BLACK);
-
-
-//                    paint.setTextSize(15);
-//                    canvas.drawText(
-//                            "(" + (x*gridX) + " , " + (y*gridY) + ")",
-//                            x*gridX,
-//                            y*gridY,
-//                            paint
-//                            );
-
-                }
-            }
+//            for (int y = 0; y < 9; y++) {
+//                for (int x = 0; x < 16; x++) {
+//                    Rect tile = gridCoordinates[y][x].getGridTile();
+//
+//                    canvas.drawCircle(tile.left, tile.top, 4, paint); //drawing pt at upper left corner of tile
+//                    canvas.drawCircle(tile.left, tile.bottom, 4, paint); //drawing pt at bottom left corner of tile
+//                    canvas.drawCircle(tile.right, tile.top, 4, paint); //drawing pt at upper right corner of tile
+//                    canvas.drawCircle(tile.right, tile.bottom, 4, paint); //drawing pt at bottom right corner of tile
+//                    paint.setColor(Color.LTGRAY);
+//                    canvas.drawCircle(tile.centerX(), tile.centerY(), 4, paint); //drawing pt at center of tile
+//                    paint.setColor(Color.BLACK);
+//
+//
+////                    paint.setTextSize(15);
+////                    canvas.drawText(
+////                            "(" + (x*gridX) + " , " + (y*gridY) + ")",
+////                            x*gridX,
+////                            y*gridY,
+////                            paint
+////                            );
+//
+//                }
+//            }
 
 
             //Unlocking the canvas
