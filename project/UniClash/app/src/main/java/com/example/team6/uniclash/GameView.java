@@ -1050,7 +1050,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
                 //Rocket tower
-                if (event.getX() > gridCoordinates[3][0].getYCenter() && event.getX()<shopRight  && event.getY() > gridCoordinates[3][0].getYCenter() && event.getY()< gridCoordinates[5][0].getTop()) {   //lower right quadrant of shop
+                if (event.getX() > shopXMiddle && event.getX()<shopRight  && event.getY() > gridCoordinates[3][0].getYCenter() && event.getY()< gridCoordinates[5][0].getTop()) {   //lower right quadrant of shop
                     if(getCredits()<50){
                         ToastShop();
                         shopOpen=true;
@@ -1070,15 +1070,30 @@ public class GameView extends SurfaceView implements Runnable {
                 //student loans pack
                 if (event.getX() > shopLeft && event.getX()< shopRight && event.getY()> gridCoordinates[5][0].getTop() && event.getY()<shopBottom){  //bottom bar of shop
                     if(getCredits()>99){
-                        credit -= 100;
-                        base.heal(50);
-                        shopOpen = true;
+                        android.support.v7.app.AlertDialog.Builder shopPopUp = new android.support.v7.app.AlertDialog.Builder(this.getContext());
+                        shopPopUp.setMessage("Boost your grade 50 points?"); //shop menu dialogue
+                        shopPopUp.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        credit -= 100;
+                                        base.heal(50);
+                                        shopOpen = true;
 
-                        CharSequence text = "Healing base 50 points.";
-                        int duration = Toast.LENGTH_SHORT;
+                                        CharSequence text = "Healing base 50 points.";
+                                        int duration = Toast.LENGTH_SHORT;
 
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
+                                        Toast toast = Toast.makeText(context, text, duration);
+                                        toast.show();
+                                    }
+                                });
+                        shopPopUp.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                towerSpawned = false;
+                            }
+                        });
+                        android.support.v7.app.AlertDialog helpDialog = shopPopUp.create();
+                        helpDialog.show();
+
                     }else{
                         ToastShop();
                         shopOpen = false;
