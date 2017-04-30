@@ -1145,6 +1145,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
             }
+
             if(!upgrading && !waveStarted && !shopOpen && !towerSpawned) {
                 final int x = findTile(event.getX(), event.getY()).centerX();
                 final int y = findTile(event.getX(), event.getY()).centerY();
