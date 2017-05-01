@@ -833,7 +833,7 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgrading && !towerSpawned) {   //if shop button selected
+        if (shopButton.contains((int) event.getX(), (int) event.getY()) && !upgrading && !towerSpawned && !waveStarted) {   //if shop button selected
             if (shopOpen) {
                 shopOpen = false;
             } else if (!shopOpen && waveStarted) {
