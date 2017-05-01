@@ -587,7 +587,6 @@ public class GameView extends SurfaceView implements Runnable {
             unlockNextLevel();
             canWriteToSave = false;
         }
-
     }
 
     private void draw() {
@@ -598,6 +597,7 @@ public class GameView extends SurfaceView implements Runnable {
             //drawing a background color for canvas
             canvas.drawColor(Color.WHITE);
 
+            //draw tiles
             for (int y = 0; y < 9; y++) {
                 for (int x = 0; x < 16; x++) {
                     canvas.drawBitmap(
@@ -610,7 +610,6 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             //Drawing the base
-            //need to use a variable for the y instead of 800
             canvas.drawBitmap(
                     base.getBitmap(),
                     base.getX() - (base.getBitmap().getWidth() / 2),
@@ -623,6 +622,7 @@ public class GameView extends SurfaceView implements Runnable {
             paint1.setColor(Color.RED);
             paint1.setTextSize(50);
 
+            //start wave button
             if(!waveStarted && !win) {
                 //start wave button
                 canvas.drawRect(startWaveButton, paint);
@@ -689,8 +689,8 @@ public class GameView extends SurfaceView implements Runnable {
 
 
             //Drawing health text
-            paint.setTextSize(50);
-            canvas.drawText(getBaseHealth(), maxX - 500, maxY - 200, paint);
+//            paint.setTextSize(50);
+//            canvas.drawText(getBaseHealth(), maxX - 500, maxY - 200, paint);
             paint.setTextSize(100);
             canvas.drawText(getBaseHealthText(), maxX - 500, maxY - 100, paint);
             paint.setTextSize(50);
@@ -721,23 +721,24 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawText("Restart", maxX / 2 + 245, maxY / 2 + 300, paint);
             }
 
-            if(level[0]){
-                paint.setColor(Color.BLACK);
-                paint.setTextSize(50);
-                canvas.drawText("Level 1", maxX / 2 - 950, maxY / 4, paint);
-            }
-
-            else if(level[1]){
-                paint.setColor(Color.BLACK);
-                paint.setTextSize(50);
-                canvas.drawText("Level 2", maxX / 2 - 950, maxY / 4, paint);
-            }
-
-            else{
-                paint.setColor(Color.BLACK);
-                paint.setTextSize(50);
-                canvas.drawText("Level 3", maxX / 2 - 950, maxY / 4, paint);
-            }
+//            //draw level name
+//            if(level[0]){
+//                paint.setColor(Color.BLACK);
+//                paint.setTextSize(50);
+//                canvas.drawText("Level 1", maxX / 2 - 950, maxY / 4, paint);
+//            }
+//
+//            else if(level[1]){
+//                paint.setColor(Color.BLACK);
+//                paint.setTextSize(50);
+//                canvas.drawText("Level 2", maxX / 2 - 950, maxY / 4, paint);
+//            }
+//
+//            else{
+//                paint.setColor(Color.BLACK);
+//                paint.setTextSize(50);
+//                canvas.drawText("Level 3", maxX / 2 - 950, maxY / 4, paint);
+//            }
 
             if(win){
                 paint.setColor(Color.YELLOW);

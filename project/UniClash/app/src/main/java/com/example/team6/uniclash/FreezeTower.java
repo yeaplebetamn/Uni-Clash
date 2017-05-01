@@ -28,10 +28,10 @@ public class FreezeTower extends Tower {
     public void attack(Enemy target, ArrayList<Enemy> enemies) {
         for (Enemy enemy: enemies) {
             if (getRangeDetector().intersects(getRangeDetector(), enemy.getCollisionDetector()) && !enemy.slowed) {
-                enemy.setSpeed(enemy.getSpeed() * slowPercent);
+                enemy.setSpeed(enemy.getSpeed() * this.slowPercent);
                 enemy.slowed = true;
             } else if (enemy.slowed){
-                enemy.setSpeed(enemy.getSpeed() / slowPercent);
+                enemy.setSpeed(enemy.getSpeed() / this.slowPercent);
                 enemy.slowed = false;
             }
         }
@@ -42,6 +42,6 @@ public class FreezeTower extends Tower {
         this.level++;
         //level     0   1   2   3
         //slow     0.5 0.4 0.3 0.2
-        slowPercent -= 0.1;
+        this.slowPercent -= 0.1;
     }
 }
