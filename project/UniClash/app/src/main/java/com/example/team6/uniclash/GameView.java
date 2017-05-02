@@ -28,7 +28,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private Context context;
-    public int credit = 100;
+    public int credit = 1000;
     private Music mServ;
     Wave currentWave;
     Wave wave[] = new Wave[20];
@@ -48,7 +48,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber = 0;
+    private int waveNumber = 14;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -115,7 +115,7 @@ public class GameView extends SurfaceView implements Runnable {
         upgradeButton = new Rect(maxX/4-150, maxY-120, maxX/4 +150,maxY-20);
         startWaveButton = new Rect(maxX / 2 - 150, maxY - 120, maxX / 2 + 150, maxY - 20);
         pauseButton = new Rect(maxX - 250, 20, maxX - 20, 120);
-        waveInfoButton = new Rect(maxX / 2 - 165, 20, maxX / 2 + 210, 120);
+        waveInfoButton = new Rect(maxX / 2 - 165, 20, maxX / 2 + 235, 120);
         mainMenuBack = new Rect(maxX / 2 - 580, maxY / 2 + 180, maxX / 2 - 80,maxY / 2 + 380);
         mainMenuButton = new Rect(maxX / 2 - 570, maxY / 2 + 190, maxX / 2 - 90, maxY / 2 + 370);
         restartBack = new Rect(maxX / 2 + 120, maxY / 2 + 180, maxX / 2 + 620, maxY / 2 + 380);
