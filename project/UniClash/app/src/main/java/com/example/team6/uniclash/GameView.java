@@ -28,7 +28,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private SurfaceHolder surfaceHolder;
     private Context context;
-    public int credit = 1000;
+    public int credit = 100;
     private Music mServ;
     Wave currentWave;
     Wave wave[] = new Wave[20];
@@ -48,7 +48,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean gameOver = false;
 
-    private int waveNumber = 14;
+    //start wave = 0, end wave = 19;
+    private int waveNumber = 0;
     private boolean waveStarted = false;
 
     private int maxX;
@@ -234,6 +235,10 @@ public class GameView extends SurfaceView implements Runnable {
     public void setPath1() {
         int pathX = 0;
         int pathY = 1;
+
+
+
+
 
         while(pathX < 5) {
             gridCoordinates[pathY][pathX].isPath = true;
