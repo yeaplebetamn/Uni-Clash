@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.2'
 
     defaultConfig {
-        applicationId "com.example.team6.uniclash"
+        applicationId "edu.vcu.team6.uniclash"
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1

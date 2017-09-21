@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
 
     android:background="@drawable/td_map"
-    tools:context="com.example.team6.uniclash.GameActivity">
+    tools:context="com.vcu.team6.uniclash.edu.vcu.team6.uniclash.GameActivity">
 
 
     <!-- The primary full-screen view. This can be replaced with whatever view

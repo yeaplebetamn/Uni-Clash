@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <RelativeLayout tools:context="com.example.team6.uniclash.pauseActivity"
+    <RelativeLayout tools:context="com.vcu.team6.uniclash.edu.vcu.team6.uniclash.pauseActivity"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
