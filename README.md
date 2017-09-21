@@ -1,4 +1,8 @@
-# androidapp-androidapp-team06
+# UNI CLASH
+
+This is the source code, documentation, and testing for the Uni Clash app.
+
+Play Store listing: https://play.google.com/store/apps/details?id=edu.vcu.team6.uniclash&hl=en
 
 ***************
 FIRST ITERATION
